@@ -1,3 +1,5 @@
+from contextlib import nullcontext
+
 import flask, os, mysql.connector as mysql
 from flask import request, jsonify, render_template
 
@@ -339,6 +341,36 @@ def view_services():
         return render_template("services.html", services=test_services)
     except Exception as e:
         return render_template("error.html", error=str(e))
+
+
+# Web route to view services sorted by name in the browser
+@app.route("/personal_account_master", methods=["GET"])
+def personal_account_master():
+    """Web route to view services sorted by name"""
+    try:
+        # conn = get_db_connection()
+        # cursor = conn.cursor()
+        #
+        # # Execute a SQL query to fetch services sorted by name in ascending order
+        # cursor.execute(
+        #     """
+        #     SELECT s.id, s.name as service, p.price
+        #     FROM services s
+        #     JOIN prices p ON s.id = p.service_id
+        #     ORDER BY s.name ASC
+        # """
+        # )
+        # # Fetch ALL rows from the query result
+        # services = cursor.fetchall()
+        # cursor.close()
+        # conn.close()
+        #
+        # # Render the sort_name.html template and pass the sorted services data to it
+        return render_template("personal_account_master.html", services=nullcontext, sort_type="Name")
+    except Exception as e:
+        # If an error occurs, render the error.html template and pass the error message
+        return render_template("error.html", error=str(e))
+
 
 # running it locally
 # if __name__ == "__main__":

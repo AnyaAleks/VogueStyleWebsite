@@ -15,8 +15,12 @@
             <h1>VogueStyle</h1>
             <nav>
                 <ul>
-                    <li><a href="/" {% if request.path=='/' %}class="active" {% endif %}>Home</a></li>
-                    <li><a href="/services" {% if request.path=='/services' %}class="active" {% endif %}>Services</a></li>
+                    <li><a href="/" {% if request.path=='/' %}class="active" {% endif %}>Главная</a></li>
+                    <li><a href="/services" {% if request.path=='/services' %}class="active" {% endif %}>Услуги</a></li>
+                    {% set show_personal_account = 1 %}
+                     {% if show_personal_account == 1 %}
+                    <li><a href="/personal_account_master" {% if request.path=='/personal_account_master' %}class="active" {% endif %}>ЛК</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
