@@ -1,0 +1,9 @@
+<!-- delegate.html -->
+<div class="service-card">
+    <h3 class="service-name">{{ service.name }}</h3>
+    <p class="service-price">Цена: {{ service.price }} ₽</p>
+    <button class="book-button"
+            onclick="bookService('{{ service.name }}', {{ service.price }})">
+        Записаться
+    </button>
+</div>

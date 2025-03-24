@@ -151,6 +151,24 @@ section {
     padding: 2rem 0;
 }
 
+.service-card button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.service-card button:hover {
+    background-color: #3e8e41;
+}
+
 /* API info */
 .api-info {
     background-color: #f8f8f8;

@@ -311,24 +311,32 @@ def sort_price():
 def view_services():
     """Web route to view all services"""
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+        # Тестовые данные (удалите, когда подключите БД)
+        test_services = [
+            {"id": 1, "name": "Тестовый маникюр", "price": 1500},
+            {"id": 2, "name": "Пробная стрижка", "price": 2000},
+            {"id": 3, "name": "Демо-окрашивание", "price": 2500}
+        ]
 
-        # Execute a SQL query to fetch all services and their prices
-        cursor.execute(
-            """
-            SELECT s.id, s.name as service, p.price 
-            FROM services s 
-            JOIN prices p ON s.id = p.service_id
-        """
-        )
-        # Fetch all rows from the query result
-        services = cursor.fetchall()
-
-        cursor.close()
-        conn.close()
-
-        return render_template("services.html", services=services)
+    # try:
+    #     conn = get_db_connection()
+    #     cursor = conn.cursor()
+    #
+    #     # Execute a SQL query to fetch all services and their prices
+    #     cursor.execute(
+    #         """
+    #         SELECT s.id, s.name as service, p.price
+    #         FROM services s
+    #         JOIN prices p ON s.id = p.service_id
+    #     """
+    #     )
+    #     # Fetch all rows from the query result
+    #     services = cursor.fetchall()
+    #
+    #     cursor.close()
+    #     conn.close()
+    #
+        return render_template("services.html", services=test_services)
     except Exception as e:
         return render_template("error.html", error=str(e))
 

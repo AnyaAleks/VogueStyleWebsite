@@ -58,6 +58,7 @@ async function fetchServices() {
                 serviceCard.innerHTML = `
                     <h3>${service.name}</h3>
                     <p class="price">Price: $${service.price}</p>
+                    <button onclick="bookService('${service.name}')" class="btn">Записаться</button>
                 `;
                 servicesContainer.appendChild(serviceCard);
             });
@@ -84,6 +85,7 @@ async function fetchServicesSortedByPrice() {
                 serviceCard.innerHTML = `
                     <h3>${service.service}</h3>
                     <p class="price">Price: $${service.price}</p>
+                    <button onclick="bookService('${service.service}')" class="btn">Записаться</button>
                 `;
                 servicesContainer.appendChild(serviceCard);
             });
@@ -91,4 +93,30 @@ async function fetchServicesSortedByPrice() {
     } catch (error) {
         console.error('Error sorting services:', error);
     }
+}
+
+// Function to book a service
+function bookService(serviceName) {
+    alert(`Вы выбрали: ${serviceName}\nЦена: ${price} ₽\nФункция записи будет реализована позже`);
+    // Отправка на сервер:
+    /*
+    fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            service: serviceName,
+            date: new Date().toISOString()
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Бронирование подтверждено!');
+    })
+    .catch(error => {
+        console.error('Ошибка бронирования:', error);
+        alert('Произошла ошибка при бронировании');
+    });
+    */
 }
