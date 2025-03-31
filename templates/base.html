@@ -17,8 +17,7 @@
                 <ul>
                     <li><a href="/" {% if request.path=='/' %}class="active" {% endif %}>Главная</a></li>
                     <li><a href="/services" {% if request.path=='/services' %}class="active" {% endif %}>Услуги</a></li>
-                    {% set show_personal_account = 1 %}
-                     {% if show_personal_account == 1 %}
+                    {% if site_version == 'master' %}
                     <li><a href="/personal_account_master" {% if request.path=='/personal_account_master' %}class="active" {% endif %}>ЛК</a></li>
                     {% endif %}
                 </ul>

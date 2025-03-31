@@ -24,6 +24,14 @@ shortcut = "/api/v1/resources"
 DATABASE_URL = os.getenv("DATABASE_URL")
 # connection_pool = None
 
+#Можно загрузить сайт со стороны master или client
+_master = "master"
+_client = "client"
+_siteVersion = _master
+@app.context_processor
+def inject_site_version():
+    return dict(site_version=_siteVersion)
+
 # apparently these dont work so well with vercel, so taking them out for now
 """def get_connection_pool():
     global connection_pool
@@ -359,7 +367,12 @@ def personal_account_master():
             'description': 'Опытный мастер с международными сертификатами.'
         }
 
-        return render_template("personal_account_master.html", master=master_data)
+        if _siteVersion == _master:
+            return render_template("personal_account_master.html", master=master_data)
+        else:
+            return ""#render_template("personal_account_master.html", master=master_data)
+
+
     except Exception as e:
         return render_template("error.html", error=str(e)), 500
 
