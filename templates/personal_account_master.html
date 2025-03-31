@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}VogueStyle - Master's personal account{% endblock %}
+{% block title %}Личный кабинет мастера{% endblock %}
 
 {% block content %}
 <section class="page-header">
@@ -8,5 +8,52 @@
     <p>Ваши данные в одном месте</p>
 </section>
 
+<section class="master-info">
+    <div class="info-card">
+        <div class="info-row">
+            <span class="info-label">Фото</span>
+            <span class="info-value">
+                {% if master.photo %}
+                    <img src="{{ master.photo }}" alt="Фото мастера" class="master-photo">
+                {% else %}
+                    Фото не загружено
+                {% endif %}
+            </span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">ФИО</span>
+            <span class="info-value">{{ master.full_name }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Адрес</span>
+            <span class="info-value">{{ master.address }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Телефон</span>
+            <span class="info-value">{{ master.phone }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Специализация</span>
+            <span class="info-value">{{ master.specialization }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Опыт работы</span>
+            <span class="info-value">{{ master.experience }}</span>
+        </div>
+    </div>
 
+    <div class="notes-section">
+        <h3>Заметки</h3>
+        <div class="notes-content">
+            {{ master.notes }}
+        </div>
+    </div>
+
+    <div class="description-section">
+        <h3>Описание</h3>
+        <div class="description-content">
+            {{ master.description }}
+        </div>
+    </div>
+</section>
 {% endblock %}

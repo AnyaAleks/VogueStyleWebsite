@@ -343,33 +343,25 @@ def view_services():
         return render_template("error.html", error=str(e))
 
 
-# Web route to view services sorted by name in the browser
 @app.route("/personal_account_master", methods=["GET"])
 def personal_account_master():
-    """Web route to view services sorted by name"""
+    """Web route to view master's personal account"""
     try:
-        # conn = get_db_connection()
-        # cursor = conn.cursor()
-        #
-        # # Execute a SQL query to fetch services sorted by name in ascending order
-        # cursor.execute(
-        #     """
-        #     SELECT s.id, s.name as service, p.price
-        #     FROM services s
-        #     JOIN prices p ON s.id = p.service_id
-        #     ORDER BY s.name ASC
-        # """
-        # )
-        # # Fetch ALL rows from the query result
-        # services = cursor.fetchall()
-        # cursor.close()
-        # conn.close()
-        #
-        # # Render the sort_name.html template and pass the sorted services data to it
-        return render_template("personal_account_master.html", services=nullcontext, sort_type="Name")
+        # Данные мастера
+        master_data = {
+            'photo': '/static/images/master_photo.jpg',
+            'full_name': 'Иванова Анна Петровна',
+            'address': 'ул. Примерная, д. 123, кв. 45',
+            'phone': '+7 (123) 456-78-90',
+            'specialization': 'Парикмахер-стилист',
+            'experience': '5 лет',
+            'notes': 'Предпочитаю работать с вечерними причёсками',
+            'description': 'Опытный мастер с международными сертификатами.'
+        }
+
+        return render_template("personal_account_master.html", master=master_data)
     except Exception as e:
-        # If an error occurs, render the error.html template and pass the error message
-        return render_template("error.html", error=str(e))
+        return render_template("error.html", error=str(e)), 500
 
 
 # running it locally
