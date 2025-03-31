@@ -1,7 +1,7 @@
 from contextlib import nullcontext
 
 import flask, os, mysql.connector as mysql
-from flask import request, jsonify, render_template
+from flask import request, jsonify, render_template, redirect, url_for
 
 import psycopg2
 from psycopg2 import pool
@@ -24,13 +24,44 @@ shortcut = "/api/v1/resources"
 DATABASE_URL = os.getenv("DATABASE_URL")
 # connection_pool = None
 
+###########################################################
+
 #Можно загрузить сайт со стороны master или client
 _master = "master"
 _client = "client"
 _siteVersion = _master
+current_version = 'master'
+
 @app.context_processor
 def inject_site_version():
     return dict(site_version=_siteVersion)
+
+# Конфигурация версий
+VERSION_CONFIG = {
+    'master': {
+        'url_prefix': '/master',
+        'show_lk': True
+    },
+    'client': {
+        'url_prefix': '/client',
+        'show_lk': False
+    }
+}
+
+# Функция для смены версии
+def set_version(version):
+    global _siteVersion
+    if version in VERSION_CONFIG:
+        _siteVersion = version
+
+# Контекстный процессор
+@app.context_processor
+def inject_version():
+    return {
+        'show_personal_account': VERSION_CONFIG[_siteVersion]['show_lk'],
+        'url_prefix': VERSION_CONFIG[_siteVersion]['url_prefix']
+    }
+########################################################
 
 # apparently these dont work so well with vercel, so taking them out for now
 """def get_connection_pool():
@@ -58,8 +89,18 @@ def return_db_connection(conn):
 
 # our route for the home page (accessible via HTTP GET requests)
 @app.route("/", methods=["GET"])
+@app.route("/master/", methods=["GET"])
+@app.route("/client/", methods=["GET"])
 def home():
-    """Home page route that displays all services"""
+    if request.path.startswith('/master'):
+        set_version('master')
+    elif request.path.startswith('/client'):
+        set_version('client')
+    else:
+        # Перенаправляем на версию по умолчанию
+        return redirect('/master/')
+
+
     try:
         # Create a database connection
         conn = get_db_connection()
@@ -318,6 +359,8 @@ def sort_price():
 
 # Web route to view all services in the browser
 @app.route("/services", methods=["GET"])
+@app.route("/master/services", methods=["GET"])
+@app.route("/client/services",  methods=["GET"])
 def view_services():
     """Web route to view all services"""
     try:
@@ -352,6 +395,7 @@ def view_services():
 
 
 @app.route("/personal_account_master", methods=["GET"])
+@app.route("/master/personal_account_master", methods=["GET"])
 def personal_account_master():
     """Web route to view master's personal account"""
     try:

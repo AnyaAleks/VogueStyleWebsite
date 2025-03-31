@@ -13,12 +13,22 @@
     <header>
         <div class="container">
             <h1>VogueStyle</h1>
+<!--            <nav>-->
+<!--                <ul>-->
+<!--                    <li><a href="/" {% if request.path=='/' %}class="active" {% endif %}>Главная</a></li>-->
+<!--                    <li><a href="/services" {% if request.path=='/services' %}class="active" {% endif %}>Услуги</a></li>-->
+<!--                    {% if site_version == 'master' %}-->
+<!--                    <li><a href="/personal_account_master" {% if request.path=='/personal_account_master' %}class="active" {% endif %}>ЛК</a></li>-->
+<!--                    {% endif %}-->
+<!--                </ul>-->
+<!--            </nav>-->
+
             <nav>
                 <ul>
-                    <li><a href="/" {% if request.path=='/' %}class="active" {% endif %}>Главная</a></li>
-                    <li><a href="/services" {% if request.path=='/services' %}class="active" {% endif %}>Услуги</a></li>
+                    <li><a href="/{{ 'master' if site_version == 'master' else 'client' }}/" {% if request.path=='/' or request.path.startswith('/master/') or request.path.startswith('/client/') %}class="active" {% endif %}>Главная</a></li>
+                    <li><a href="/{{ 'master' if site_version == 'master' else 'client' }}/services" {% if request.path=='/services' or request.path.startswith('/master/services') or request.path.startswith('/client/services') %}class="active" {% endif %}>Услуги</a></li>
                     {% if site_version == 'master' %}
-                    <li><a href="/personal_account_master" {% if request.path=='/personal_account_master' %}class="active" {% endif %}>ЛК</a></li>
+                    <li><a href="/master/personal_account_master" {% if request.path=='/personal_account_master' or request.path.startswith('/master/personal_account_master') %}class="active" {% endif %}>ЛК</a></li>
                     {% endif %}
                 </ul>
             </nav>
@@ -29,9 +39,21 @@
         {% block content %}{% endblock %}
     </main>
 
+<!--    <footer>-->
+<!--        <div class="container">-->
+<!--            <p>&copy; {{ current_year }} VogueStyle 💜 All rights reserved. GUAP</p>-->
+<!--        </div>-->
+<!--    </footer>-->
     <footer>
         <div class="container">
             <p>&copy; {{ current_year }} VogueStyle 💜 All rights reserved. GUAP</p>
+            <div class="version-switcher" style="color: white;">
+                Версия:
+                <a href="/master/" style="color: white; text-decoration: none;"
+                   {% if site_version == 'master' %}class="active"{% endif %}>Мастер</a> |
+                <a href="/client/" style="color: white; text-decoration: none;"
+                   {% if site_version == 'client' %}class="active"{% endif %}>Клиент</a>
+            </div>
         </div>
     </footer>
 
