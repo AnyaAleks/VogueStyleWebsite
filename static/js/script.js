@@ -94,19 +94,19 @@ async function fetchServicesSortedByPrice() {
         console.error('Error sorting services:', error);
     }
 }
-//function toggleDetails(masterId) {
-//    const details = document.getElementById(`details-${masterId}`);
-//    const button = document.querySelector(`#details-${masterId}`).nextElementSibling;
-//
-//    details.classList.toggle('expanded');
-//    button.classList.toggle('active');
-//
-//    if (details.classList.contains('expanded')) {
-//        button.querySelector('.btn-text').textContent = 'СВЕРНУТЬ';
-//    } else {
-//        button.querySelector('.btn-text').textContent = 'ЧИТАТЬ ПОДРОБНЕЕ';
-//    }
-//}
+function toggleDetails(masterId) {
+    const details = document.getElementById(`details-${masterId}`);
+    const button = document.querySelector(`#details-${masterId}`).nextElementSibling;
+
+    details.classList.toggle('expanded');
+    button.classList.toggle('active');
+
+    if (details.classList.contains('expanded')) {
+        button.querySelector('.btn-text').textContent = 'СВЕРНУТЬ';
+    } else {
+        button.querySelector('.btn-text').textContent = 'ЧИТАТЬ ПОДРОБНЕЕ';
+    }
+}
 
 // Function to book a service
 function bookService(serviceName) {
@@ -134,22 +134,22 @@ function bookService(serviceName) {
     */
 }
 
-document.getElementById('delete-photo').addEventListener('click', function() {
-    if (confirm('Удалить фото?')) {
-        fetch('/delete-photo/', {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({master_id: {{ master.id }}})
-        })
-        .then(response => location.reload())
-    }
-});
-
-document.getElementById('photo-upload').addEventListener('change', function(e) {
-    if (e.target.files.length > 0) {
-        document.querySelector('.lk-form').submit();
-    }
-});
+//document.getElementById('delete-photo').addEventListener('click', function() {
+//    if (confirm('Удалить фото?')) {
+//        fetch('/delete-photo/', {
+//            method: 'POST',
+//            headers: {
+//                'X-CSRFToken': '{{ csrf_token }}',
+//                'Content-Type': 'application/json',
+//            },
+//            body: JSON.stringify({master_id: {{ master.id }}})
+//        })
+//        .then(response => location.reload())
+//    }
+//});
+//
+//document.getElementById('photo-upload').addEventListener('change', function(e) {
+//    if (e.target.files.length > 0) {
+//        document.querySelector('.lk-form').submit();
+//    }
+//});

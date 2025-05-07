@@ -41,30 +41,3 @@
     </div>
 </div>
 
-<script>
-    function toggleDetails(masterId) {
-        const details = document.getElementById(`details-${masterId}`);
-        const button = document.querySelector(`button[onclick="toggleDetails(${masterId})"]`);
-
-        if (!details || !button) {
-            console.error('Элементы не найдены!');
-            return;
-        }
-
-        // Переключаем состояние
-        const isExpanded = details.classList.toggle('expanded');
-
-        // Обновляем текст кнопки
-        const btnText = button.querySelector('.btn-text');
-        if (btnText) {
-            btnText.textContent = isExpanded ? 'СВЕРНУТЬ' : 'ЧИТАТЬ ПОДРОБНЕЕ';
-        }
-
-        // Анимируем иконку
-        const btnIcon = button.querySelector('.btn-icon');
-        if (btnIcon) {
-            btnIcon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
-        }
-    }
-
-</script>
