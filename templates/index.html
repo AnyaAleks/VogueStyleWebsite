@@ -14,12 +14,15 @@
         {% for service in services %}
             {% include "delegate.html" %}
         {% endfor %}
-<!--        {% for service in services %}-->
-<!--        <div class="service-card">-->
-<!--            <h3>{{ service.service }}</h3>-->
-<!--            <p class="price">${{ service.price }}</p>-->
-<!--        </div>-->
-<!--        {% endfor %}-->
+    </div>
+</section>
+
+<section class="masters">
+    <h2>Our Masters</h2>
+    <div class="masters-container">
+        {% for master in masters %}
+            {% include "master_card.html" %}
+        {% endfor %}
     </div>
 </section>
 

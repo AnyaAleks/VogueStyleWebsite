@@ -105,6 +105,27 @@ def home():
             {"id": 3, "name": "Демо-окрашивание", "price": 2500}
         ]
 
+        test_masters = [
+            {
+                "id": 1,
+                "photo": "https://example.com/path/to/photo1.jpg",
+                "name": "Иван Иванов",
+                'specialization': 'Парикмахер-стилист'
+            },
+            {
+                "id": 2,
+                "photo": "https://example.com/path/to/photo1.jpg",
+                "name": "Мария Петрова",
+                'specialization': 'Парикмахер-стилист'
+            },
+            {
+                "id": 3,
+                "photo": "https://example.com/path/to/photo1.jpg",
+                "name": "Алексей Смирнов",
+                'specialization': 'Парикмахер-стилист'
+            }
+        ]
+
 
         # try:
     #     # Create a database connection
@@ -129,7 +150,8 @@ def home():
     #     current_year = datetime.now().year
     #
     #     # Render the index.html template and pass the services data to it
-        return render_template("index.html", services=test_services)
+
+        return render_template("index.html", services=test_services, masters=test_masters)
 
     except Exception as e:
         # If an error occurs, render the error.html template and pass the error message
@@ -240,25 +262,65 @@ def api_id():
 def view_masters():
     """Web route to view all services"""
     try:
-        # Тестовые данные (удалите, когда подключите БД)
-        test_masters = [
+        masters_add = [
             {
                 "id": 1,
-                "photo": "https://example.com/path/to/photo1.jpg",
-                "name": "Иван Иванов",
-                'specialization': 'Парикмахер-стилист'
+                "photo": "https://example.com/photos/anna.jpg",
+                "name": "Иванова Анна",
+                "job": "Топ-стилист, колорист",
+                "specialization": "Окрашивание, уход за волосами",
+                "experience": 8,
+                "education": "Высшее образование: Московский институт красоты. Курсы повышения квалификации в Лондоне и Милане.",
+                "certificates": [
+                    "Сертификат L'Oréal Professionnel",
+                    "Диплом Wella Professionals",
+                    "Мастер-класс Tony&Guy"
+                ],
+                "services": [
+                    "Сложное окрашивание",
+                    "Кератиновое восстановление",
+                    "Авторские стрижки"
+                ]
             },
             {
                 "id": 2,
-                "photo": "https://example.com/path/to/photo1.jpg",
-                "name": "Мария Петрова",
-                'specialization': 'Парикмахер-стилист'
+                "photo": "https://example.com/photos/sergey.jpg",
+                "name": "Петров Сергей",
+                "job": "Барбер-стилист",
+                "specialization": "Мужские стрижки, бороды",
+                "experience": 5,
+                "education": "Школа барберов «OldBoy». Мастер-классы в Берлине и Варшаве.",
+                "certificates": [
+                    "Сертификат BarberPro",
+                    "Диплом Schorem Academy",
+                    "Курс «Современные техники бритья»"
+                ],
+                "services": [
+                    "Классическая стрижка",
+                    "Королевское бритье",
+                    "Уход за бородой",
+                    "Оформление усов"
+                ]
             },
             {
                 "id": 3,
-                "photo": "https://example.com/path/to/photo1.jpg",
-                "name": "Алексей Смирнов",
-                'specialization': 'Парикмахер-стилист'
+                "photo": "https://example.com/photos/ekaterina.jpg",
+                "name": "Смирнова Екатерина",
+                "job": "Визажист-стилист",
+                "specialization": "Вечерний и свадебный макияж",
+                "experience": 6,
+                "education": "Академия визажа MakeUpAtelier. Стажировка в Париже у Christophe Danchaud.",
+                "certificates": [
+                    "Сертификат MAC Pro",
+                    "Диплом по airbrush макияжу",
+                    "Курс «Свадебный макияж»"
+                ],
+                "services": [
+                    "Свадебный макияж",
+                    "Вечерний макияж",
+                    "Smoky eyes",
+                    "Контурная пластика"
+                ]
             }
         ]
 
@@ -280,7 +342,7 @@ def view_masters():
     #     cursor.close()
     #     conn.close()
     #
-        return render_template("masters.html", masters=test_masters)  # Исправлено services на masters
+        return render_template("masters.html", masters=masters_add)  # Исправлено services на masters
     except Exception as e:
         return render_template("error.html", error=str(e))
 
