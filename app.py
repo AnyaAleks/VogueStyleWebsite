@@ -111,19 +111,20 @@ def home():
         test_masters = [
             {
                 "id": 1,
-                "photo": "https://example.com/path/to/photo1.jpg",
+                "photo": "vogue_1.jpg",
                 "name": "Иван Иванов",
                 'specialization': 'Парикмахер-стилист'
             },
             {
                 "id": 2,
-                "photo": "https://example.com/path/to/photo1.jpg",
+                "photo": "vogue_2.jpg",
+
                 "name": "Мария Петрова",
                 'specialization': 'Парикмахер-стилист'
             },
             {
                 "id": 3,
-                "photo": "https://example.com/path/to/photo1.jpg",
+                "photo": "vogue_3.jpg",
                 "name": "Алексей Смирнов",
                 'specialization': 'Парикмахер-стилист'
             }
@@ -268,7 +269,7 @@ def view_masters():
         masters_add = [
             {
                 "id": 1,
-                "photo": "https://example.com/photos/anna.jpg",
+                "photo": "vogue_1.jpg",
                 "name": "Иванова Анна",
                 "job": "Топ-стилист, колорист",
                 "specialization": "Окрашивание, уход за волосами",
@@ -287,7 +288,7 @@ def view_masters():
             },
             {
                 "id": 2,
-                "photo": "https://example.com/photos/sergey.jpg",
+                "photo": "vogue_2.jpg",
                 "name": "Петров Сергей",
                 "job": "Барбер-стилист",
                 "specialization": "Мужские стрижки, бороды",
@@ -307,7 +308,7 @@ def view_masters():
             },
             {
                 "id": 3,
-                "photo": "https://example.com/photos/ekaterina.jpg",
+                "photo": "vogue_3.jpg",
                 "name": "Смирнова Екатерина",
                 "job": "Визажист-стилист",
                 "specialization": "Вечерний и свадебный макияж",
