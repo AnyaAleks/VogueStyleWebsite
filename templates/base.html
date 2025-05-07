@@ -13,25 +13,28 @@
     <header>
         <div class="container">
             <h1>VogueStyle</h1>
-<!--            <nav>-->
-<!--                <ul>-->
-<!--                    <li><a href="/" {% if request.path=='/' %}class="active" {% endif %}>Главная</a></li>-->
-<!--                    <li><a href="/services" {% if request.path=='/services' %}class="active" {% endif %}>Услуги</a></li>-->
-<!--                    {% if site_version == 'master' %}-->
-<!--                    <li><a href="/personal_account_master" {% if request.path=='/personal_account_master' %}class="active" {% endif %}>ЛК</a></li>-->
-<!--                    {% endif %}-->
-<!--                </ul>-->
-<!--            </nav>-->
-
             <nav>
                 <ul>
-                    <li><a href="/{{ 'master' if site_version == 'master' else 'client' }}/" {% if request.path=='/' or request.path.startswith('/master/') or request.path.startswith('/client/') %}class="active" {% endif %}>Главная</a></li>
-                    <li><a href="/{{ 'master' if site_version == 'master' else 'client' }}/services" {% if request.path=='/services' or request.path.startswith('/master/services') or request.path.startswith('/client/services') %}class="active" {% endif %}>Услуги</a></li>
-                    {% if site_version == 'master' %}
-                    <li><a href="/master/personal_account_master" {% if request.path=='/personal_account_master' or request.path.startswith('/master/personal_account_master') %}class="active" {% endif %}>ЛК</a></li>
+                    <li><a href="/" {% if request.path=='/' %}class="active" {% endif %}>Home</a></li>
+                    <li><a href="/services" {% if request.path=='/services' %}class="active" {% endif %}>Services</a>
+                    </li>
+                    <li><a href="/masters" {% if request.path=='/expensive' %}class="active" {% endif %}>Masters</a></li>
+                    <li><a href="/foto_gallery" {% if request.path=='/cheapest' %}class="active" {% endif %}>Foto Gallery</a></li>
+                    {% if site_version == 'master' %}  <!-- Показываем ЛК только в версии для мастеров -->
+                        <li><a href="/master/personal_account_master" {% if request.path=='/personal_account_master' or request.path.startswith('/master/personal_account_master') %}class="active" {% endif %}>ЛК</a></li>
                     {% endif %}
                 </ul>
             </nav>
+
+<!--            <nav>-->
+<!--                <ul>-->
+<!--                    <li><a href="/{{ 'master' if site_version == 'master' else 'client' }}/" {% if request.path=='/' or request.path.startswith('/master/') or request.path.startswith('/client/') %}class="active" {% endif %}>Главная</a></li>-->
+<!--                    <li><a href="/{{ 'master' if site_version == 'master' else 'client' }}/services" {% if request.path=='/services' or request.path.startswith('/master/services') or request.path.startswith('/client/services') %}class="active" {% endif %}>Услуги</a></li>-->
+<!--                    {% if site_version == 'master' %}-->
+<!--                    <li><a href="/master/personal_account_master" {% if request.path=='/personal_account_master' or request.path.startswith('/master/personal_account_master') %}class="active" {% endif %}>ЛК</a></li>-->
+<!--                    {% endif %}-->
+<!--                </ul>-->
+<!--            </nav>-->
         </div>
     </header>
 
