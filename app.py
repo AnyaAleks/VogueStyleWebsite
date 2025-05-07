@@ -2,6 +2,7 @@ from contextlib import nullcontext
 
 import flask, os, mysql.connector as mysql
 from flask import request, jsonify, render_template, redirect, url_for
+import requests
 
 import psycopg2
 from psycopg2 import pool
@@ -23,6 +24,8 @@ shortcut = "/api/v1/resources"
 # UPDATED Database config for swapping from mySQL to PostgreSQL
 DATABASE_URL = os.getenv("http://127.0.0.1:8000")
 # connection_pool = None
+
+
 
 ###########################################################
 
@@ -539,6 +542,38 @@ def personal_account_master():
 #     except Exception as e:
 #         return jsonify({"error": str(e)}), 500
 
+
+@app.route("/test_api")
+def test_api():
+    try:
+        response = requests.get("http://172.16.0.10:8000/docs")
+        print("Response status code:", response.status_code)
+        print("Response headers:", response.headers)
+
+        # Пробуем получить JSON, если API возвращает JSON
+        try:
+            json_data = response.json()
+            print("JSON response:", json_data)
+            return jsonify({
+                "status": "success",
+                "status_code": response.status_code,
+                "data": json_data
+            })
+        except ValueError:
+            # Если ответ не JSON, возвращаем текст
+            print("Text response:", response.text)
+            return jsonify({
+                "status": "success",
+                "status_code": response.status_code,
+                "data": response.text
+            })
+
+    except requests.exceptions.RequestException as e:
+        print("Request failed:", str(e))
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
 
 # running it locally
 # if __name__ == "__main__":
