@@ -105,6 +105,7 @@ def home():
             {"id": 3, "name": "Демо-окрашивание", "price": 2500}
         ]
 
+
         # try:
     #     # Create a database connection
     #     conn = get_db_connection()
@@ -195,19 +196,70 @@ def api_id():
         # If an error occurs, return a JSON response with the error message and a 500 status code
         return jsonify({"error": str(e)}), 500
 
+#
+# # Web route to view all services in the browser
+# @app.route("/services", methods=["GET"])
+# @app.route("/master/services", methods=["GET"])
+# @app.route("/client/services",  methods=["GET"])
+# def view_services():
+#     """Web route to view all services"""
+#     try:
+#         # Тестовые данные (удалите, когда подключите БД)
+#         test_services = [
+#             {"id": 1, "name": "Тестовый маникюр", "price": 1500},
+#             {"id": 2, "name": "Пробная стрижка", "price": 2000},
+#             {"id": 3, "name": "Демо-окрашивание", "price": 2500}
+#         ]
+#
+#     # try:
+#     #     conn = get_db_connection()
+#     #     cursor = conn.cursor()
+#     #
+#     #     # Execute a SQL query to fetch all services and their prices
+#     #     cursor.execute(
+#     #         """
+#     #         SELECT s.id, s.name as service, p.price
+#     #         FROM services s
+#     #         JOIN prices p ON s.id = p.service_id
+#     #     """
+#     #     )
+#     #     # Fetch all rows from the query result
+#     #     services = cursor.fetchall()
+#     #
+#     #     cursor.close()
+#     #     conn.close()
+#     #
+#         return render_template("services.html", services=test_services)
+#     except Exception as e:
+#         return render_template("error.html", error=str(e))
 
 # Web route to view all services in the browser
-@app.route("/services", methods=["GET"])
-@app.route("/master/services", methods=["GET"])
-@app.route("/client/services",  methods=["GET"])
-def view_services():
+@app.route("/masters", methods=["GET"])
+@app.route("/master/masters", methods=["GET"])
+@app.route("/client/masters",  methods=["GET"])
+def view_masters():
     """Web route to view all services"""
     try:
         # Тестовые данные (удалите, когда подключите БД)
-        test_services = [
-            {"id": 1, "name": "Тестовый маникюр", "price": 1500},
-            {"id": 2, "name": "Пробная стрижка", "price": 2000},
-            {"id": 3, "name": "Демо-окрашивание", "price": 2500}
+        test_masters = [
+            {
+                "id": 1,
+                "photo": "https://example.com/path/to/photo1.jpg",
+                "name": "Иван Иванов",
+                'specialization': 'Парикмахер-стилист'
+            },
+            {
+                "id": 2,
+                "photo": "https://example.com/path/to/photo1.jpg",
+                "name": "Мария Петрова",
+                'specialization': 'Парикмахер-стилист'
+            },
+            {
+                "id": 3,
+                "photo": "https://example.com/path/to/photo1.jpg",
+                "name": "Алексей Смирнов",
+                'specialization': 'Парикмахер-стилист'
+            }
         ]
 
     # try:
@@ -228,7 +280,7 @@ def view_services():
     #     cursor.close()
     #     conn.close()
     #
-        return render_template("services.html", services=test_services)
+        return render_template("masters.html", masters=test_masters)  # Исправлено services на masters
     except Exception as e:
         return render_template("error.html", error=str(e))
 

@@ -16,9 +16,9 @@
             <nav>
                 <ul>
                     <li><a href="/" {% if request.path=='/' %}class="active" {% endif %}>Home</a></li>
-                    <li><a href="/services" {% if request.path=='/services' %}class="active" {% endif %}>Services</a>
-                    </li>
-                    <li><a href="/masters" {% if request.path=='/expensive' %}class="active" {% endif %}>Masters</a></li>
+<!--                    <li><a href="/services" {% if request.path=='/services' %}class="active" {% endif %}>Services</a>-->
+<!--                    </li>-->
+                    <li><a href="/masters" {% if request.path=='/masters' %}class="active" {% endif %}>Masters</a></li>
                     <li><a href="/foto_gallery" {% if request.path=='/cheapest' %}class="active" {% endif %}>Foto Gallery</a></li>
                     {% if site_version == 'master' %}  <!-- Показываем ЛК только в версии для мастеров -->
                         <li><a href="/master/personal_account_master" {% if request.path=='/personal_account_master' or request.path.startswith('/master/personal_account_master') %}class="active" {% endif %}>ЛК</a></li>

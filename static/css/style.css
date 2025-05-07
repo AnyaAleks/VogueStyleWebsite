@@ -111,6 +111,54 @@ header nav ul li a.active {
     min-height: 50px;
 }
 
+
+
+/* Стили для карточек мастеров */
+.masters-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.master-card {
+    width: 250px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+}
+
+.master-photo-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.no-photo {
+    width: 150px;
+    height: 150px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+}
+
+.master-name {
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.master-specialization {
+    color: #555;
+    margin: 5px 0;
+}
+
 /* Main content styles */
 main {
     padding: 2rem 0;

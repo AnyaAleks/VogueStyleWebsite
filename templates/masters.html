@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}VogueStyle - Masters{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h2>Наши мастера</h2>
+    <p>Профессионалы с многолетним опытом работы</p>
+</section>
+
+<section class="masters">
+    <div class="masters-container">
+        {% for master in masters %}
+            {% include "master_card.html" %}
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}
