@@ -94,19 +94,19 @@ async function fetchServicesSortedByPrice() {
         console.error('Error sorting services:', error);
     }
 }
-function toggleDetails(masterId) {
-    const details = document.getElementById(`details-${masterId}`);
-    const button = document.querySelector(`#details-${masterId}`).nextElementSibling;
-
-    details.classList.toggle('expanded');
-    button.classList.toggle('active');
-
-    if (details.classList.contains('expanded')) {
-        button.querySelector('.btn-text').textContent = 'СВЕРНУТЬ';
-    } else {
-        button.querySelector('.btn-text').textContent = 'ЧИТАТЬ ПОДРОБНЕЕ';
-    }
-}
+//function toggleDetails(masterId) {
+//    const details = document.getElementById(`details-${masterId}`);
+//    const button = document.querySelector(`#details-${masterId}`).nextElementSibling;
+//
+//    details.classList.toggle('expanded');
+//    button.classList.toggle('active');
+//
+//    if (details.classList.contains('expanded')) {
+//        button.querySelector('.btn-text').textContent = 'СВЕРНУТЬ';
+//    } else {
+//        button.querySelector('.btn-text').textContent = 'ЧИТАТЬ ПОДРОБНЕЕ';
+//    }
+//}
 
 // Function to book a service
 function bookService(serviceName) {

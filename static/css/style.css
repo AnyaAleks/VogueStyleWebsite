@@ -392,18 +392,20 @@ footer {
 
 /* Стили для скрываемых деталей */
 .master-details {
-    max-height: 0;
+    opacity: 0;
+    height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
-    font-size: 14px;
-    line-height: 1.5;
-    color: #555;
+    transition:
+        opacity 0.3s ease,
+        height 0.3s ease;
+    will-change: opacity, height;
 }
 
 .master-details.expanded {
-    max-height: 1000px;
+    opacity: 1;
+    height: auto;
+    display: block;
 }
-
 /* Стили кнопки */
 .read-more-btn {
     background: none;
