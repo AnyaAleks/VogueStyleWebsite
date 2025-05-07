@@ -1,7 +1,7 @@
 from contextlib import nullcontext
 
 import flask, os, mysql.connector as mysql
-from flask import request, jsonify, render_template, redirect, url_for
+from flask import request, jsonify, render_template, redirect, url_for, abort
 import requests
 
 import psycopg2
@@ -357,20 +357,21 @@ def personal_account_master():
     try:
         # Данные мастера
         master_data = {
-            'photo': '/static/images/master_photo.jpg',
-            'full_name': 'Иванова Анна Петровна',
-            'address': 'ул. Примерная, д. 123, кв. 45',
-            'phone': '+7 (123) 456-78-90',
-            'specialization': 'Парикмахер-стилист',
-            'experience': '5 лет',
-            'notes': 'Предпочитаю работать с вечерними причёсками',
-            'description': 'Опытный мастер с международными сертификатами.'
+            "id": 1,
+            "last_name": "Иванов",
+            "first_name": "Иван",
+            "middle_name": "Иванович",
+            "birth_date": "1990-01-01",
+            "address": "г. Москва, ул. Примерная, д. 1",
+            "email": "ivanov@example.com",
+            "phone": "+79991234567",
+            "photo": "/media/photos/master1.jpg"
         }
 
         if _siteVersion == _master:
             return render_template("personal_account_master.html", master=master_data)
         else:
-            return ""#render_template("personal_account_master.html", master=master_data)
+            abort(403)
 
 
     except Exception as e:

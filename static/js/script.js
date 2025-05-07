@@ -133,3 +133,23 @@ function bookService(serviceName) {
     });
     */
 }
+
+document.getElementById('delete-photo').addEventListener('click', function() {
+    if (confirm('Удалить фото?')) {
+        fetch('/delete-photo/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({master_id: {{ master.id }}})
+        })
+        .then(response => location.reload())
+    }
+});
+
+document.getElementById('photo-upload').addEventListener('change', function(e) {
+    if (e.target.files.length > 0) {
+        document.querySelector('.lk-form').submit();
+    }
+});
