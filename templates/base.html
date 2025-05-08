@@ -10,52 +10,57 @@
 </head>
 
 <body>
-    <header>
-        <div class="container">
-            <h1>VogueStyle</h1>
-            <nav>
-                <ul>
-                    <li><a href="/" {% if request.path=='/' %}class="active" {% endif %}>Home</a></li>
-<!--                    <li><a href="/services" {% if request.path=='/services' %}class="active" {% endif %}>Services</a>-->
-<!--                    </li>-->
-                    <li><a href="/masters" {% if request.path=='/masters' %}class="active" {% endif %}>Masters</a></li>
-                    <li><a href="/foto_gallery" {% if request.path=='/cheapest' %}class="active" {% endif %}>Foto Gallery</a></li>
-                    {% if site_version == 'master' %}  <!-- Показываем ЛК только в версии для мастеров -->
-                        <li><a href="/master/personal_account_master" {% if request.path=='/personal_account_master' or request.path.startswith('/master/personal_account_master') %}class="active" {% endif %}>ЛК</a></li>
-                    {% endif %}
-                </ul>
-            </nav>
+    <!-- Новая навигационная панель -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">О нас</a></li>
 
-<!--            <nav>-->
-<!--                <ul>-->
-<!--                    <li><a href="/{{ 'master' if site_version == 'master' else 'client' }}/" {% if request.path=='/' or request.path.startswith('/master/') or request.path.startswith('/client/') %}class="active" {% endif %}>Главная</a></li>-->
-<!--                    <li><a href="/{{ 'master' if site_version == 'master' else 'client' }}/services" {% if request.path=='/services' or request.path.startswith('/master/services') or request.path.startswith('/client/services') %}class="active" {% endif %}>Услуги</a></li>-->
-<!--                    {% if site_version == 'master' %}-->
-<!--                    <li><a href="/master/personal_account_master" {% if request.path=='/personal_account_master' or request.path.startswith('/master/personal_account_master') %}class="active" {% endif %}>ЛК</a></li>-->
-<!--                    {% endif %}-->
-<!--                </ul>-->
-<!--            </nav>-->
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link">Услуги</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/services/hair" class="dropdown-item">Парикмахерские</a></li>
+                        <li><a href="/services/nails" class="dropdown-item">Ногтевой сервис</a></li>
+                        <li><a href="/services/makeup" class="dropdown-item">Макияж</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a href="#" class="nav-link">Салоны</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/salons/moscow" class="dropdown-item">Москва</a></li>
+                        <li><a href="/salons/spb" class="dropdown-item">Санкт-Петербург</a></li>
+                        <li><a href="/salons/other" class="dropdown-item">Другие города</a></li>
+                    </ul>
+                </li>
+
+                <!-- Логотип в середине меню -->
+                <li class="nav-item">
+                    <a href="/"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="VogueStyle" class="nav-logo-img"></a>
+                </li>
+
+                <li class="nav-item"><a href="/masters" class="nav-link {% if request.path == '/masters' %}active{% endif %}">Наши Мастера</a></li>
+                <li class="nav-item"><a href="/foto_gallery" class="nav-link {% if request.path == '/foto_gallery' %}active{% endif %}">Фото</a></li>
+
+                {% if site_version == 'master' %}
+                    <li class="nav-item"><a href="/master/personal_account_master" class="nav-link {% if request.path == '/master/personal_account_master' %}active{% endif %}">ЛК</a></li>
+                {% endif %}
+            </ul>
         </div>
-    </header>
+    </nav>
 
+    <!-- Блок для основного содержимого -->
     <main class="container">
         {% block content %}{% endblock %}
     </main>
 
-<!--    <footer>-->
-<!--        <div class="container">-->
-<!--            <p>&copy; {{ current_year }} VogueStyle 💜 All rights reserved. GUAP</p>-->
-<!--        </div>-->
-<!--    </footer>-->
     <footer>
         <div class="container">
             <p>&copy; {{ current_year }} VogueStyle 💜 All rights reserved. GUAP</p>
-            <div class="version-switcher" style="color: white;">
+            <div class="version-switcher">
                 Версия:
-                <a href="/master/" style="color: white; text-decoration: none;"
-                   {% if site_version == 'master' %}class="active"{% endif %}>Мастер</a> |
-                <a href="/client/" style="color: white; text-decoration: none;"
-                   {% if site_version == 'client' %}class="active"{% endif %}>Клиент</a>
+                <a href="/master/" {% if site_version == 'master' %}class="active"{% endif %}>Мастер</a> |
+                <a href="/client/" {% if site_version == 'client' %}class="active"{% endif %}>Клиент</a>
             </div>
         </div>
     </footer>

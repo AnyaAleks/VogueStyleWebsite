@@ -573,3 +573,89 @@ footer {
 .lk-action-buttons {
     text-align: center;
 }
+
+
+/*-------------------------------------Новое меню с выпадающими списками--------------------------*/
+/* Стили для нового меню */
+.navbar {
+    background-color: #fff;
+    padding: 20px 0; /* Увеличили отступы */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center; /* Центрируем меню */
+    width: 100%;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: center; /* Центрируем элементы меню */
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    justify-content: center; /* Центрируем пункты меню */
+    width: 100%;
+}
+
+.nav-item {
+    position: relative;
+    margin: 0 25px; /* Увеличили отступы между пунктами */
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    font-size: 18px; /* Увеличили размер шрифта */
+    font-weight: 600; /* Сделали шрифт более жирным */
+    transition: all 0.3s;
+    padding: 10px 15px; /* Добавили отступы вокруг текста */
+    display: inline-block;
+    text-transform: uppercase; /* Опционально: все буквы заглавные */
+    letter-spacing: 1px; /* Увеличили расстояние между буквами */
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #ff6b6b;
+    transform: translateY(-2px); /* Эффект поднятия при наведении */
+}
+
+/* Стили для выпадающих меню */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    z-index: 1;
+    padding: 10px 0;
+    border-radius: 4px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 8px 16px;
+    color: #333;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.nav-logo-img {
+    height: 40px;
+    margin: 0 20px;
+}
