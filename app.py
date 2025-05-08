@@ -346,9 +346,41 @@ def view_masters():
     #     cursor.close()
     #     conn.close()
     #
-        return render_template("masters.html", masters=masters_add)  # Исправлено services на masters
+        return render_template("masters.html", masters=masters_add)
     except Exception as e:
         return render_template("error.html", error=str(e))
+
+# Web route to view all services in the browser
+@app.route("/about", methods=["GET"])
+@app.route("/master/about", methods=["GET"])
+@app.route("/client/about",  methods=["GET"])
+def view_about():
+    """Web route to view all services"""
+    try:
+        test_about = []
+
+    # try:
+    #     conn = get_db_connection()
+    #     cursor = conn.cursor()
+    #
+    #     # Execute a SQL query to fetch all services and their prices
+    #     cursor.execute(
+    #         """
+    #         SELECT s.id, s.name as service, p.price
+    #         FROM services s
+    #         JOIN prices p ON s.id = p.service_id
+    #     """
+    #     )
+    #     # Fetch all rows from the query result
+    #     services = cursor.fetchall()
+    #
+    #     cursor.close()
+    #     conn.close()
+    #
+        return render_template("about.html", about=test_about)  # Исправлено services на masters
+    except Exception as e:
+        return render_template("error.html", error=str(e))
+
 
 
 @app.route("/personal_account_master", methods=["GET"])

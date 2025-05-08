@@ -576,57 +576,87 @@ footer {
 
 
 /*-------------------------------------Новое меню с выпадающими списками--------------------------*/
-/* Стили для нового меню */
+/* Стили для навигационного меню */
 .navbar {
     background-color: #fff;
-    padding: 20px 0; /* Увеличили отступы */
+    padding: 10px 0;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: flex;
-    justify-content: center; /* Центрируем меню */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     width: 100%;
 }
 
 .nav-container {
     display: flex;
-    justify-content: center; /* Центрируем элементы меню */
+    justify-content: center;
     align-items: center;
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
 }
 
 .nav-menu {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     list-style: none;
     margin: 0;
     padding: 0;
     align-items: center;
-    justify-content: center; /* Центрируем пункты меню */
     width: 100%;
+}
+
+.nav-menu-left {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.nav-menu-right {
+    display: flex;
+    justify-content: flex-start;
 }
 
 .nav-item {
     position: relative;
-    margin: 0 25px; /* Увеличили отступы между пунктами */
+    margin: 0 15px;
+    list-style: none;
 }
 
 .nav-link {
     text-decoration: none;
     color: #333;
-    font-size: 18px; /* Увеличили размер шрифта */
-    font-weight: 600; /* Сделали шрифт более жирным */
+    font-size: 14px;
+    font-weight: 600;
     transition: all 0.3s;
-    padding: 10px 15px; /* Добавили отступы вокруг текста */
+    padding: 8px 12px;
     display: inline-block;
-    text-transform: uppercase; /* Опционально: все буквы заглавные */
-    letter-spacing: 1px; /* Увеличили расстояние между буквами */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .nav-link:hover,
 .nav-link.active {
-    color: #ff6b6b;
-    transform: translateY(-2px); /* Эффект поднятия при наведении */
+    color: #c53dff;
+}
+
+/* Логотип - фиксирован в центре */
+.nav-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.nav-logo-img {
+    height: 80px;
+    width: auto;
+    transition: transform 0.3s;
+}
+
+.nav-logo-img:hover {
+    transform: scale(1.05);
 }
 
 /* Стили для выпадающих меню */
@@ -634,11 +664,14 @@ footer {
     display: none;
     position: absolute;
     background-color: #fff;
-    min-width: 160px;
+    min-width: 180px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    z-index: 1;
+    z-index: 100;
     padding: 10px 0;
     border-radius: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    list-style: none;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -647,15 +680,31 @@ footer {
 
 .dropdown-item {
     display: block;
-    padding: 8px 16px;
+    padding: 10px 20px;
     color: #333;
+    text-align: center;
+    transition: all 0.2s;
 }
 
 .dropdown-item:hover {
     background-color: #f8f9fa;
+    color: #c53dff;
 }
 
-.nav-logo-img {
-    height: 40px;
-    margin: 0 20px;
+/*---------------------------О нас---------------------------*/
+/* Для about-header */
+.about-header {
+    max-width: calc(1200px - 12rem);
+    margin: 0 auto;
+    padding: 6rem 0;
+    text-align: center;
+    font-size: 18px;
+    font-family: Arial;
+    background-image: url("https://ania.cleverlive.pro/VogueStyle_MastersPhoto/vogue_1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 0 0 8px 8px;
+    box-sizing: border-box;
+    overflow-anchor: none;
 }
