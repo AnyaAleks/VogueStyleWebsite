@@ -15,15 +15,8 @@
         <div class="nav-container">
             <ul class="nav-menu">
                 <div class="nav-menu-left">
+                    <li class="nav-item"><a href="/request" class="nav-link {% if request.path == '/request' %}active{% endif %}">Запись</a></li>
                     <li class="nav-item"><a href="/about" class="nav-link {% if request.path == '/about' %}active{% endif %}">О нас</a></li>
-
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link">Наши работы</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/services/hair" class="dropdown-item">Парикмахерские</a></li>
-                            <li><a href="/services/nails" class="dropdown-item">Ногтевой сервис</a></li>
-                        </ul>
-                    </li>
 
                     <li class="nav-item dropdown">
                         <a href="#" class="nav-link">Салоны</a>
@@ -42,7 +35,7 @@
 
                 <div class="nav-menu-right">
                     <li class="nav-item"><a href="/masters" class="nav-link {% if request.path == '/masters' %}active{% endif %}">Наши Мастера</a></li>
-                    <li class="nav-item"><a href="/foto_gallery" class="nav-link {% if request.path == '/foto_gallery' %}active{% endif %}">Фото</a></li>
+                    <li class="nav-item"><a href="/foto_gallery" class="nav-link {% if request.path == '/foto_gallery' %}active{% endif %}">Контакты</a></li>
 
                     {% if site_version == 'master' %}
                         <li class="nav-item"><a href="/master/personal_account_master" class="nav-link {% if request.path == '/master/personal_account_master' %}active{% endif %}">ЛК</a></li>

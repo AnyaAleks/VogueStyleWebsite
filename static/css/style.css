@@ -13,10 +13,11 @@ body {
 }
 
 .container {
-    width: 90%;
-    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 0px;
+    padding-bottom: 15px;
 }
 
 /* ------------------------Header styles-------------------------- */
@@ -113,8 +114,17 @@ section {
     text-align: center;
     padding: 3rem 0;
     background-color: #f0e6f6;
-    border-radius: 8px;
+    border-radius: 0 0 16px 16px;
     margin-bottom: 2rem;
+    height: 200px;
+    display: flex;
+    font-size: 40px;
+    font-family: Arial, sans-serif;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1rem;
 }
 
 .hero h2 {
@@ -694,17 +704,94 @@ footer {
 /*---------------------------О нас---------------------------*/
 /* Для about-header */
 .about-header {
-    max-width: calc(1200px - 12rem);
-    margin: 0 auto;
-    padding: 6rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    font-size: 18px;
-    font-family: Arial;
+    padding: 3rem 1rem;
+    font-size: 30px;
+    font-family: Arial, sans-serif;
     background-image: url("https://ania.cleverlive.pro/VogueStyle_MastersPhoto/vogue_1.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 16px 16px;
+    height: 200px;
+}
+
+.container-about {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 2vw;
+    max-width: 1400px;
+    margin: 0 auto;
     box-sizing: border-box;
-    overflow-anchor: none;
+    gap: 2vw;
+}
+
+.about-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20vh 0 10vh;
+    box-sizing: border-box;
+}
+
+.about-h1 {
+    font-size: clamp(32px, 4vw, 40px);
+    color: black;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-bottom: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.h2-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    box-sizing: border-box;
+    padding-bottom: 150px;
+}
+
+.about-h2 {
+    font-size: clamp(18px, 2vw, 20px);
+    color: #6b5ccc;
+    font-family: Arial, sans-serif;
+    text-align: right;
+    padding-bottom: clamp(20px, 4vh, 40px);
+    width: 100%;
+}
+
+.header3-about{
+    font-size: 25px;
+    color: black;
+    font-family: Arial, sans-serif;
+    text-align: left;
+    padding-bottom: 20px;
+}
+.feature-card-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.feature-card {
+    padding: 20px;
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .feature-card-container {
+        grid-template-columns: 1fr;
+    }
 }

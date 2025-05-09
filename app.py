@@ -100,7 +100,7 @@ def home():
         set_version('client')
     else:
         # Перенаправляем на версию по умолчанию
-        return redirect('/master/')
+        return redirect('/client/')
     try:
         test_services = [
             {"id": 1, "name": "Тестовый маникюр", "price": 1500},
