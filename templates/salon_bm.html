@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Салон на Большой Морской ул., 67{% endblock %}
+
+{% block content %}
+<div class="about-header">
+    <h1>Наши салоны</h1>
+</div>
+<div class="salon-body">
+    <div class="salon-container">
+        <div class="salon-h3">Санкт-Петербург</div>
+        <div class="salon-h1">Большая Морская ул., 67</div>
+
+        <div class="salon-footer">
+            <div>
+                Режим работы<br>
+                10:00 – 22:00
+            </div>
+            <div>
+                м. Адмиралтейская<br>
+                +7 123 456-78-90
+            </div>
+            <div>
+                <span class="online-booking">Онлайн-запись</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="carousel-wrapper">
+    <button class="carousel-arrow prev-btn">❮</button>
+
+    <div class="carousel-container">
+        <div class="carousel">
+            <div class="carousel-item">
+                <div class="photo-placeholder">Фото 1</div>
+            </div>
+            <div class="carousel-item">
+                <div class="photo-placeholder">Фото 2</div>
+            </div>
+            <div class="carousel-item">
+                <div class="photo-placeholder">Фото 3</div>
+            </div>
+        </div>
+    </div>
+
+    <button class="carousel-arrow next-btn">❯</button>
+</div>
+
+<div class="carousel-indicators">
+    <div class="indicator active"></div>
+    <div class="indicator"></div>
+    <div class="indicator"></div>
+</div>
+{% endblock %}

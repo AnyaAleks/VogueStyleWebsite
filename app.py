@@ -222,42 +222,6 @@ def api_id():
         # If an error occurs, return a JSON response with the error message and a 500 status code
         return jsonify({"error": str(e)}), 500
 
-#
-# # Web route to view all services in the browser
-# @app.route("/services", methods=["GET"])
-# @app.route("/master/services", methods=["GET"])
-# @app.route("/client/services",  methods=["GET"])
-# def view_services():
-#     """Web route to view all services"""
-#     try:
-#         # Тестовые данные (удалите, когда подключите БД)
-#         test_services = [
-#             {"id": 1, "name": "Тестовый маникюр", "price": 1500},
-#             {"id": 2, "name": "Пробная стрижка", "price": 2000},
-#             {"id": 3, "name": "Демо-окрашивание", "price": 2500}
-#         ]
-#
-#     # try:
-#     #     conn = get_db_connection()
-#     #     cursor = conn.cursor()
-#     #
-#     #     # Execute a SQL query to fetch all services and their prices
-#     #     cursor.execute(
-#     #         """
-#     #         SELECT s.id, s.name as service, p.price
-#     #         FROM services s
-#     #         JOIN prices p ON s.id = p.service_id
-#     #     """
-#     #     )
-#     #     # Fetch all rows from the query result
-#     #     services = cursor.fetchall()
-#     #
-#     #     cursor.close()
-#     #     conn.close()
-#     #
-#         return render_template("services.html", services=test_services)
-#     except Exception as e:
-#         return render_template("error.html", error=str(e))
 
 # Web route to view all services in the browser
 @app.route("/masters", methods=["GET"])
@@ -350,34 +314,12 @@ def view_masters():
     except Exception as e:
         return render_template("error.html", error=str(e))
 
-# Web route to view all services in the browser
 @app.route("/about", methods=["GET"])
 @app.route("/master/about", methods=["GET"])
 @app.route("/client/about",  methods=["GET"])
 def view_about():
-    """Web route to view all services"""
     try:
-        test_about = []
-
-    # try:
-    #     conn = get_db_connection()
-    #     cursor = conn.cursor()
-    #
-    #     # Execute a SQL query to fetch all services and their prices
-    #     cursor.execute(
-    #         """
-    #         SELECT s.id, s.name as service, p.price
-    #         FROM services s
-    #         JOIN prices p ON s.id = p.service_id
-    #     """
-    #     )
-    #     # Fetch all rows from the query result
-    #     services = cursor.fetchall()
-    #
-    #     cursor.close()
-    #     conn.close()
-    #
-        return render_template("about.html", about=test_about)  # Исправлено services на masters
+        return render_template("about.html")
     except Exception as e:
         return render_template("error.html", error=str(e))
 
@@ -409,6 +351,37 @@ def personal_account_master():
 
     except Exception as e:
         return render_template("error.html", error=str(e)), 500
+
+
+@app.route("/salons/bm", methods=["GET"])
+@app.route("/master/salons/bm", methods=["GET"])
+@app.route("/client/salons/bm",  methods=["GET"])
+def salon_bm():
+    try:
+
+        return render_template("salon_bm.html")
+    except Exception as e:
+        return render_template("error.html", error=str(e))
+
+@app.route("/salons/gasta", methods=["GET"])
+@app.route("/master/salons/gasta", methods=["GET"])
+@app.route("/client/salons/gasta",  methods=["GET"])
+def salon_gasta():
+    try:
+
+        return render_template("salon_gasta.html")
+    except Exception as e:
+        return render_template("error.html", error=str(e))
+
+@app.route("/salons/lensa", methods=["GET"])
+@app.route("/master/salons/lensa", methods=["GET"])
+@app.route("/client/salons/lensa",  methods=["GET"])
+def salon_lensa():
+    try:
+
+        return render_template("salon_lensa.html")
+    except Exception as e:
+        return render_template("error.html", error=str(e))
 
 
 # # API route to fetch all prices

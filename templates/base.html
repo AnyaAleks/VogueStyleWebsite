@@ -18,14 +18,7 @@
                     <li class="nav-item"><a href="/request" class="nav-link {% if request.path == '/request' %}active{% endif %}">Запись</a></li>
                     <li class="nav-item"><a href="/about" class="nav-link {% if request.path == '/about' %}active{% endif %}">О нас</a></li>
 
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link">Салоны</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/salons/moscow" class="dropdown-item">Москва</a></li>
-                            <li><a href="/salons/spb" class="dropdown-item">Санкт-Петербург</a></li>
-                            <li><a href="/salons/other" class="dropdown-item">Другие города</a></li>
-                        </ul>
-                    </li>
+
                 </div>
 
                 <!-- Логотип в середине меню -->
@@ -35,7 +28,14 @@
 
                 <div class="nav-menu-right">
                     <li class="nav-item"><a href="/masters" class="nav-link {% if request.path == '/masters' %}active{% endif %}">Наши Мастера</a></li>
-                    <li class="nav-item"><a href="/foto_gallery" class="nav-link {% if request.path == '/foto_gallery' %}active{% endif %}">Контакты</a></li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link">Салоны</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/salons/bm" class="dropdown-item">Большая Морская ул., 67 </a></li>
+                            <li><a href="/salons/gasta" class="dropdown-item">ул. Гастелло, 15</a></li>
+                            <li><a href="/salons/lensa" class="dropdown-item">ул. Ленсовета, 14</a></li>
+                        </ul>
+                    </li>
 
                     {% if site_version == 'master' %}
                         <li class="nav-item"><a href="/master/personal_account_master" class="nav-link {% if request.path == '/master/personal_account_master' %}active{% endif %}">ЛК</a></li>

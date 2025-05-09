@@ -470,6 +470,49 @@ footer {
     left: 0;
 }
 
+.master-h-container {
+    display: flex;
+
+    margin: 0 auto;
+    padding-top: 40px;
+    gap: 20px;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.qualification-card {
+    flex: 1;
+    min-width: 200px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 12px;
+}
+
+.qualification-card h3 {
+    color: #6b5ccc;
+    margin-top: 0;
+    font-size: 20px;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.qualification-text {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .cards-container {
+        flex-direction: column;
+    }
+
+    .qualification-card {
+        width: 100%;
+    }
+}
 
 /* ------------------------------ЛК-----------------------------*/
 .lk-container {
@@ -710,7 +753,7 @@ footer {
     justify-content: center;
     text-align: center;
     padding: 3rem 1rem;
-    font-size: 30px;
+    font-size: 20px;
     font-family: Arial, sans-serif;
     background-image: url("https://ania.cleverlive.pro/VogueStyle_MastersPhoto/vogue_1.jpg");
     background-size: cover;
@@ -794,4 +837,149 @@ footer {
     .feature-card-container {
         grid-template-columns: 1fr;
     }
+}
+
+/*-------------------------Салоны----------------------*/
+.salon-body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.salon-h1 {
+    font-size: 72px; /* +50% */
+    font-weight: 300;
+    line-height: 1.2;
+    color: #222;
+    margin: 0;
+}
+
+.salon-h3 {
+    font-size: 27px; /* +50% */
+    font-weight: 400;
+    color: #666;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.salon-container {
+    text-align: center;
+    padding: 40px;
+    width: 80%;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+
+.salon-footer {
+    display: flex;
+    justify-content: space-between;
+    justify-align: center;
+    width: 100%;
+    font-size: 1.2em;
+    margin-top: 60px;
+}
+
+.footer div {
+    flex: 1;
+    text-align: center;
+}
+
+.footer div:first-child {
+    text-align: left;
+}
+
+.footer div:last-child {
+    text-align: right;
+}
+
+.online-booking {
+    text-decoration: underline;
+}
+
+
+/*-------------------------Карусель фото для салонов---------------------*/
+.carousel-wrapper {
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 40px auto;
+    gap: 10px;
+}
+
+/* Контейнер для карусели */
+.carousel-container {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+/*------заглушка----*/
+.photo-placeholder {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    border-radius: 8px;
+}
+
+/* Стили кнопок ВНЕ карусели */
+.carousel-arrow {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0,0,0,0.1);
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+
+.carousel-arrow:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+/* Индикаторы */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.indicator.active {
+    background-color: #666;
 }

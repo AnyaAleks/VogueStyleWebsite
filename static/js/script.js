@@ -108,6 +108,45 @@ function toggleDetails(masterId) {
     }
 }
 
+const carousel = document.querySelector('.carousel');
+const items = document.querySelectorAll('.carousel-item');
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+const indicators = document.querySelectorAll('.indicator');
+
+let currentIndex = 0;
+
+function updateCarousel() {
+    carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === currentIndex);
+    });
+}
+
+prevBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex > 0) ? currentIndex - 1 : items.length - 1;
+    updateCarousel();
+});
+
+nextBtn.addEventListener('click', () => {
+    currentIndex = (currentIndex < items.length - 1) ? currentIndex + 1 : 0;
+    updateCarousel();
+});
+
+indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => {
+        currentIndex = index;
+        updateCarousel();
+    });
+});
+
+// Автопрокрутка (по желанию)
+// setInterval(() => {
+//     currentIndex = (currentIndex < items.length - 1) ? currentIndex + 1 : 0;
+//     updateCarousel();
+// }, 3000);
+
 // Function to book a service
 function bookService(serviceName) {
     alert(`Вы выбрали: ${serviceName}\nЦена: ${price} ₽\nФункция записи будет реализована позже`);
