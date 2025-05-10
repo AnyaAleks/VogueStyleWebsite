@@ -293,7 +293,7 @@ footer {
     color: #fff;
     padding: 1.5rem 0;
     text-align: center;
-    margin-top: 3rem;
+    margin-top: 0;
 }
 
 /* -------------------------Responsive styles---------------------- */
@@ -747,7 +747,7 @@ footer {
 
 .about-header-container {
     background-color: #ddd;
-    background-image: url("https://ania.cleverlive.pro/VogueStyle_MastersPhoto/vogue_1.jpg");
+    background-image: url("https://ania.cleverlive.pro/VogueStyle_application/background_stars.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -761,7 +761,7 @@ footer {
     justify-content: center;
     text-align: center;
     padding: 3rem 1rem;
-    font-size: 20px;
+    font-size: 30px;
     font-family: Arial, sans-serif;
     /*background-image: url("https://ania.cleverlive.pro/VogueStyle_MastersPhoto/vogue_1.jpg");*/
     background-size: cover;
@@ -775,7 +775,8 @@ footer {
     width: 100%;
     box-sizing: border-box;
     padding-bottom: 15px;
-    margin-bottom: 40px; /* Добавлено */
+    margin-bottom: 40px;
+    color: white;
 }
 
 .width-h{
