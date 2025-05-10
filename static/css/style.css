@@ -14,10 +14,8 @@ body {
 
 .container {
     margin: 0 auto;
-    padding-left: 80px;
-    padding-right: 80px;
     padding-top: 0px;
-    padding-bottom: 15px;
+    padding-bottom: 0px;
 }
 
 /* ------------------------Header styles-------------------------- */
@@ -746,6 +744,16 @@ footer {
 
 /*---------------------------О нас---------------------------*/
 /* Для about-header */
+
+.about-header-container {
+    background-color: #ddd;
+    background-image: url("https://ania.cleverlive.pro/VogueStyle_MastersPhoto/vogue_1.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-bottom: 0px;
+}
+
 .about-header {
     display: flex;
     flex-direction: column;
@@ -755,19 +763,36 @@ footer {
     padding: 3rem 1rem;
     font-size: 20px;
     font-family: Arial, sans-serif;
-    background-image: url("https://ania.cleverlive.pro/VogueStyle_MastersPhoto/vogue_1.jpg");
+    /*background-image: url("https://ania.cleverlive.pro/VogueStyle_MastersPhoto/vogue_1.jpg");*/
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 0 0 16px 16px;
     height: 200px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding-bottom: 15px;
+    margin-bottom: 40px; /* Добавлено */
+}
+
+.width-h{
+    /* Новые стили для центрирования и ограничения ширины */
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .container-about {
     display: flex;
     flex-wrap: wrap;
+    background-color: white;
     justify-content: center;
-    padding: 2vw;
+    padding: 2vw 10vh 10vh;
     max-width: 1400px;
     margin: 0 auto;
     box-sizing: border-box;
@@ -777,10 +802,13 @@ footer {
 .about-container {
     display: flex;
     flex-direction: column;
+    margin-top: 40px; /* Добавлено */
+    border-radius: 16px 16px 0px 0px;
     align-items: center;
     width: 100%;
-    padding: 20vh 0 10vh;
+    padding: 10vh 0 10vh;
     box-sizing: border-box;
+    background-color: white;
 }
 
 .about-h1 {
@@ -803,7 +831,7 @@ footer {
     margin: 0 auto;
     text-align: center;
     box-sizing: border-box;
-    padding-bottom: 150px;
+    padding-bottom: 80px;
 }
 
 .about-h2 {
@@ -844,11 +872,23 @@ footer {
     margin: 0;
     padding: 0;
     font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f9f9f9;
+    background-color: white;
     color: #333;
     display: flex;
     justify-content: center;
+    border-radius: 16px 16px 0px 0px;
     align-items: center;
+}
+
+.salon-width-h{
+    /* Новые стили для центрирования и ограничения ширины */
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    border-radius: 16px 16px 0px 0px;
+    box-sizing: border-box;
+    background-color: white;
 }
 
 .salon-h1 {

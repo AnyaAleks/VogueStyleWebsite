@@ -3,27 +3,29 @@
 {% block title %}VogueStyle{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <h2>VogueStyle</h2>
-    <p>Насладись каждым мгновением с нами!</p>
-</section>
+<div class="width-h">
+    <section class="hero">
+        <h2>VogueStyle</h2>
+        <p>Насладись каждым мгновением с нами!</p>
+    </section>
 
-<section class="services">
-    <h2>Our Services</h2>
-    <div class="service-list">
-        {% for service in services %}
-            {% include "delegate.html" %}
-        {% endfor %}
-    </div>
-</section>
+    <section class="services">
+        <h2>Our Services</h2>
+        <div class="service-list">
+            {% for service in services %}
+                {% include "delegate.html" %}
+            {% endfor %}
+        </div>
+    </section>
 
-<section class="masters">
-    <h2>Our Masters</h2>
-    <div class="masters-container">
-        {% for master in masters %}
-            {% include "master_card.html" %}
-        {% endfor %}
-    </div>
-</section>
+    <section class="masters">
+        <h2>Our Masters</h2>
+        <div class="masters-container">
+            {% for master in masters %}
+                {% include "master_card.html" %}
+            {% endfor %}
+        </div>
+    </section>
+</div>
 
 {% endblock %}
