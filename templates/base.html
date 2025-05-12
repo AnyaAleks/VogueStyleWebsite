@@ -50,16 +50,59 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; {{ current_year }} VogueStyle 💜 All rights reserved. GUAP</p>
-            <div class="version-switcher">
-                Версия:
-                <a href="/master/" {% if site_version == 'master' %}class="active"{% endif %}>Мастер</a> |
-                <a href="/client/" {% if site_version == 'client' %}class="active"{% endif %}>Клиент</a>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-column left-column">
+            <div class="column-section">
+                <h3 class="footer-title">Студии</h3>
+                <div class="footer-addresses">
+                    <p>Большая Морская ул., 67</p>
+                    <p>ул. Гастелло, 15</p>
+                    <p>ул. Ленсовета, 14</p>
+                </div>
+            </div>
+
+            <div class="column-section">
+                <h3 class="footer-title">Запись на услуги</h3>
+                <div class="footer-contacts">
+                    <p>Телефон:  +7 943 255 755</p>
+                    <p>(ссылка на тг бота)</p>
+                    <p>Email:  voguestyle@yandex.ru</p>
+                </div>
+            </div>
+
+            <div class="column-section">
+                <h3 class="footer-title">Плановая конфиденциальность</h3>
+                <li>© 2025 - настоящее время / г. Санкт-Петербург </li>
+                <p class="footer-note">Все права защищены от владения гражданами или его лицами.</p>
             </div>
         </div>
-    </footer>
+
+        <div class="divider"></div>
+
+        <div class="footer-column right-column">
+            <div class="column-section">
+                <h3 class="footer-title">Установите приложение VogueStyle</h3>
+                <div class="footer-apps">
+                    <p>Download from ref.</p>
+                    <p class="footer-highlight">(Ссылка на приложение)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!--<div class="footer">-->
+<!--    <div class="footer-container">-->
+<!--        <p>&copy; {{ current_year }} VogueStyle 💜 All rights reserved. GUAP</p>-->
+<!--        <div class="version-switcher">-->
+<!--            Версия:-->
+<!--            <a href="/master/" {% if site_version == 'master' %}class="active"{% endif %}>Мастер</a> |-->
+<!--            <a href="/client/" {% if site_version == 'client' %}class="active"{% endif %}>Клиент</a>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     {% block extra_scripts %}{% endblock %}

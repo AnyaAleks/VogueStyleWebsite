@@ -161,6 +161,16 @@ def home():
         # If an error occurs, render the error.html template and pass the error message
         return render_template("error.html", error=str(e))
 
+# @app.route("/request", methods=["GET"])
+# @app.route("/master/request", methods=["GET"])
+# @app.route("/client/request",  methods=["GET"])
+# def request():
+#     try:
+#
+#         return render_template("error.html")
+#     except Exception as e:
+#         return #render_template("error.html", error=str(e))
+
 
 # API route to fetch all services -- yeah we get the accessibility -_-
 @app.route(shortcut + "/services/all", methods=["GET"])

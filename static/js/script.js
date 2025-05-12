@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Function to fetch all services from the API
 async function fetchServices() {
+    console.error("Start fetch")
     try {
         const response = await fetch('/api/v1/resources/services/all');
         const services = await response.json();
@@ -58,7 +59,9 @@ async function fetchServices() {
                 serviceCard.innerHTML = `
                     <h3>${service.name}</h3>
                     <p class="price">Price: $${service.price}</p>
-                    <button onclick="bookService('${service.name}')" class="btn">Записаться</button>
+                     <button onclick="showPopUpForRequest()" class="btn">Записаться</button>
+                     //onclick=showPopUpForRequest() onclick="showPopUpForRequest();"
+//                    <button onclick="bookService('${service.name}')" class="btn">Записаться</button>
                 `;
                 servicesContainer.appendChild(serviceCard);
             });
@@ -140,6 +143,13 @@ indicators.forEach((indicator, index) => {
         updateCarousel();
     });
 });
+
+//function showPopUpForRequest(){
+//    print("gfgdgfdgyg")
+//    const popUpElement = document.getElementById("pop-up");
+//    popUpElement.show();
+//}
+
 
 // Автопрокрутка (по желанию)
 // setInterval(() => {

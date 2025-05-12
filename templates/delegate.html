@@ -3,7 +3,20 @@
     <h3 class="service-name">{{ service.name }}</h3>
     <p class="service-price">Цена: {{ service.price }} ₽</p>
     <button class="book-button"
-            onclick="bookService('{{ service.name }}', {{ service.price }})">
+            onclick="showPopUpForRequest()">
+<!--            onclick="bookService('{{ service.name }}', {{ service.price }})">-->
         Записаться
     </button>
+
 </div>
+
+<dialog id="pop-up">
+    Привет, я поп-ап!
+</dialog>
+
+<script>
+    function showPopUpForRequest(){
+        const popUpElement = document.getElementById("pop-up");
+        popUpElement.show();
+    }
+</script>
