@@ -880,6 +880,119 @@ footer-logo img {
     color: #c53dff;
 }
 
+.mobile-header {
+    display: none; /* По умолчанию скрыто */
+}
+
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    height: 100vh;
+    background: white;
+    padding: 60px 20px 20px;
+    transition: all 0.3s;
+    z-index: 1000;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #c53dff #f8f9fa;
+}
+
+/* Стили только для масштаба 250% */
+@media (min-resolution: 2.5dpi) {
+    .nav-menu {
+        display: none;
+    }
+
+    .nav-container {
+        justify-content: space-between;
+    }
+
+    .mobile-header {
+        display: flex; /* Показываем только при 150% масштабе */
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .hamburger {
+        display: block;
+        width: 25px;
+        height: 2px;
+        background: #333;
+        position: relative;
+    }
+
+    .hamburger:before,
+    .hamburger:after {
+        content: '';
+        position: absolute;
+        width: 25px;
+        height: 2px;
+        background: #333;
+    }
+
+    .hamburger:before {
+        top: -8px;
+    }
+
+    .hamburger:after {
+        top: 8px;
+    }
+
+    .mobile-menu {
+        display: block
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 80%;
+        height: 100vh;
+        background: white;
+        padding: 60px 20px;
+        transition: all 0.3s;
+        z-index: 1000;
+        box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+    }
+
+    .mobile-menu.active {
+        left: 0;
+    }
+
+    .mobile-nav-item {
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+        color: #333;
+        text-decoration: none;
+        display: block;
+    }
+
+    .mobile-dropdown-item {
+        padding: 10px 15px;
+        display: block;
+        color: #555;
+    }
+
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #333;
+    }
+
+    .menu-btn {
+        background: none;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+}
+
 /*---------------------------О нас---------------------------*/
 /* Для about-header */
 
@@ -889,7 +1002,9 @@ footer-logo img {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding-bottom: 0px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
 }
 
 .about-header {
@@ -899,30 +1014,26 @@ footer-logo img {
     justify-content: center;
     text-align: center;
     padding: 3rem 1rem;
-    font-size: 30px;
+    font-size: clamp(24px, 3vw, 30px);
     font-family: Arial, sans-serif;
-    /*background-image: url("https://ania.cleverlive.pro/VogueStyle_MastersPhoto/vogue_1.jpg");*/
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 0 0 16px 16px;
-    height: 200px;
+    height: auto;
+    min-height: 200px;
     max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
+    margin: 0 auto 40px;
+    width: calc(100% - 2rem);
     box-sizing: border-box;
-    padding-bottom: 15px;
-    margin-bottom: 40px;
     color: white;
+    position: relative;
 }
 
-.width-h{
-    /* Новые стили для центрирования и ограничения ширины */
+.width-h {
     max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
+    margin: 0 auto;
+    width: calc(100% - 4rem);
     box-sizing: border-box;
 }
 
@@ -942,23 +1053,23 @@ footer-logo img {
     display: flex;
     flex-direction: column;
     margin-top: 40px;
-    border-radius: 16px 16px 0px 0px;
+    border-radius: 16px 16px 0 0;
     align-items: center;
     width: 100%;
-    padding: 10vh 0 10vh;
+    padding: clamp(3rem, 10vh, 6rem) 0;
     box-sizing: border-box;
     background-color: white;
 }
-
 .about-h1 {
     font-size: clamp(32px, 4vw, 40px);
     color: black;
     font-family: Arial, sans-serif;
     text-align: center;
-    padding-bottom: 20px;
+    padding: 0 clamp(10px, 5vw, 20px) 20px;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .h2-container {
@@ -970,7 +1081,7 @@ footer-logo img {
     margin: 0 auto;
     text-align: center;
     box-sizing: border-box;
-    padding-bottom: 80px;
+    padding: 0 clamp(10px, 5vw, 20px) 60px;
 }
 
 .about-h2 {
@@ -978,8 +1089,9 @@ footer-logo img {
     color: #6b5ccc;
     font-family: Arial, sans-serif;
     text-align: right;
-    padding-bottom: clamp(20px, 4vh, 40px);
+    padding: 0 clamp(10px, 5vw, 20px) clamp(10px, 4vh, 20px);
     width: 100%;
+    box-sizing: border-box;
 }
 
 .header3-about{
@@ -1000,7 +1112,36 @@ footer-logo img {
     border-radius: 8px;
 }
 
+/* Адаптация для планшетов и мобильных */
 @media (max-width: 768px) {
+    .about-header {
+        width: 100%;
+        margin: 0 auto;
+        border-radius: 0;
+        padding: 2rem 0;
+    }
+
+    .width-h {
+        width: 100%;
+        padding: 0;
+        max-width: 100%;
+    }
+
+    .feature-card-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Дополнительная адаптация для маленьких экранов */
+@media (max-width: 480px) {
+    .about-header {
+        padding: 1.5rem 0;
+    }
+
+    .width-h {
+        padding: 0;
+    }
+
     .feature-card-container {
         grid-template-columns: 1fr;
     }

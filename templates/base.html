@@ -12,6 +12,31 @@
 <body>
     <!-- Новая навигационная панель -->
     <nav class="navbar">
+        <div class="mobile-header">
+            <button class="menu-btn">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+
+        <div class="mobile-menu">
+            <button class="close-btn">×</button>
+            <a href="/" class="mobile-nav-item">На главную</a>
+            <a href="/request" class="mobile-nav-item {% if request.path == '/request' %}active{% endif %}">Запись</a>
+            <a href="/about" class="mobile-nav-item {% if request.path == '/about' %}active{% endif %}">О нас</a>
+            <a href="/masters" class="mobile-nav-item {% if request.path == '/masters' %}active{% endif %}">Наши Мастера</a>
+            <div class="mobile-nav-item">
+                Салоны
+                <div class="mobile-dropdown-container">
+                    <a href="/salons/bm" class="mobile-dropdown-item">Большая Морская ул., 67</a>
+                    <a href="/salons/gasta" class="mobile-dropdown-item">ул. Гастелло, 15</a>
+                    <a href="/salons/lensa" class="mobile-dropdown-item">ул. Ленсовета, 14</a>
+                </div>
+            </div>
+            {% if site_version == 'master' %}
+                <a href="/master/personal_account_master" class="mobile-nav-item {% if request.path == '/master/personal_account_master' %}active{% endif %}">ЛК</a>
+            {% endif %}
+        </div>
+
         <div class="nav-container">
             <ul class="nav-menu">
                 <div class="nav-menu-left">
@@ -108,7 +133,51 @@
 <!--</div>-->
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
     {% block extra_scripts %}{% endblock %}
 </body>
+<script>
+    function checkZoom() {
+        const isZoomed = window.devicePixelRatio >= 2.5;
+        const mobileHeader = document.querySelector('.mobile-header');
+        const navMenu = document.querySelector('.nav-menu');
+        const mobileMenu = document.querySelector('.mobile-menu');
 
+        if (isZoomed) {
+            mobileHeader.style.display = 'flex';
+            navMenu.style.display = 'none';
+            mobileMenu.style.display = 'block';
+        } else {
+            mobileHeader.style.display = 'none';
+            navMenu.style.display = 'grid';
+            mobileMenu.style.display = 'none';
+            mobileMenu.classList.remove('active');
+        }
+    }
+
+    document.querySelector('.menu-btn').addEventListener('click', function() {
+        document.querySelector('.mobile-menu').classList.add('active');
+    });
+
+    document.querySelector('.close-btn').addEventListener('click', function() {
+        document.querySelector('.mobile-menu').classList.remove('active');
+    });
+
+    // Обработка раскрытия подменю "Салоны"
+    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+        if (item.querySelector('.mobile-dropdown-container')) {
+            item.addEventListener('click', function(e) {
+                if (e.target === this) { // Клик именно по родительскому элементу
+                    e.preventDefault();
+                    const dropdown = this.querySelector('.mobile-dropdown-container');
+                    dropdown.classList.toggle('expanded');
+                }
+            });
+        }
+    });
+
+    window.addEventListener('load', checkZoom);
+    window.addEventListener('resize', checkZoom);
+</script>
 </html>
