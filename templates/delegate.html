@@ -10,13 +10,13 @@
 
 </div>
 
-<dialog id="pop-up">
-    Привет, я поп-ап!
+<dialog id="request">
+
 </dialog>
 
 <script>
     function showPopUpForRequest(){
-        const popUpElement = document.getElementById("pop-up");
-        popUpElement.show();
+        const popUpElement = document.querySelector(".dialog-container");
+        popUpElement.style.display = "block";
     }
 </script>
