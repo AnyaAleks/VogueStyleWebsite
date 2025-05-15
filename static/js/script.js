@@ -144,11 +144,54 @@ indicators.forEach((indicator, index) => {
     });
 });
 
-//function showPopUpForRequest(){
-//    print("gfgdgfdgyg")
-//    const popUpElement = document.getElementById("pop-up");
-//    popUpElement.show();
-//}
+// Обновите вызов в fetchServices
+async function fetchServices() {
+    console.error("Start fetch")
+    try {
+        const response = await fetch('/api/v1/resources/services/all');
+        const services = await response.json();
+
+        const servicesContainer = document.getElementById('services');
+        if (servicesContainer) {
+            servicesContainer.innerHTML = ''; // Clear previous content
+
+            // Loop through the services and create HTML elements
+            services.forEach(service => {
+                const serviceCard = document.createElement('div');
+                serviceCard.className = 'service-card';
+                serviceCard.innerHTML = `
+                    <h3>${service.name}</h3>
+                    <p class="price">Price: $${service.price}</p>
+                    <button onclick="showPopUpForRequest('${service.name}', ${service.price})" class="btn">Записаться</button>
+                `;
+                servicesContainer.appendChild(serviceCard);
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching services:', error);
+    }
+}
+
+let currentService = null;
+
+function showPopUpForRequest(serviceName, servicePrice) {
+    const popUpElement = document.getElementById("pop-up");
+
+    if (!popUpElement) {
+        console.error("Dialog element not found");
+        return;
+    }
+
+    // Устанавливаем информацию об услуге
+    const nameElement = document.getElementById("popup-service-name");
+    const priceElement = document.getElementById("popup-service-price");
+
+    if (nameElement) nameElement.textContent = serviceName;
+    if (priceElement) priceElement.textContent = servicePrice;
+
+    // Показываем диалоговое окно (лучше использовать showModal())
+    popUpElement.showModal();
+}
 
 
 // Автопрокрутка (по желанию)
@@ -202,3 +245,57 @@ function bookService(serviceName) {
 //        document.querySelector('.lk-form').submit();
 //    }
 //});
+
+
+
+
+// Показ диалога с первой страницей
+function showDialog(serviceName, servicePrice) {
+    const dialog = document.getElementById('pop-up');
+    showFirstPage(serviceName, servicePrice);
+    dialog.showModal();
+}
+
+// Первая страница диалога
+function showFirstPage(serviceName, servicePrice) {
+    const content = document.getElementById('dialog-content');
+    //const content = document.getElementById('dialog-container');
+    content.innerHTML = `
+        <div class="popup-content">
+            <h3>Запись на услугу</h3>
+            <p>Услуга: <span>${serviceName}</span></p>
+            <p>Цена: <span>${servicePrice}</span> ₽</p>
+            <div class="popup-buttons">
+                <button onclick="showSecondPage()">Записаться</button>
+                <button onclick="document.getElementById('pop-up').close()">Закрыть</button>
+            </div>
+        </div>
+    `;
+}
+
+// Вторая страница диалога
+function showSecondPage() {
+    const content = document.getElementById('dialog-content');
+    content.innerHTML = `
+        <div class="popup-content">
+            <h3>Подтверждение записи</h3>
+            <div class="form-group">
+                <label>Выберите дату:</label>
+                <input type="date" class="popup-input">
+            </div>
+            <div class="form-group">
+                <label>Выберите время:</label>
+                <input type="time" class="popup-input">
+            </div>
+            <div class="popup-buttons">
+                <button onclick="confirmAppointment()">Подтвердить</button>
+                <button onclick="showFirstPage()">Назад</button>
+            </div>
+        </div>
+    `;
+}
+
+function confirmAppointment() {
+    alert("Запись подтверждена!");
+    document.getElementById('pop-up').close();
+}

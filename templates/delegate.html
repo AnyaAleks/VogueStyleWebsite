@@ -2,21 +2,12 @@
 <div class="service-card">
     <h3 class="service-name">{{ service.name }}</h3>
     <p class="service-price">Цена: {{ service.price }} ₽</p>
-    <button class="service-card-button"
-            onclick="showPopUpForRequest()">
-<!--            onclick="bookService('{{ service.name }}', {{ service.price }})">-->
+    <button class="service-card-button" onclick="showDialog('{{ service.name }}', {{ service.price }})">
         Записаться
     </button>
-
 </div>
 
-<dialog id="request">
-
+<dialog id="pop-up" class="popup-dialog">
+    <!-- Контент будет меняться через JS -->
+    <div id="dialog-content"></div>
 </dialog>
-
-<script>
-    function showPopUpForRequest(){
-        const popUpElement = document.querySelector(".dialog-container");
-        popUpElement.style.display = "block";
-    }
-</script>

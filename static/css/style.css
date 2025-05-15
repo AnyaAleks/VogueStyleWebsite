@@ -1364,6 +1364,106 @@ footer-logo img {
     background-color: #666;
 }
 
+.popup-dialog {
+    width: 40vw;
+    min-width: 300px;
+    max-width: 500px;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popup-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.popup-buttons button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.popup-buttons button:first-child {
+    background-color: #6c5ce7;
+    color: white;
+}
+
+.popup-buttons button:last-child {
+    background-color: #dfe6e9;
+}
+
+/* Дополнительные стили для второй страницы диалога */
+.popup-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+.popup-dialog {
+    width: 40%;
+    min-width: 300px;
+    max-width: 500px;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.popup-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
 
 /*--------------------Записаться--------------------*/
 .dialog-container {
@@ -1420,4 +1520,62 @@ footer-logo img {
 .location-address {
     color: #666;
     font-size: 0.9em;
+}
+
+.dialog-container {
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.dialog-title {
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.service-price-info {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.location-list {
+    margin-top: 20px;
+}
+
+.location {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.location:hover {
+    border-color: #4285F4;
+}
+
+.location.selected {
+    border-color: #4285F4;
+    background-color: #f0f7ff;
+}
+
+.location-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.location-address {
+    color: #666;
+    font-size: 14px;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-bottom: 15px;
 }
