@@ -274,12 +274,6 @@ function showSecondPage(serviceName, servicePrice) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
         <div class="dialog-container">
-            <button class="back-button" onclick="showFirstPage('${serviceName}', '${servicePrice}')">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15 18L9 12L15 6" stroke="#4285F4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
-
             <h3 class="dialog-title">Выберите адрес для услуги: <span id="selected-service-name">${serviceName}</span></h3>
             <p class="service-price-info">Стоимость: <span id="selected-service-price">${servicePrice}</span> ₽</p>
             <div class="location-list">
@@ -298,6 +292,10 @@ function showSecondPage(serviceName, servicePrice) {
                     <div class="location-address">Ленсовета ул. 14, Санкт-Петербург</div>
                 </div>
             </div>
+            <div class="popup-buttons">
+                <button onclick="showThirdPage('${serviceName}', '${servicePrice}')">Далее</button>
+                <button onclick="showFirstPage('${serviceName}', '${servicePrice}')">Назад</button>
+            </div>
         </div>
     `;
 }
@@ -308,19 +306,16 @@ function selectLocation(element, locationName) {
         loc.classList.remove('selected');
     });
     element.classList.add('selected');
-    selectedLocation = locationName;
-    showThirdPage();
 }
 
 // Третья страница диалога (подтверждение записи)
-function showThirdPage() {
+function showThirdPage(serviceName, servicePrice) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
         <div class="popup-content">
             <h3>Подтверждение записи</h3>
             <p>Услуга: ${currentService.name}</p>
             <p>Цена: ${currentService.price} ₽</p>
-            <p>Локация: ${selectedLocation}</p>
 
             <div class="form-group">
                 <label>Выберите дату:</label>
@@ -332,13 +327,17 @@ function showThirdPage() {
             </div>
 
             <div class="popup-buttons">
-                <button onclick="confirmAppointment()">Подтвердить</button>
-                <button onclick="showSecondPage()">Назад</button>
+                <button onclick="confirmAppointment('${serviceName}', '${servicePrice}')">Подтвердить</button>
+                <button onclick="showSecondPage('${serviceName}', '${servicePrice}')">Назад</button>
             </div>
         </div>
     `;
 }
-//
+function confirmAppointment(serviceName, servicePrice) {
+    alert("Запись подтверждена!");
+    document.getElementById('pop-up').close();
+}
+
 //// Вторая страница диалога
 //function showSecondPage() {
 //    const content = document.getElementById('dialog-content');
@@ -361,7 +360,3 @@ function showThirdPage() {
 //    `;
 //}
 
-//function confirmAppointment() {
-//    alert("Запись подтверждена!");
-//    document.getElementById('pop-up').close();
-//}
