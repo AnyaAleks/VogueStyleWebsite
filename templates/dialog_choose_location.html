@@ -72,32 +72,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    // Получаем параметры из URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const serviceName = urlParams.get('service');
-    const servicePrice = urlParams.get('price');
-
-    // Устанавливаем данные услуги
-    document.getElementById('selected-service-name').textContent = serviceName;
-    document.getElementById('selected-service-price').textContent = servicePrice;
-
-    let selectedLocation = null;
-
-    function selectLocation(element, locationName) {
-        // Убираем выделение у всех локаций
-        document.querySelectorAll('.location').forEach(loc => {
-            loc.classList.remove('selected');
-        });
-
-        // Добавляем выделение выбранной локации
-        element.classList.add('selected');
-        selectedLocation = locationName;
-    }
-
-    function goBackToServiceSelection() {
-        // Возвращаемся назад с сохранением параметров
-        history.back();
-    }
-</script>

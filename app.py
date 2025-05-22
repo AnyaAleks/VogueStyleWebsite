@@ -592,11 +592,17 @@ def test_api():
             "message": str(e)
         }), 500
 
-@app.route('/location')
+@app.route("/request", methods=["GET"])
+@app.route("/master/request", methods=["GET"])
+@app.route("/client/request",  methods=["GET"])
 def location_page():
-    service = request.args.get('service', 'Услуга')
-    price = request.args.get('price', '0')
-    return render_template('location.html', service=service, price=price)
+
+
+
+
+ service = request.args.get('service', 'Услуга')
+    # price = request.args.get('price', '0')
+    # return render_template('dialog_choose_location.html', service=service, price=price)
 
 # running it locally
 # if __name__ == "__main__":

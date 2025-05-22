@@ -1363,7 +1363,7 @@ footer-logo img {
 .indicator.active {
     background-color: #666;
 }
-
+/*----------------------Диалоговое окно--------------------*/
 .popup-dialog {
     width: 40vw;
     min-width: 300px;
@@ -1411,7 +1411,7 @@ footer-logo img {
     background-color: #dfe6e9;
 }
 
-/* Дополнительные стили для второй страницы диалога */
+/*----------------Записаться дата и время------------------ */
 .popup-input {
     width: 100%;
     padding: 10px;
@@ -1465,92 +1465,45 @@ footer-logo img {
 }
 
 
-/*--------------------Записаться--------------------*/
+/*--------------------Записаться выбрать салон--------------------*/
+/* Стили для страницы выбора локации */
 .dialog-container {
-    position: relative;
+    font-family: Arial, sans-serif;
+    max-width: 500px;
+    margin: 0 auto;
     padding: 20px;
-    min-width: 300px;
 }
 
 .back-button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
     background: none;
     border: none;
     cursor: pointer;
     padding: 5px;
-}
-
-.dialog-title {
-    margin-top: 0;
-    text-align: center;
-    color: #333;
-    font-size: 1.5em;
-    margin-bottom: 5px;
-}
-
-.location-list {
-    margin-top: 30px;
-}
-
-.location {
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.location:hover {
-    background-color: #f5f5f5;
-}
-
-.location.selected {
-    background-color: #e8f0fe;
-    border-left: 3px solid #4285F4;
-}
-
-.location-name {
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 5px;
-}
-
-.location-address {
-    color: #666;
-    font-size: 0.9em;
-}
-
-.dialog-container {
-    padding: 20px;
-    max-width: 500px;
-    margin: 0 auto;
+    margin-bottom: 15px;
 }
 
 .dialog-title {
     color: #333;
-    margin-bottom: 10px;
-    text-align: center;
+    margin-bottom: 5px;
 }
 
 .service-price-info {
-    text-align: center;
     color: #666;
     margin-bottom: 20px;
 }
 
 .location-list {
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .location {
     padding: 15px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    margin-bottom: 10px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
 }
 
 .location:hover {
@@ -1570,12 +1523,5 @@ footer-logo img {
 .location-address {
     color: #666;
     font-size: 14px;
-}
-
-.back-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    margin-bottom: 15px;
+    margin-top: 5px;
 }
