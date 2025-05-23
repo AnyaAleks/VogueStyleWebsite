@@ -172,7 +172,6 @@ async function fetchServices() {
     }
 }
 
-let currentService = null;
 
 
 // Автопрокрутка (по желанию)
@@ -228,24 +227,24 @@ function bookService(serviceName) {
 //});
 
 //dialog window--------------------------------------
-function showPopUpForRequest(serviceName, servicePrice) {
-    const popUpElement = document.getElementById("pop-up");
-
-    if (!popUpElement) {
-        console.error("Dialog element not found");
-        return;
-    }
-
-    // Устанавливаем информацию об услуге
-    const nameElement = document.getElementById("popup-service-name");
-    const priceElement = document.getElementById("popup-service-price");
-
-    if (nameElement) nameElement.textContent = serviceName;
-    if (priceElement) priceElement.textContent = servicePrice;
-
-    // Показываем диалоговое окно (лучше использовать showModal())
-    popUpElement.showModal();
-}
+//function showPopUpForRequest(serviceName, servicePrice) {
+//    const popUpElement = document.getElementById("pop-up");
+//
+//    if (!popUpElement) {
+//        console.error("Dialog element not found");
+//        return;
+//    }
+//
+//    // Устанавливаем информацию об услуге
+//    const nameElement = document.getElementById("popup-service-name");
+//    const priceElement = document.getElementById("popup-service-price");
+//
+//    if (nameElement) nameElement.textContent = serviceName;
+//    if (priceElement) priceElement.textContent = servicePrice;
+//
+//    // Показываем диалоговое окно (лучше использовать showModal())
+//    popUpElement.showModal();
+//}
 
 
 // Показ диалога с первой страницей
@@ -311,52 +310,29 @@ function selectLocation(element, locationName) {
 // Третья страница диалога (подтверждение записи)
 function showThirdPage(serviceName, servicePrice) {
     const content = document.getElementById('dialog-content');
-    content.innerHTML = `
-        <div class="popup-content">
-            <h3>Подтверждение записи</h3>
-            <p>Услуга: ${currentService.name}</p>
-            <p>Цена: ${currentService.price} ₽</p>
+        content.innerHTML = `
+            <div class="popup-content">
+                <h3>Подтверждение записи</h3>
+                <p>Услуга: ${serviceName}</p>
+                <p>Цена: ${servicePrice} ₽</p>
 
-            <div class="form-group">
-                <label>Выберите дату:</label>
-                <input type="date" class="popup-input">
-            </div>
-            <div class="form-group">
-                <label>Выберите время:</label>
-                <input type="time" class="popup-input">
-            </div>
+                <div class="form-group">
+                    <label>Выберите дату:</label>
+                    <input type="date" class="popup-input">
+                </div>
+                <div class="form-group">
+                    <label>Выберите время:</label>
+                    <input type="time" class="popup-input">
+                </div>
 
-            <div class="popup-buttons">
-                <button onclick="confirmAppointment('${serviceName}', '${servicePrice}')">Подтвердить</button>
-                <button onclick="showSecondPage('${serviceName}', '${servicePrice}')">Назад</button>
+                <div class="popup-buttons">
+                    <button onclick="confirmAppointment('${serviceName}', '${servicePrice}')">Подтвердить</button>
+                    <button onclick="showSecondPage('${serviceName}', '${servicePrice}')">Назад</button>
+                </div>
             </div>
-        </div>
-    `;
+        `;
 }
 function confirmAppointment(serviceName, servicePrice) {
     alert("Запись подтверждена!");
     document.getElementById('pop-up').close();
 }
-
-//// Вторая страница диалога
-//function showSecondPage() {
-//    const content = document.getElementById('dialog-content');
-//    content.innerHTML = `
-//        <div class="popup-content">
-//            <h3>Подтверждение записи</h3>
-//            <div class="form-group">
-//                <label>Выберите дату:</label>
-//                <input type="date" class="popup-input">
-//            </div>
-//            <div class="form-group">
-//                <label>Выберите время:</label>
-//                <input type="time" class="popup-input">
-//            </div>
-//            <div class="popup-buttons">
-//                <button onclick="confirmAppointment()">Подтвердить</button>
-//                <button onclick="showFirstPage()">Назад</button>
-//            </div>
-//        </div>
-//    `;
-//}
-
