@@ -38,7 +38,7 @@
             masterElement.dataset.id = master.id;
 
             // Проверяем наличие фото
-            const photoUrl = master.photo ? `/static/uploads/${master.photo}` : null;
+            const photoUrl = master.photo ? `https://ania.cleverlive.pro/VogueStyle_MastersPhoto/${master.photo}` : null;
             const initials = master.name.split(' ').map(n => n[0]).join('').toUpperCase();
 
             masterElement.innerHTML = `
