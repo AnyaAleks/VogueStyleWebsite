@@ -1,7 +1,7 @@
 from contextlib import nullcontext
 
 import flask, os, mysql.connector as mysql
-from flask import request, jsonify, render_template, redirect, url_for, abort
+from flask import request, jsonify, render_template, redirect, url_for, abort, make_response
 import requests
 
 import psycopg2
@@ -601,5 +601,36 @@ def location_page():
 # running it locally
 # if __name__ == "__main__":
 #    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
+@app.route("/request", methods=["GET"])
+@app.route("/master/request", methods=["GET"])
+@app.route("/client/request",  methods=["GET"])
+def master_request():
+    try:
+        masters_add_request = [
+            {
+                "id": 1,
+                "photo": "vogue_1.jpg",
+                "name": "Иванова Анна",
+                "job": "Топ-стилист, колорист",
+            },
+            {
+                "id": 2,
+                "photo": "vogue_2.jpg",
+                "name": "Петров Сергей",
+                "job": "Барбер-стилист",
+            },
+            {
+                "id": 3,
+                "photo": "vogue_3.jpg",
+                "name": "Смирнова Екатерина",
+                "job": "Визажист-стилист",
+            }
+        ]
+
+        return render_template('dialog_choose_master.html', masters=masters_add_request)
+    except Exception as e:
+        return render_template("error.html", error=str(e))
+
 
 app = app
