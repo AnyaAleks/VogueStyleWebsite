@@ -127,6 +127,44 @@ def home():
                 "photo": "vogue_3.jpg",
                 "name": "Алексей Смирнов",
                 'specialization': 'Парикмахер-стилист'
+            },
+            {
+                "id": 4,
+                "photo": "vogue_1.jpg",
+                "name": "Иван Иванов",
+                'specialization': 'Парикмахер-стилист'
+            },
+            {
+                "id": 5,
+                "photo": "vogue_2.jpg",
+
+                "name": "Мария Петрова",
+                'specialization': 'Парикмахер-стилист'
+            },
+            {
+                "id": 6,
+                "photo": "vogue_3.jpg",
+                "name": "Алексей Смирнов",
+                'specialization': 'Парикмахер-стилист'
+            },
+            {
+                "id": 7,
+                "photo": "vogue_1.jpg",
+                "name": "Иван Иванов",
+                'specialization': 'Парикмахер-стилист'
+            },
+            {
+                "id": 8,
+                "photo": "vogue_2.jpg",
+
+                "name": "Мария Петрова",
+                'specialization': 'Парикмахер-стилист'
+            },
+            {
+                "id": 9,
+                "photo": "vogue_3.jpg",
+                "name": "Алексей Смирнов",
+                'specialization': 'Парикмахер-стилист'
             }
         ]
 
