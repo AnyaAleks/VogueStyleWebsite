@@ -39,7 +39,84 @@ document.addEventListener('DOMContentLoaded', function () {
             fetchServicesSortedByPrice();
         });
     }
+
+
+    // Обработчик загрузки фото
+    const photoUpload = document.getElementById('photo-upload');
+    if (photoUpload) {
+        photoUpload.addEventListener('change', function(e) {
+            handlePhotoUpload(e);
+        });
+    }
+
+    // Обработчик удаления фото
+    const deletePhoto = document.getElementById('delete-photo');
+    if (deletePhoto) {
+        deletePhoto.addEventListener('click', function() {
+            handlePhotoDelete();
+        });
+    }
 });
+
+
+function handlePhotoUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Проверка типа файла
+    if (!file.type.match('image.*')) {
+        alert('Пожалуйста, выберите файл изображения');
+        return;
+    }
+
+    // Проверка размера файла (например, не более 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+        alert('Размер файла не должен превышать 2MB');
+        return;
+    }
+
+    // Создаем превью изображения
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const previewContainer = document.getElementById('photo-preview');
+
+        // Если это div-плейсхолдер, заменяем его на img
+        if (previewContainer.tagName === 'DIV') {
+            const img = document.createElement('img');
+            img.id = 'photo-preview';
+            img.className = 'lk-photo';
+            img.src = e.target.result;
+            img.alt = 'Фото мастера';
+
+            previewContainer.parentNode.replaceChild(img, previewContainer);
+        } else {
+            // Если это уже img, просто обновляем src
+            previewContainer.src = e.target.result;
+        }
+    };
+
+    reader.readAsDataURL(file);
+}
+
+function handlePhotoDelete() {
+    const previewContainer = document.getElementById('photo-preview');
+
+    // Если это img, заменяем его на плейсхолдер
+    if (previewContainer.tagName === 'IMG') {
+        const placeholder = document.createElement('div');
+        placeholder.id = 'photo-preview';
+        placeholder.className = 'lk-photo-placeholder';
+        placeholder.innerHTML = '<span>Фото не загружено</span>';
+
+        previewContainer.parentNode.replaceChild(placeholder, previewContainer);
+    }
+
+    // Сбрасываем значение input file
+    const photoUpload = document.getElementById('photo-upload');
+    if (photoUpload) {
+        photoUpload.value = '';
+    }
+}
 
 // Function to fetch all services from the API
 async function fetchServices() {
@@ -311,13 +388,6 @@ function handleLocationSelect(element, serviceName, servicePrice, locationName) 
     showThirdPage(serviceName, servicePrice, locationName);
 }
 
-function selectLocation(element, locationName) {
-    document.querySelectorAll('.location').forEach(loc => {
-        loc.classList.remove('selected');
-    });
-    element.classList.add('selected');
-}
-
 function showThirdPage(serviceName, servicePrice, location) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
@@ -344,6 +414,7 @@ function showThirdPage(serviceName, servicePrice, location) {
     `;
 }
 
+//Для обработки всех данных из записи на услугу
 function confirmAppointment(serviceName, servicePrice, location) {
     const date = document.getElementById('appointment-date').value;
     const time = document.getElementById('appointment-time').value;
@@ -356,3 +427,35 @@ function confirmAppointment(serviceName, servicePrice, location) {
     alert(`Запись подтверждена!\nУслуга: ${serviceName}\nЦена: ${servicePrice} ₽\nАдрес: ${location}\nДата: ${date}\nВремя: ${time}`);
     document.getElementById('pop-up').close();
 }
+
+
+//Для обработки всех данных из ЛК мастера
+document.querySelector('.lk-btn-save').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const form = document.querySelector('.lk-form');
+    const formData = new FormData(form);
+
+    let output = "Данные мастера:\n\n";
+    const fieldLabels = {
+        'last_name': 'Фамилия',
+        'first_name': 'Имя',
+        'middle_name': 'Отчество',
+        'birth_date': 'Дата рождения',
+        'address': 'Адрес',
+        'email': 'E-mail',
+        'phone': 'Телефон',
+        'photo': 'Фото'
+    };
+
+    for (let [key, value] of formData.entries()) {
+        if (key === 'photo' && value instanceof File) {
+            output += `${fieldLabels[key] || key}: ${value.name || 'файл выбран'}\n`;
+        } else {
+            output += `${fieldLabels[key] || key}: ${value || 'не указано'}\n`;
+        }
+    }
+
+    alert(output);
+    // form.submit(); // Раскомментировать для реальной отправки
+});

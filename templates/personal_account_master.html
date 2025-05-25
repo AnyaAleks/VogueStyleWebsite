@@ -5,16 +5,15 @@
 {% block content %}
 <div class="lk-container">
     <h1 class="lk-title">Личные данные</h1>
-
     <form class="lk-form" method="POST" enctype="multipart/form-data">
         <div class="lk-form-layout">
             <!-- Левая колонка (фото и кнопки) -->
             <div class="lk-left-column">
                 <div class="lk-photo-preview">
                     {% if master.photo %}
-                        <img src="{{ url_for('static', filename=master.photo) }}" alt="Фото мастера" class="lk-photo">
+                        <img id="photo-preview" src="{{ url_for('static', filename=master.photo) }}" alt="Фото мастера" class="lk-photo">
                     {% else %}
-                        <div class="lk-photo-placeholder">
+                        <div id="photo-preview" class="lk-photo-placeholder">
                             <span>Фото не загружено</span>
                         </div>
                     {% endif %}
