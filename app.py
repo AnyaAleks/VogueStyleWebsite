@@ -666,7 +666,14 @@ def master_request():
             }
         ]
 
-        return render_template('dialog_choose_master.html', masters=masters_add_request)
+
+        test_services_add = [
+            {"id": 1, "name": "Тестовый маникюр", "price": 1500},
+            {"id": 2, "name": "Пробная стрижка", "price": 2000},
+            {"id": 3, "name": "Демо-окрашивание", "price": 2500}
+        ]
+
+        return render_template('dialog_choose_service.html', services=test_services_add)
     except Exception as e:
         return render_template("error.html", error=str(e))
 
