@@ -273,32 +273,43 @@ function showSecondPage(serviceName, servicePrice) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
         <div class="dialog-container">
-            <h3 class="dialog-title">Выберите адрес для услуги: <span id="selected-service-name">${serviceName}</span></h3>
-            <p class="service-price-info">Стоимость: <span id="selected-service-price">${servicePrice}</span> ₽</p>
+            <h3 class="dialog-title">Выберите адрес для услуги: <span>${serviceName}</span></h3>
+            <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
             <div class="location-list">
-                <div class="location" onclick="selectLocation(this, 'Центр города')">
+                <div class="location" onclick="handleLocationSelect(this, '${serviceName}', ${servicePrice}, 'Центр города')">
                     <div class="location-name">Салон VogueStyle в Центре города</div>
                     <div class="location-address">ул. Большая Морская 67, Санкт-Петербург</div>
                 </div>
 
-                <div class="location" onclick="selectLocation(this, 'Московская')">
+                <div class="location" onclick="handleLocationSelect(this, '${serviceName}', ${servicePrice}, 'Московская')">
                     <div class="location-name">Салон VogueStyle на Московской</div>
                     <div class="location-address">Гастелло ул. 15, Санкт-Петербург</div>
                 </div>
 
-                <div class="location" onclick="selectLocation(this, 'Ленсовета')">
-                    <div class="location-name">Салон VogueStyle на Московской</div>
+                <div class="location" onclick="handleLocationSelect(this, '${serviceName}', ${servicePrice}, 'Ленсовета')">
+                    <div class="location-name">Салон VogueStyle на Ленсовета</div>
                     <div class="location-address">Ленсовета ул. 14, Санкт-Петербург</div>
                 </div>
             </div>
             <div class="popup-buttons">
-                <button onclick="showThirdPage('${serviceName}', '${servicePrice}')">Далее</button>
-                <button onclick="showFirstPage('${serviceName}', '${servicePrice}')">Назад</button>
+                <button onclick="showFirstPage('${serviceName}', ${servicePrice})">Назад</button>
             </div>
         </div>
     `;
 }
 
+function handleLocationSelect(element, serviceName, servicePrice, locationName) {
+    // Удаляем класс selected у всех элементов
+    document.querySelectorAll('.location').forEach(loc => {
+        loc.classList.remove('selected');
+    });
+
+    // Добавляем класс selected к выбранному элементу
+    element.classList.add('selected');
+
+    // Сразу переходим на третью страницу с выбранным адресом
+    showThirdPage(serviceName, servicePrice, locationName);
+}
 
 function selectLocation(element, locationName) {
     document.querySelectorAll('.location').forEach(loc => {
@@ -307,32 +318,41 @@ function selectLocation(element, locationName) {
     element.classList.add('selected');
 }
 
-// Третья страница диалога (подтверждение записи)
-function showThirdPage(serviceName, servicePrice) {
+function showThirdPage(serviceName, servicePrice, location) {
     const content = document.getElementById('dialog-content');
-        content.innerHTML = `
-            <div class="popup-content">
-                <h3>Подтверждение записи</h3>
-                <p>Услуга: ${serviceName}</p>
-                <p>Цена: ${servicePrice} ₽</p>
+    content.innerHTML = `
+        <div class="popup-content">
+            <h3>Подтверждение записи</h3>
+            <p>Услуга: ${serviceName}</p>
+            <p>Цена: ${servicePrice} ₽</p>
+            <p>Адрес: ${location}</p>
 
-                <div class="form-group">
-                    <label>Выберите дату:</label>
-                    <input type="date" class="popup-input">
-                </div>
-                <div class="form-group">
-                    <label>Выберите время:</label>
-                    <input type="time" class="popup-input">
-                </div>
-
-                <div class="popup-buttons">
-                    <button onclick="confirmAppointment('${serviceName}', '${servicePrice}')">Подтвердить</button>
-                    <button onclick="showSecondPage('${serviceName}', '${servicePrice}')">Назад</button>
-                </div>
+            <div class="form-group">
+                <label>Выберите дату:</label>
+                <input type="date" class="popup-input" id="appointment-date">
             </div>
-        `;
+            <div class="form-group">
+                <label>Выберите время:</label>
+                <input type="time" class="popup-input" id="appointment-time">
+            </div>
+
+            <div class="popup-buttons">
+                <button onclick="confirmAppointment('${serviceName}', ${servicePrice}, '${location}')">Подтвердить</button>
+                <button onclick="showSecondPage('${serviceName}', ${servicePrice})">Назад</button>
+            </div>
+        </div>
+    `;
 }
-function confirmAppointment(serviceName, servicePrice) {
-    alert("Запись подтверждена!");
+
+function confirmAppointment(serviceName, servicePrice, location) {
+    const date = document.getElementById('appointment-date').value;
+    const time = document.getElementById('appointment-time').value;
+
+    if (!date || !time) {
+        alert("Пожалуйста, выберите дату и время!");
+        return;
+    }
+
+    alert(`Запись подтверждена!\nУслуга: ${serviceName}\nЦена: ${servicePrice} ₽\nАдрес: ${location}\nДата: ${date}\nВремя: ${time}`);
     document.getElementById('pop-up').close();
 }
