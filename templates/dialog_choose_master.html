@@ -1,19 +1,11 @@
 <div class="popup-content">
     <h3 class="dialog-title">Выберите мастера: <span id="selected-service-name"></span></h3>
-    <p class="service-price-info">Стоимость: <span id="selected-service-price"></span> ₽</p>
     <div class="master-list" id="masters-container">
         <!-- Мастера будут добавлены динамически -->
     </div>
 </div>
 
 <script>
-
-
-
-    //Почему-то фото не тянуться. Надо починить!
-
-
-
     // Правильная передача данных из Flask в JavaScript
     const mastersData = {{ masters|tojson|safe }};
 

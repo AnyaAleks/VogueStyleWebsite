@@ -677,7 +677,7 @@ footer-logo img {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     border-radius: 8px;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1200px;
     box-sizing: border-box;
 }
 
@@ -805,7 +805,6 @@ footer-logo img {
 
 .master-h-container {
     display: flex;
-
     margin: 0 auto;
     padding-top: 40px;
     gap: 20px;
@@ -814,10 +813,23 @@ footer-logo img {
     flex-wrap: wrap;
 }
 
+.masters-card-style {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1600px; /* 80% от 1600px */
+    margin: 0 auto; /* Центрирование по горизонтали */
+    box-sizing: border-box; /* Чтобы padding не влиял на общую ширину */
+}
+
 .qualification-card {
     flex: 1;
     min-width: 200px;
-    padding: 40px;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 30px;
+    padding-bottom: 60px;
     background-color: white;
     border-radius: 12px;
 }
@@ -1288,7 +1300,7 @@ footer-logo img {
 }
 
 .width-h {
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
     width: calc(100% - 4rem);
     box-sizing: border-box;
@@ -1300,7 +1312,7 @@ footer-logo img {
     background-color: white;
     justify-content: center;
     padding: 2vw 10vh 10vh;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
     box-sizing: border-box;
     gap: 2vw;
@@ -1419,7 +1431,7 @@ footer-logo img {
 
 .salon-width-h{
     /* Новые стили для центрирования и ограничения ширины */
-    max-width: 1400px;
+    max-width: 1600px;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
