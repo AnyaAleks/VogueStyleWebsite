@@ -1613,7 +1613,7 @@ footer-logo img {
 
 .popup-buttons button:first-child {
     background-color: #6c5ce7;
-    color: white;
+    color: black;
 }
 
 .popup-buttons button:last-child {
@@ -1787,4 +1787,104 @@ footer-logo img {
     width: 100%; /* На всю ширину контейнера */
     border: none;
     backdrop-filter: blur(2px); /* Легкое размытие для мягкости */
+}
+
+/*--------------------Выбор мастера----------------------------*/
+ /* Стили списка мастеров */
+.master-list-js {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.master-js {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.master-js:hover {
+    border-color: #d0d0d0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.master-js.selected {
+    border-color: #ff66cc;
+    background-color: #fff0f7;
+}
+
+.master-photo-js {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    margin-right: 15px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #666;
+    flex-shrink: 0;
+}
+
+.master-info-js {
+    flex-grow: 1;
+}
+
+.master-name-js {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 16px;
+}
+
+.master-position-js {
+    font-size: 14px;
+    color: #666;
+}
+
+/*--------------------Выбор услуги----------------*/
+.service-list-js {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.services-js {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.services-js:hover {
+    border-color: #4285F4;
+}
+
+.services-js.selected {
+    border-color: #4285F4;
+    background-color: #f0f7ff;
+}
+
+.service-name-js {
+    font-weight: bold;
+    color: #333;
+}
+
+.service-price-js {
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.service-info-js {
+    flex-grow: 1;
 }

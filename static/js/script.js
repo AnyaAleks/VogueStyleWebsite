@@ -311,14 +311,152 @@ function handleLocationSelect(element, serviceName, servicePrice, locationName) 
     showThirdPage(serviceName, servicePrice, locationName);
 }
 
-function selectLocation(element, locationName) {
-    document.querySelectorAll('.location').forEach(loc => {
-        loc.classList.remove('selected');
-    });
-    element.classList.add('selected');
+function showThirdPage(serviceName, servicePrice, locationName) {
+    const content = document.getElementById('dialog-content');
+    content.innerHTML = `
+        <div class="popup-content">
+            <h3 class="dialog-title">Выберите услугу: <span id="selected-service-name"></span></h3>
+            <div class="service-list-js" id="services-container">
+                <!-- Услуги будут добавлены динамически -->
+            </div>
+            <div class="popup-buttons">
+                <button onclick="showSecondPage('${serviceName}', ${servicePrice})">Назад</button>
+            </div>
+        </div>
+    `;
+
+    // Загрузка и отображение услуг
+    loadServicesData();
 }
 
-function showThirdPage(serviceName, servicePrice, location) {
+function loadServicesData() {
+    // Используем предзагруженные данные или делаем запрос
+    if (window.servicesData && Array.isArray(window.servicesData)) {
+        renderServices(window.servicesData);
+    } else {
+        console.error('Ошибка: Некорректные данные услуг', window.servicesData);
+        document.getElementById('services-container').innerHTML =
+            '<div class="error">Не удалось загрузить данные услуг</div>';
+    }
+}
+
+function renderServices(services) {
+    const container = document.getElementById('services-container');
+    container.innerHTML = '';
+
+    services.forEach(service => {
+        const serviceElement = document.createElement('div');
+        serviceElement.className = 'service-js';
+        serviceElement.dataset.id = service.id;
+
+        serviceElement.innerHTML = `
+            <div class="service-info-js">
+                <div class="service-name-js">${service.name}</div>
+                <div class="service-price-js">${service.price} rub.</div>
+            </div>
+        `;
+
+        serviceElement.onclick = () => handleServiceSelect(serviceElement, service.id, service.name, service.price);
+        container.appendChild(serviceElement);
+    });
+}
+
+function handleServiceSelect(element, serviceId, serviceName, servicePrice) {
+    // Снимаем выделение со всех услуг
+    document.querySelectorAll('.service-js').forEach(s => {
+        s.classList.remove('selected');
+    });
+
+    // Добавляем выделение выбранной услуге
+    element.classList.add('selected');
+
+    // Переходим на следующую страницу с выбранной услугой
+    showFourthPagePage(serviceName, servicePrice, serviceId);
+}
+
+function showFourthPage(serviceName, servicePrice, locationName) {
+    const content = document.getElementById('dialog-content');
+    content.innerHTML = `
+        <div class="popup-content">
+            <h3 class="dialog-title">Выберите мастера: <span id="selected-service-name">${serviceName}</span></h3>
+            <p class="service-info">Локация: ${locationName} | Стоимость: ${servicePrice} ₽</p>
+            <div class="master-list-js" id="masters-container">
+                <!-- Мастера будут добавлены динамически -->
+            </div>
+            <div class="popup-buttons">
+                <button onclick="showThirdPage('${serviceName}', ${servicePrice})">Назад</button>
+            </div>
+        </div>
+    `;
+
+    // Загружаем данные мастеров
+    loadMastersData(serviceName, servicePrice, locationName);
+}
+
+function loadMastersData(serviceName, servicePrice, locationName) {
+    // Здесь должна быть логика загрузки данных мастеров!!!!!!!!
+
+    // Пример с предзагруженными данными:
+    if (window.mastersData && Array.isArray(window.mastersData)) {
+        renderMasters(window.mastersData, serviceName, servicePrice, locationName);
+    } else {
+        console.error('Данные мастеров не загружены');
+        document.getElementById('masters-container').innerHTML =
+            '<div class="error">Не удалось загрузить данные мастеров</div>';
+    }
+}
+
+function renderMasters(masters, serviceName, servicePrice, locationName) {
+    const container = document.getElementById('masters-container');
+    container.innerHTML = '';
+
+    masters.forEach(master => {
+        const masterElement = document.createElement('div');
+        masterElement.className = 'master-js';
+        masterElement.dataset.id = master.id;
+
+        // Проверяем наличие фото
+        const photoUrl = master.photo ? `https://ania.cleverlive.pro/VogueStyle_MastersPhoto/${master.photo}` : null;
+        const initials = master.name.split(' ').map(n => n[0]).join('').toUpperCase();
+
+        masterElement.innerHTML = `
+            <div class="master-photo-js" style="${photoUrl ? `background-image: url('${photoUrl}')` : ''}">
+                ${!photoUrl ? initials : ''}
+            </div>
+            <div class="master-info-js">
+                <div class="master-name-js">${master.name}</div>
+                <div class="master-position-js">${master.job}</div>
+            </div>
+        `;
+
+        // Обработка ошибки загрузки фото
+        const photoEl = masterElement.querySelector('.master-photo-js');
+        if (photoUrl) {
+            photoEl.onerror = function() {
+                this.style.backgroundImage = 'none';
+                this.textContent = initials;
+            };
+        }
+
+        masterElement.onclick = () => handleMasterSelect(masterElement, master.id, serviceName, servicePrice, locationName);
+        container.appendChild(masterElement);
+    });
+}
+
+function handleMasterSelect(element, masterId, serviceName, servicePrice, locationName) {
+    // Удаляем класс selected у всех элементов
+    document.querySelectorAll('.master-js').forEach(m => {
+        m.classList.remove('selected');
+    });
+
+    // Добавляем класс selected к выбранному элементу
+    element.classList.add('selected');
+
+    // Переходим на следующую страницу с выбранным мастером
+    showFifthPage(serviceName, servicePrice, locationName, masterId);
+}
+
+function showFifthPage(serviceName, servicePrice, locationName, masterId) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
         <div class="popup-content">
@@ -338,7 +476,7 @@ function showThirdPage(serviceName, servicePrice, location) {
 
             <div class="popup-buttons">
                 <button onclick="confirmAppointment('${serviceName}', ${servicePrice}, '${location}')">Подтвердить</button>
-                <button onclick="showSecondPage('${serviceName}', ${servicePrice})">Назад</button>
+                <button onclick="showFourthPage('${serviceName}', ${servicePrice})">Назад</button>
             </div>
         </div>
     `;

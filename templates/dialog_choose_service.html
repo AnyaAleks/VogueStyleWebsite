@@ -1,6 +1,6 @@
 <div class="popup-content">
     <h3 class="dialog-title">Выберите услугу: <span id="selected-service-name"></span></h3>
-    <div class="service-list" id="services-container">
+    <div class="service-list-js" id="services-container">
         <!-- Услуги будут добавлены динамически -->
     </div>
 </div>
@@ -26,16 +26,16 @@
 
         services.forEach(service => {
             const serviceElement = document.createElement('div');
-            serviceElement.className = 'service';
+            serviceElement.className = 'service-js';
             serviceElement.dataset.id = service.id;
 
             // Проверяем наличие фото
             const initials = service.name.split(' ').map(n => n[0]).join('').toUpperCase();
 
             serviceElement.innerHTML = `
-                <div class="service-info">
-                    <div class="service-name">${service.name}</div>
-                    <div class="service-price">${service.price} rub.</div>
+                <div class="service-info-js">
+                    <div class="service-name-js">${service.name}</div>
+                    <div class="service-price-js">${service.price} rub.</div>
                 </div>
             `;
 
@@ -45,7 +45,7 @@
     }
 
     function selectService(element, serviceId) {
-        document.querySelectorAll('.service').forEach(m => m.classList.remove('selected'));
+        document.querySelectorAll('.service-js').forEach(m => m.classList.remove('selected'));
         element.classList.add('selected');
         console.log('Выбрана услуга:', masterId);
     }
