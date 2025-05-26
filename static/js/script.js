@@ -430,7 +430,7 @@ function confirmAppointment(serviceName, servicePrice, location) {
 
 
 //Для обработки всех данных из ЛК мастера
-document.querySelector('.lk-btn-save').addEventListener('click', function(e) {
+document.querySelector('save-information').addEventListener('click', function(e) {
     e.preventDefault();
 
     const form = document.querySelector('.lk-form');
