@@ -286,7 +286,6 @@ section {
     padding: 0 2rem;
 }
 
-
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -297,11 +296,11 @@ section {
     background: white;
     border-radius: 24px;
     padding: 2.5rem;
-    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.05);
+    box-shadow: 0 25px 50px -12px rgba(20, 20, 22, 0.08);
     transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     position: relative;
     overflow: hidden;
-    border: 1px solid rgba(226, 232, 240, 0.6);
+    border: 2px solid rgba(226, 232, 240, 0.6);
 }
 
 .service-card::before {
@@ -311,14 +310,15 @@ section {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(56, 182, 255, 0.03) 0%, rgba(240, 249, 255, 0) 100%);
+    background: linear-gradient(135deg, rgba(10, 82, 166, 0.03) 0%, rgba(214, 231, 125, 0.03) 100%);
     z-index: 0;
 }
 
 .service-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 32px 64px -16px rgba(15, 23, 42, 0.1);
-    border-color: rgba(165, 216, 255, 0.8);
+    box-shadow: 0 32px 64px -16px rgba(17, 98, 177, 0.15);
+    border-color: #1162b1;
+    outline: none;
 }
 
 .service-card-content {
@@ -329,7 +329,7 @@ section {
 .service-name {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #141416;
     margin-bottom: 1.5rem;
     line-height: 1.4;
 }
@@ -344,7 +344,7 @@ section {
 .service-price {
     font-size: 2.2rem;
     font-weight: 800;
-    color: #0ea5e9;
+    color: #0a52a6;
     line-height: 1;
 }
 
@@ -360,7 +360,7 @@ section {
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    background: linear-gradient(95deg, #0ea5e9, #38b6ff);
+    background: linear-gradient(95deg, #163587, #0a52a6);
     color: white;
     padding: 1.1rem;
     border: none;
@@ -386,8 +386,9 @@ section {
 }
 
 .book-button:hover {
-    box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+    box-shadow: 0 10px 20px rgba(22, 53, 135, 0.4);
     transform: translateY(-2px);
+    background: linear-gradient(95deg, #0a52a6, #163587);
 }
 
 .book-button:hover::after {
@@ -407,13 +408,13 @@ section {
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
-    background: linear-gradient(135deg, #f59e0b, #f97316);
-    color: white;
+    background: linear-gradient(135deg, #d6e77d, #c2f0a5);
+    color: #141416;
     padding: 0.35rem 1.25rem;
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 700;
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    box-shadow: 0 4px 12px rgba(214, 231, 125, 0.3); /* #d6e77d */
     z-index: 2;
 }
 
@@ -437,7 +438,6 @@ section {
         padding: 2rem;
     }
 }
-
 /* ------------------------API info-------------------------------------- */
 .api-info {
     background-color: #f8f8f8;
@@ -853,7 +853,7 @@ footer-logo img {
 }
 
 .qualification-card h3 {
-    color: #6b5ccc;
+    color: #1453b2;
     margin-top: 0;
     font-size: 20px;
     text-align: center;
@@ -1114,7 +1114,7 @@ footer-logo img {
 
 .nav-link:hover,
 .nav-link.active {
-    color: #c53dff;
+    color: #78daa1;
 }
 
 /* Логотип - фиксирован в центре */
@@ -1164,7 +1164,7 @@ footer-logo img {
 
 .dropdown-item:hover {
     background-color: #f8f9fa;
-    color: #c53dff;
+    color: #78daa1;
 }
 
 .mobile-header {
@@ -1373,7 +1373,7 @@ footer-logo img {
 
 .about-h2 {
     font-size: clamp(18px, 2vw, 20px);
-    color: #6b5ccc;
+    color: #1453b2;
     font-family: Arial, sans-serif;
     text-align: right;
     padding: 0 clamp(10px, 5vw, 20px) clamp(10px, 4vh, 20px);
@@ -1467,10 +1467,11 @@ footer-logo img {
 }
 
 .salon-h3 {
-    font-size: 27px; /* +50% */
+    font-size: 27px;
     font-weight: 400;
-    color: #666;
+    color: #153d9d;
     margin-bottom: 10px;
+    padding-top: 20px;
     letter-spacing: 1px;
 }
 
@@ -1515,8 +1516,10 @@ footer-logo img {
     display: flex;
     align-items: center;
     max-width: 1200px;
-    margin: 40px auto;
-    gap: 10px;
+    margin: 60px auto;
+    gap: 20px;
+    position: relative;
+    padding: 0 40px;
 }
 
 /* Контейнер для карусели */
@@ -1524,71 +1527,126 @@ footer-logo img {
     flex: 1;
     overflow: hidden;
     position: relative;
+    border-radius: 16px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
 .carousel {
     display: flex;
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .carousel-item {
     min-width: 100%;
     box-sizing: border-box;
     flex-shrink: 0;
-}
-
-/*------заглушка----*/
-.photo-placeholder {
-    width: 100%;
-    aspect-ratio: 16/9;
-    background-color: #ddd;
     display: flex;
-    align-items: center;
     justify-content: center;
-    color: #888;
-    font-family: Arial, sans-serif;
-    font-size: 24px;
-    border-radius: 8px;
+    align-items: center;
+    background: #f8f9fa;
 }
 
-/* Стили кнопок ВНЕ карусели */
+/* Стили для изображений */
+.carousel-image {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    object-fit: contain;
+    display: block;
+    border-radius: 16px;
+}
+
+/* Стили кнопок */
 .carousel-arrow {
     width: 50px;
     height: 50px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(255,255,255,0.9);
     border: none;
     border-radius: 50%;
     font-size: 24px;
+    color: #1453b2;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s;
     flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    z-index: 2;
 }
 
 .carousel-arrow:hover {
-    background-color: rgba(0,0,0,0.2);
+    background-color: #1453b2;
+    color: white;
+    transform: scale(1.05);
 }
 
 /* Индикаторы */
 .carousel-indicators {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 30px;
+    gap: 8px;
+    padding-bottom: 80px;
 }
 
 .indicator {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background-color: #ccc;
+    background-color: rgba(20, 83, 178, 0.2);
     margin: 0 5px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .indicator.active {
-    background-color: #666;
+    background-color: #1453b2;
+    transform: scale(1.3);
+}
+
+.indicator:hover {
+    background-color: rgba(20, 83, 178, 0.5);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .carousel-wrapper {
+        padding: 0 15px;
+        margin: 30px auto;
+    }
+
+    .carousel-arrow {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+
+    .carousel-container {
+        border-radius: 12px;
+    }
+
+    .carousel-image {
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .carousel-indicators {
+        margin-top: 20px;
+        padding-bottom: 15px;
+    }
+
+    .indicator {
+        width: 5px;
+        height: 5px;
+    }
 }
 /*----------------------Диалоговое окно--------------------*/
 .popup-dialog {
