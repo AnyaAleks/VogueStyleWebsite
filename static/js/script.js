@@ -453,24 +453,94 @@ function handleServiceSelect(element, serviceId, serviceName, servicePrice) {
     showFourthPagePage(serviceName, servicePrice, serviceId);
 }
 
+//function showThirdPage(serviceName, servicePrice, locationName) {
+//    const content = document.getElementById('dialog-content');
+//    content.innerHTML = `
+//        <div class="popup-content">
+//            <h3 class="dialog-title">Выберите мастера: <span id="selected-service-name">${serviceName}</span></h3>
+//            <p class="service-info">Локация: ${locationName} | Стоимость: ${servicePrice} ₽</p>
+//            <div class="master-list-js" id="masters-container">
+//                <!-- Мастера будут добавлены динамически -->
+//            </div>
+//            <div class="popup-buttons">
+//                <button onclick="showThirdPage('${serviceName}', ${servicePrice})">Назад</button>
+//            </div>
+//        </div>
+//    `;
+//
+//    // Загружаем данные мастеров
+//    loadMastersData(serviceName, servicePrice, locationName);
+//}
+
 function showThirdPage(serviceName, servicePrice, locationName) {
+    console.log("Функция showThirdPage вызвана");
+
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
         <div class="popup-content">
-            <h3 class="dialog-title">Выберите мастера: <span id="selected-service-name">${serviceName}</span></h3>
+            <h3 class="dialog-title">Выберите мастера: <span>${serviceName}</span></h3>
             <p class="service-info">Локация: ${locationName} | Стоимость: ${servicePrice} ₽</p>
-            <div class="master-list-js" id="masters-container">
-                <!-- Мастера будут добавлены динамически -->
-            </div>
+            <div class="loading-spinner"></div>
+            <div class="master-list-js" id="masters-container"></div>
             <div class="popup-buttons">
-                <button onclick="showThirdPage('${serviceName}', ${servicePrice})">Назад</button>
+                <button onclick="showSecondPage('${serviceName}', ${servicePrice})">Назад</button>
             </div>
         </div>
     `;
 
-    // Загружаем данные мастеров
-    loadMastersData(serviceName, servicePrice, locationName);
+    const spinner = content.querySelector('.loading-spinner');
+    const container = content.querySelector('#masters-container');
+
+    spinner.style.display = 'block';
+    container.innerHTML = '';
+
+    const url = 'http://82.202.142.17:8000/master';
+
+    fetch(url)
+        .then(response => {
+            alert("1");
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert("2");
+            spinner.style.display = 'none';
+
+            if (data.ok && data.masters && data.masters.length > 0) {
+                // Данные успешно получены, отображаем мастеров
+                renderMasters(data.masters, serviceName, servicePrice, locationName, container);
+            } else {
+                // Нет доступных мастеров
+                container.innerHTML = `
+                    <div class="no-masters">
+                        <i class="icon-warning"></i>
+                        <p>Нет доступных мастеров.</p>
+                    </div>
+                `;
+            }
+        })
+        .catch(error => {
+            alert("3");
+            spinner.style.display = 'none';
+            console.error('Ошибка загрузки мастеров:', error);
+            container.innerHTML = `
+                <div class="error">
+                    <i class="icon-error"></i>
+                    <p>Ошибка загрузки данных. Пожалуйста, попробуйте позже.</p>
+                    <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}')">
+                        Попробовать снова
+                    </button>
+                </div>
+            `;
+        });
 }
+
+
+
+
+
 
 async function loadMastersData(serviceName, servicePrice, locationName) {
     // Здесь должна быть логика загрузки данных мастеров!!!!!!!!
@@ -491,41 +561,63 @@ async function loadMastersData(serviceName, servicePrice, locationName) {
     }
 }
 
-function renderMasters(masters, serviceName, servicePrice, locationName) {
-    const container = document.getElementById('masters-container');
-    container.innerHTML = '';
+//function renderMasters(masters, serviceName, servicePrice, locationName) {
+//    const container = document.getElementById('masters-container');
+//    container.innerHTML = '';
+//
+//    masters.forEach(master => {
+//        const masterElement = document.createElement('div');
+//        masterElement.className = 'master-js';
+//        masterElement.dataset.id = master.id;
+//
+//        // Проверяем наличие фото
+//        const photoUrl = master.photo ? `https://ania.cleverlive.pro/VogueStyle_MastersPhoto/${master.photo}` : null;
+//        const initials = master.name.split(' ').map(n => n[0]).join('').toUpperCase();
+//
+//        masterElement.innerHTML = `
+//            <div class="master-photo-js" style="${photoUrl ? `background-image: url('${photoUrl}')` : ''}">
+//                ${!photoUrl ? initials : ''}
+//            </div>
+//            <div class="master-info-js">
+//                <div class="master-name-js">${master.name}</div>
+//                <div class="master-position-js">${master.job}</div>
+//            </div>
+//        `;
+//
+//        // Обработка ошибки загрузки фото
+//        const photoEl = masterElement.querySelector('.master-photo-js');
+//        if (photoUrl) {
+//            photoEl.onerror = function() {
+//                this.style.backgroundImage = 'none';
+//                this.textContent = initials;
+//            };
+//        }
+//
+//        masterElement.onclick = () => handleMasterSelect(masterElement, master.id, serviceName, servicePrice, locationName);
+//        container.appendChild(masterElement);
+//    });
+//}
+function renderMasters(masters, serviceName, servicePrice, locationName, container) {
+    container.innerHTML = ''; // Очищаем контейнер
 
     masters.forEach(master => {
         const masterElement = document.createElement('div');
-        masterElement.className = 'master-js';
-        masterElement.dataset.id = master.id;
+        masterElement.classList.add('master-item'); // Добавьте класс для стилизации
 
-        // Проверяем наличие фото
-        const photoUrl = master.photo ? `https://ania.cleverlive.pro/VogueStyle_MastersPhoto/${master.photo}` : null;
-        const initials = master.name.split(' ').map(n => n[0]).join('').toUpperCase();
-
+        // Формируем отображение для каждого мастера
         masterElement.innerHTML = `
-            <div class="master-photo-js" style="${photoUrl ? `background-image: url('${photoUrl}')` : ''}">
-                ${!photoUrl ? initials : ''}
-            </div>
-            <div class="master-info-js">
-                <div class="master-name-js">${master.name}</div>
-                <div class="master-position-js">${master.job}</div>
-            </div>
+            <h3>${master.surname} ${master.name} ${master.patronymic}</h3>
+            <p>Телефон: ${master.phone}</p>
+            <button onclick="bookMaster(${master.id}, '${serviceName}', ${servicePrice}, '${locationName}')">Записаться</button>
         `;
 
-        // Обработка ошибки загрузки фото
-        const photoEl = masterElement.querySelector('.master-photo-js');
-        if (photoUrl) {
-            photoEl.onerror = function() {
-                this.style.backgroundImage = 'none';
-                this.textContent = initials;
-            };
-        }
-
-        masterElement.onclick = () => handleMasterSelect(masterElement, master.id, serviceName, servicePrice, locationName);
         container.appendChild(masterElement);
     });
+}
+
+// Пример функции bookMaster (заглушка)
+function bookMaster(masterId, serviceName, servicePrice, locationName) {
+    alert(`Запись к мастеру ${masterId} на ${serviceName} в ${locationName} за ${servicePrice} ₽`);
 }
 
 function handleMasterSelect(element, masterId, serviceName, servicePrice, locationName) {

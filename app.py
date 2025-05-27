@@ -104,7 +104,7 @@ def home():
         api_url_masters = "http://82.202.142.17:8000/master"
         all_masters = requests.get(api_url_masters).json()
         masters_list = all_masters['masters']
-        #print(masters_list)
+        print(all_masters)
 
         api_url_services = "http://82.202.142.17:8000/services"
         all_services = requests.get(api_url_services).json()
@@ -692,5 +692,57 @@ def master_request():
     except Exception as e:
         return render_template("error.html", error=str(e))
 
+
+@app.route("/", methods=["GET"])
+def get_filtered_masters():
+    try:
+        service_name = request.args.get('service', '').lower()
+        location_name = request.args.get('location', '')
+
+        # Ваши данные мастеров (в реальном приложении это будет запрос к БД)
+        masters_data = [
+            {
+                "id": 1,
+                "photo": "vogue_1.jpg",
+                "name": "Иванова Анна",
+                "job": "Топ-стилист, колорист",
+                "specialization": "окрашивание, уход за волосами",
+                "available_locations": ["Центр города", "Московская"]
+            },
+            {
+                "id": 2,
+                "photo": "vogue_2.jpg",
+                "name": "Петров Сергей",
+                "job": "Барбер-стилист",
+                "specialization": "мужские стрижки, бороды",
+                "available_locations": ["Ленсовета", "Московская"]
+            }
+        ]
+
+        # Фильтрация
+        filtered = []
+        for master in masters_data:
+            # Фильтр по услуге (если указана)
+            if service_name and service_name not in master['specialization'].lower():
+                continue
+
+            # Фильтр по локации (если указана)
+            if location_name and location_name not in master['available_locations']:
+                continue
+
+            filtered.append(master)
+
+        return jsonify({
+            "success": True,
+            "masters": filtered,
+            "count": len(filtered)
+        })
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "message": "Произошла ошибка при загрузке мастеров"
+        }), 500
 
 app = app
