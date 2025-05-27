@@ -390,7 +390,7 @@ function handleLocationSelect(element, serviceName, servicePrice, locationName) 
 
 
 
-function showThirdPage(serviceName, servicePrice, locationName) {
+function showFourthPage(serviceName, servicePrice, locationName) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
         <div class="popup-content">
@@ -453,7 +453,7 @@ function handleServiceSelect(element, serviceId, serviceName, servicePrice) {
     showFourthPagePage(serviceName, servicePrice, serviceId);
 }
 
-function showFourthPage(serviceName, servicePrice, locationName) {
+function showThirdPage(serviceName, servicePrice, locationName) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
         <div class="popup-content">
@@ -472,8 +472,14 @@ function showFourthPage(serviceName, servicePrice, locationName) {
     loadMastersData(serviceName, servicePrice, locationName);
 }
 
-function loadMastersData(serviceName, servicePrice, locationName) {
+async function loadMastersData(serviceName, servicePrice, locationName) {
     // Здесь должна быть логика загрузки данных мастеров!!!!!!!!
+    ///const mastersData = {{ masters|tojson|safe }};
+//    console.error(mastersData)\
+
+//        const response = await fetch('/request');
+//        const mastersData = await response.json();
+//        console.error(mastersData)
 
     // Пример с предзагруженными данными:
     if (window.mastersData && Array.isArray(window.mastersData)) {

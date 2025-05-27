@@ -1,4 +1,5 @@
 from contextlib import nullcontext
+from venv import logger
 
 import flask, os, mysql.connector as mysql
 from flask import request, jsonify, render_template, redirect, url_for, abort, make_response
@@ -22,10 +23,8 @@ app.config["DEBUG"] = True
 shortcut = "/api/v1/resources"
 
 # UPDATED Database config for swapping from mySQL to PostgreSQL
-DATABASE_URL = os.getenv("http://127.0.0.1:8000")
+DATABASE_URL = os.getenv("http://82.202.142.17:8000")
 # connection_pool = None
-
-
 
 ###########################################################
 
@@ -102,6 +101,17 @@ def home():
         # Перенаправляем на версию по умолчанию
         return redirect('/client/')
     try:
+        api_url_masters = "http://82.202.142.17:8000/master"
+        all_masters = requests.get(api_url_masters).json()
+        masters_list = all_masters['masters']
+        #print(masters_list)
+
+        api_url_services = "http://82.202.142.17:8000/services"
+        all_services = requests.get(api_url_services).json()
+        services_list = all_services['services']
+        #print(services_list)
+
+
         test_services = [
             {"id": 1, "name": "Тестовый маникюр", "price": 1500},
             {"id": 2, "name": "Пробная стрижка", "price": 2000},
@@ -193,7 +203,7 @@ def home():
     #
     #     # Render the index.html template and pass the services data to it
 
-        return render_template("index.html", services=test_services, masters=test_masters)
+        return render_template("index.html", services=services_list, masters=masters_list)
 
     except Exception as e:
         # If an error occurs, render the error.html template and pass the error message
@@ -278,6 +288,11 @@ def api_id():
 def view_masters():
     """Web route to view all services"""
     try:
+
+        # api_url_masters = "http://82.202.142.17:8000/master"
+        # all_masters = requests.get(api_url_masters).json()
+        # masters_list = all_masters['masters']
+
         masters_add = [
             {
                 "id": 1,
@@ -673,7 +688,7 @@ def master_request():
             {"id": 3, "name": "Демо-окрашивание", "price": 2500}
         ]
 
-        return render_template('dialog_choose_service.html', services=test_services_add)
+        return render_template('dialog_choose_master.html', masters=masters_add_request)
     except Exception as e:
         return render_template("error.html", error=str(e))
 
