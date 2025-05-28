@@ -426,8 +426,6 @@ function handleLocationSelect(element, serviceName, servicePrice, locationName) 
     showThirdPage(serviceName, servicePrice, locationName);
 }
 
-
-
 function showFourthPage(serviceName, servicePrice, locationName) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
@@ -491,25 +489,6 @@ function handleServiceSelect(element, serviceId, serviceName, servicePrice) {
     showFourthPagePage(serviceName, servicePrice, serviceId);
 }
 
-//function showThirdPage(serviceName, servicePrice, locationName) {
-//    const content = document.getElementById('dialog-content');
-//    content.innerHTML = `
-//        <div class="popup-content">
-//            <h3 class="dialog-title">Выберите мастера: <span id="selected-service-name">${serviceName}</span></h3>
-//            <p class="service-info">Локация: ${locationName} | Стоимость: ${servicePrice} ₽</p>
-//            <div class="master-list-js" id="masters-container">
-//                <!-- Мастера будут добавлены динамически -->
-//            </div>
-//            <div class="popup-buttons">
-//                <button onclick="showThirdPage('${serviceName}', ${servicePrice})">Назад</button>
-//            </div>
-//        </div>
-//    `;
-//
-//    // Загружаем данные мастеров
-//    loadMastersData(serviceName, servicePrice, locationName);
-//}
-
 function showThirdPage(serviceName, servicePrice, locationName) {
     console.log("Функция showThirdPage вызвана");
 
@@ -519,7 +498,7 @@ function showThirdPage(serviceName, servicePrice, locationName) {
             <h3 class="dialog-title">Выберите мастера: <span>${serviceName}</span></h3>
             <p class="service-info">Локация: ${locationName} | Стоимость: ${servicePrice} ₽</p>
             <div class="loading-spinner"></div>
-            <div class="master-list-js" id="masters-container"></div>
+            <div class="master-list" id="masters-container"></div>
             <div class="popup-buttons">
                 <button onclick="showSecondPage('${serviceName}', ${servicePrice})">Назад</button>
             </div>
@@ -536,21 +515,17 @@ function showThirdPage(serviceName, servicePrice, locationName) {
 
     fetch(url)
         .then(response => {
-            alert("1");
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
-            alert("2");
             spinner.style.display = 'none';
 
             if (data.ok && data.masters && data.masters.length > 0) {
-                // Данные успешно получены, отображаем мастеров
                 renderMasters(data.masters, serviceName, servicePrice, locationName, container);
             } else {
-                // Нет доступных мастеров
                 container.innerHTML = `
                     <div class="no-masters">
                         <i class="icon-warning"></i>
@@ -560,7 +535,6 @@ function showThirdPage(serviceName, servicePrice, locationName) {
             }
         })
         .catch(error => {
-            alert("3");
             spinner.style.display = 'none';
             console.error('Ошибка загрузки мастеров:', error);
             container.innerHTML = `
@@ -575,87 +549,33 @@ function showThirdPage(serviceName, servicePrice, locationName) {
         });
 }
 
-
-
-
-
-
-async function loadMastersData(serviceName, servicePrice, locationName) {
-    // Здесь должна быть логика загрузки данных мастеров!!!!!!!!
-    ///const mastersData = {{ masters|tojson|safe }};
-//    console.error(mastersData)\
-
-//        const response = await fetch('/request');
-//        const mastersData = await response.json();
-//        console.error(mastersData)
-
-    // Пример с предзагруженными данными:
-    if (window.mastersData && Array.isArray(window.mastersData)) {
-        renderMasters(window.mastersData, serviceName, servicePrice, locationName);
-    } else {
-        console.error('Данные мастеров не загружены');
-        document.getElementById('masters-container').innerHTML =
-            '<div class="error">Не удалось загрузить данные мастеров</div>';
-    }
-}
-
-//function renderMasters(masters, serviceName, servicePrice, locationName) {
-//    const container = document.getElementById('masters-container');
-//    container.innerHTML = '';
-//
-//    masters.forEach(master => {
-//        const masterElement = document.createElement('div');
-//        masterElement.className = 'master-js';
-//        masterElement.dataset.id = master.id;
-//
-//        // Проверяем наличие фото
-//        const photoUrl = master.photo ? `https://ania.cleverlive.pro/VogueStyle_MastersPhoto/${master.photo}` : null;
-//        const initials = master.name.split(' ').map(n => n[0]).join('').toUpperCase();
-//
-//        masterElement.innerHTML = `
-//            <div class="master-photo-js" style="${photoUrl ? `background-image: url('${photoUrl}')` : ''}">
-//                ${!photoUrl ? initials : ''}
-//            </div>
-//            <div class="master-info-js">
-//                <div class="master-name-js">${master.name}</div>
-//                <div class="master-position-js">${master.job}</div>
-//            </div>
-//        `;
-//
-//        // Обработка ошибки загрузки фото
-//        const photoEl = masterElement.querySelector('.master-photo-js');
-//        if (photoUrl) {
-//            photoEl.onerror = function() {
-//                this.style.backgroundImage = 'none';
-//                this.textContent = initials;
-//            };
-//        }
-//
-//        masterElement.onclick = () => handleMasterSelect(masterElement, master.id, serviceName, servicePrice, locationName);
-//        container.appendChild(masterElement);
-//    });
-//}
 function renderMasters(masters, serviceName, servicePrice, locationName, container) {
-    container.innerHTML = ''; // Очищаем контейнер
+    container.innerHTML = '';
 
     masters.forEach(master => {
         const masterElement = document.createElement('div');
-        masterElement.classList.add('master-item'); // Добавьте класс для стилизации
+        masterElement.classList.add('master');
+        masterElement.classList.add('master-js');
 
-        // Формируем отображение для каждого мастера
+        const masterName = `${master.surname} ${master.name} ${master.patronymic}`.trim();
+
         masterElement.innerHTML = `
-            <h3>${master.surname} ${master.name} ${master.patronymic}</h3>
-            <p>Телефон: ${master.phone}</p>
-            <button onclick="bookMaster(${master.id}, '${serviceName}', ${servicePrice}, '${locationName}')">Записаться</button>
+            <div class="master-info">
+                <div class="master-name">${masterName}</div>
+                <div class="master-phone">${master.phone}</div>
+            </div>
         `;
+
+        masterElement.onclick = () => handleMasterSelect(
+            masterElement,
+            master.id,
+            serviceName,
+            servicePrice,
+            locationName
+        );
 
         container.appendChild(masterElement);
     });
-}
-
-// Пример функции bookMaster (заглушка)
-function bookMaster(masterId, serviceName, servicePrice, locationName) {
-    alert(`Запись к мастеру ${masterId} на ${serviceName} в ${locationName} за ${servicePrice} ₽`);
 }
 
 function handleMasterSelect(element, masterId, serviceName, servicePrice, locationName) {
@@ -667,7 +587,7 @@ function handleMasterSelect(element, masterId, serviceName, servicePrice, locati
     // Добавляем класс selected к выбранному элементу
     element.classList.add('selected');
 
-    // Переходим на следующую страницу с выбранным мастером
+    // Переходим на страницу подтверждения
     showFifthPage(serviceName, servicePrice, locationName, masterId);
 }
 
@@ -677,8 +597,9 @@ function showFifthPage(serviceName, servicePrice, locationName, masterId) {
         <div class="popup-content">
             <h3>Подтверждение записи</h3>
             <p>Услуга: ${serviceName}</p>
+            <p>Мастер ID: ${masterId}</p>
             <p>Цена: ${servicePrice} ₽</p>
-            <p>Адрес: ${location}</p>
+            <p>Адрес: ${locationName}</p>
 
             <div class="form-group">
                 <label>Выберите дату:</label>
@@ -690,26 +611,61 @@ function showFifthPage(serviceName, servicePrice, locationName, masterId) {
             </div>
 
             <div class="popup-buttons">
-                <button onclick="confirmAppointment('${serviceName}', ${servicePrice}, '${location}')">Подтвердить</button>
-                <button onclick="showFourthPage('${serviceName}', ${servicePrice})">Назад</button>
+                <button onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}')">Подтвердить</button>
+                <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}')">Назад</button>
             </div>
         </div>
     `;
 }
 
+function confirmAppointment(masterId, serviceName, servicePrice, locationName) {
+    const dateInput = document.getElementById('appointment-date');
+    const timeInput = document.getElementById('appointment-time');
 
-//Для обработки всех данных из записи на услугу
-function confirmAppointment(serviceName, servicePrice, location) {
-    const date = document.getElementById('appointment-date').value;
-    const time = document.getElementById('appointment-time').value;
-
-    if (!date || !time) {
-        alert("Пожалуйста, выберите дату и время!");
+    if (!dateInput.value || !timeInput.value) {
+        alert('Пожалуйста, выберите дату и время');
         return;
     }
 
-    alert(`Запись подтверждена!\nУслуга: ${serviceName}\nЦена: ${servicePrice} ₽\nАдрес: ${location}\nДата: ${date}\nВремя: ${time}`);
-    document.getElementById('pop-up').close();
+    const datetime = `${dateInput.value}T${timeInput.value}:00`;
+
+    bookMaster(masterId, serviceName, servicePrice, locationName, datetime);
+}
+
+// Обновленная функция bookMaster с параметром datetime
+function bookMaster(masterId, serviceName, servicePrice, locationName, datetime) {
+    const url = 'http://82.202.142.17:8000/requests';
+    const userId = 1; // !!!Заменить на реальный ID пользователя
+    const serviceId = 1; // !!!Заменить на реальный ID сервиса
+
+    const data = {
+        master_id: masterId,
+        service_id: serviceId,
+        user_id: userId,
+        datetime: datetime || new Date().toISOString() // Используем переданное время или текущее
+    };
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+            console.log('Заявка успешно создана:', xhr.responseText);
+            alert(`Вы записаны на ${serviceName} в ${locationName} за ${servicePrice} ₽ в ${datetime}`);
+            document.getElementById('pop-up').close();
+        } else {
+            console.error('Ошибка при создании заявки:', xhr.status, xhr.statusText);
+            alert(`Ошибка при создании заявки: ${xhr.status} ${xhr.statusText}`);
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error('Ошибка сети при создании заявки.');
+        alert('Ошибка сети при создании заявки.');
+    };
+
+    xhr.send(JSON.stringify(data));
 }
 
 

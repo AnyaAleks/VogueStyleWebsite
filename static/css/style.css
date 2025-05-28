@@ -2059,3 +2059,37 @@ footer-logo img {
     border-radius: 4px;
     cursor: pointer;
 }
+
+.master-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.master {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.master:hover {
+    background-color: #f5f5f5;
+}
+
+.master.selected {
+    border-color: #4CAF50;
+    background-color: #e8f5e9;
+}
+
+.master-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.master-phone {
+    color: #666;
+    font-size: 0.9em;
+}
