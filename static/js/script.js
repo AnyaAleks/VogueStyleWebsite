@@ -241,6 +241,24 @@ indicators.forEach((indicator, index) => {
     });
 });
 
+document.querySelectorAll('.carousel-image').forEach(img => {
+    let scale = 1;
+    const element = img;
+
+    element.addEventListener('wheel', (e) => {
+        e.preventDefault();
+
+        // Определяем направление масштабирования
+        scale += e.deltaY * -0.01;
+
+        // Ограничиваем масштаб
+        scale = Math.min(Math.max(0.5, scale), 3);
+
+        // Применяем трансформацию
+        element.style.transform = `scale(${scale})`;
+    });
+});
+
 // Обновите вызов в fetchServices
 async function fetchServices() {
     console.error("Start fetch")
