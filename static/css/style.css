@@ -2056,3 +2056,38 @@ footer-logo img {
 .master-js.selected .selection-indicator {
     opacity: 1;
 }
+
+.master-id{
+    color: #666;
+}
+
+/*-------------------------Style input_popUp---------------------*/
+.input-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 20px;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-field label {
+    color: #666;
+    font-size: 14px;
+}
+
+.input-field input {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.input-field input:focus {
+    outline: none;
+    border-color: #4285F4;
+}

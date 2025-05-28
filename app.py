@@ -688,7 +688,7 @@ def master_request():
             {"id": 3, "name": "Демо-окрашивание", "price": 2500}
         ]
 
-        return render_template('dialog_choose_master.html', masters=masters_add_request)
+        return render_template('dialog_input.html')
     except Exception as e:
         return render_template("error.html", error=str(e))
 

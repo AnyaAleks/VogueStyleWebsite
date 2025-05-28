@@ -1,0 +1,87 @@
+<div class="dialog-container">
+    <h3 class="dialog-title">Выберите адрес для услуги: <span>${serviceName}</span></h3>
+    <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+    <p class="location-info">Локация: <span>${locationName}</span></p>
+    <p class="master-id">Мастер: <span>${masterId}</span></p>
+
+    <div class="input-list">
+        <div class="input-field">
+            <label for="lastName">Фамилия*</label>
+            <input type="text" id="lastName" placeholder="Иванов" required>
+        </div>
+        <div class="input-field">
+            <label for="firstName">Имя*</label>
+            <input type="text" id="firstName" placeholder="Иван" required>
+        </div>
+        <div class="input-field">
+            <label for="middleName">Отчество</label>
+            <input type="text" id="middleName" placeholder="Иванович (необязательно)">
+        </div>
+        <div class="input-field">
+            <label for="phoneNumber">Номер телефона*</label>
+            <input type="tel" id="phoneNumber" placeholder="+7 (900) 123-45-67" required>
+        </div>
+    </div>
+
+    <div class="popup-buttons">
+        <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}')">Подтвердить</button>
+        <button class="back-btn" onclick="showFifthPage('${serviceName}', ${servicePrice})">Назад</button>
+    </div>
+</div>
+
+<style>
+    .dialog-container {
+        font-family: Arial, sans-serif;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .dialog-title {
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .dialog-title span {
+        font-weight: bold;
+    }
+
+    .service-price-info,
+    .location-info,
+    .master-id {
+        color: #666;
+        margin-bottom: 5px;
+    }
+
+    .input-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-top: 20px;
+    }
+
+    .input-field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .input-field label {
+        color: #666;
+        font-size: 14px;
+    }
+
+    .input-field input {
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .input-field input:focus {
+        outline: none;
+        border-color: #4285F4;
+    }
+
+
+</style>

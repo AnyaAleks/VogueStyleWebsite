@@ -561,10 +561,9 @@ function renderMasters(masters, serviceName, servicePrice, locationName, contain
         const masterName = `${master.surname} ${master.name} ${master.patronymic}`.trim();
 
         masterElement.innerHTML = `
-            <div class="master-info-js">
-                <div class="master-name-js">${masterName}</div>
-                <div class="master-specialty-js">${master.phone}</div>
-            </div>
+            <div class="master-name-js">${masterName}</div>
+            <div class="master-specialty-js">${master.phone}</div>
+
         `;
 
         masterElement.onclick = () => handleMasterSelect(
@@ -612,10 +611,49 @@ function showFifthPage(serviceName, servicePrice, locationName, masterId) {
             </div>
 
             <div class="popup-buttons">
-                <button onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}')">Подтвердить</button>
+                <button onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}')">Далее</button>
                 <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}')">Назад</button>
             </div>
         </div>
+    `;
+}
+
+//НАДО ПЕРЕДОВАТЬ ДАЛЬШЕ ВРЕМЯ И ДАТУ
+//А ПОТОМ НАДО БУДЕТ ЕЩЁ ДАННЫЕ КЛИЕНТА ПЕРЕДОВАТЬ
+
+function showSixthPage(serviceName, servicePrice, locationName, masterId) {
+    const content = document.getElementById('dialog-content');
+    content.innerHTML = `
+        <div class="dialog-container">
+        <h3 class="dialog-title">Выберите адрес для услуги: <span>${serviceName}</span></h3>
+        <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+        <p class="location-info">Локация: <span>${locationName}</span></p>
+        <p class="master-id">Мастер: <span>${masterId}</span></p>
+
+        <div class="input-list">
+            <div class="input-field">
+                <label for="lastName">Фамилия*</label>
+                <input type="text" id="lastName" placeholder="Иванов" required>
+            </div>
+            <div class="input-field">
+                <label for="firstName">Имя*</label>
+                <input type="text" id="firstName" placeholder="Иван" required>
+            </div>
+            <div class="input-field">
+                <label for="middleName">Отчество</label>
+                <input type="text" id="middleName" placeholder="Иванович (необязательно)">
+            </div>
+            <div class="input-field">
+                <label for="phoneNumber">Номер телефона*</label>
+                <input type="tel" id="phoneNumber" placeholder="+7 (900) 123-45-67" required>
+            </div>
+        </div>
+
+        <div class="popup-buttons">
+            <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}')">Подтвердить</button>
+            <button class="back-btn" onclick="showFifthPage('${serviceName}', ${servicePrice})">Назад</button>
+        </div>
+    </div>
     `;
 }
 
