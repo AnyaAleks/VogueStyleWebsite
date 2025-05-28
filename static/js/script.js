@@ -494,11 +494,12 @@ function showThirdPage(serviceName, servicePrice, locationName) {
 
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
-        <div class="popup-content">
-            <h3 class="dialog-title">Выберите мастера: <span>${serviceName}</span></h3>
-            <p class="service-info">Локация: ${locationName} | Стоимость: ${servicePrice} ₽</p>
+        <div class="dialog-container">
+            <h3 class="dialog-title">Выберите адрес для услуги: <span>${serviceName}</span></h3>
+            <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+            <p class="location-info">Локация: <span>${locationName}</span></p>
             <div class="loading-spinner"></div>
-            <div class="master-list" id="masters-container"></div>
+            <div class="master-list-js" id="masters-container"></div>
             <div class="popup-buttons">
                 <button onclick="showSecondPage('${serviceName}', ${servicePrice})">Назад</button>
             </div>
@@ -560,9 +561,9 @@ function renderMasters(masters, serviceName, servicePrice, locationName, contain
         const masterName = `${master.surname} ${master.name} ${master.patronymic}`.trim();
 
         masterElement.innerHTML = `
-            <div class="master-info">
-                <div class="master-name">${masterName}</div>
-                <div class="master-phone">${master.phone}</div>
+            <div class="master-info-js">
+                <div class="master-name-js">${masterName}</div>
+                <div class="master-specialty-js">${master.phone}</div>
             </div>
         `;
 
