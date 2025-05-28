@@ -195,8 +195,24 @@ const nextBtn = document.querySelector('.next-btn');
 const indicators = document.querySelectorAll('.indicator');
 
 let currentIndex = 0;
+const scaleDownFactor = 0.85; // Коэффициент уменьшения неактивных элементов
 
 function updateCarousel() {
+    items.forEach((item, index) => {
+        const distance = Math.abs(index - currentIndex);
+        let scale = 1;
+        let zIndex = items.length;
+
+        if (distance > 0) {
+            scale = Math.pow(scaleDownFactor, distance);
+            zIndex = items.length - distance;
+        }
+
+        item.style.transform = `scale(${scale})`;
+        item.style.zIndex = zIndex;
+        item.style.opacity = distance > 1 ? 0.7 : 1;
+    });
+
     carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
 
     indicators.forEach((indicator, index) => {
@@ -204,6 +220,10 @@ function updateCarousel() {
     });
 }
 
+// Инициализация
+updateCarousel();
+
+// Обработчики событий
 prevBtn.addEventListener('click', () => {
     currentIndex = (currentIndex > 0) ? currentIndex - 1 : items.length - 1;
     updateCarousel();
