@@ -88,25 +88,12 @@ header nav ul li a.active {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    width: auto; /* Изменено с calc(100% - 100px) */
-    max-width: calc(100% - 100px); /* Добавлено ограничение максимальной ширины */
+    width: auto;
+
     margin: 0 auto;
-    justify-content: center; /* Центрируем слайды */
+    justify-content: center;
 }
 
-/* Когда слайдов мало - центрируем, когда много - оставляем как есть */
-.slider-container:not(.force-scroll) {
-    overflow-x: hidden;
-}
-
-.slider-container.force-scroll {
-    overflow-x: auto;
-    justify-content: flex-start;
-}
-
-.slider-container::-webkit-scrollbar {
-    display: none;
-}
 
 .slide {
     scroll-snap-align: start;
@@ -202,8 +189,9 @@ header nav ul li a.active {
 }
 
 /* Адаптивность */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .slider-container {
+        justify-content: flex-start;
         gap: 20px;
         max-width: calc(100% - 60px);
     }
@@ -958,8 +946,9 @@ footer-logo img {
 .lk-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 30px;
+    padding: 20px;
     font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
 }
 
 .lk-title {
@@ -989,8 +978,10 @@ footer-logo img {
 }
 
 .lk-photo-preview {
-    width: 250px;
-    height: 250px;
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    aspect-ratio: 1/1;
     border: 1px solid #eee;
     display: flex;
     align-items: center;
@@ -1006,6 +997,7 @@ footer-logo img {
 .lk-photo-placeholder {
     color: #999;
     text-align: center;
+    padding: 20px;
 }
 
 .lk-photo-actions {
@@ -1032,6 +1024,7 @@ footer-logo img {
     font-size: 16px;
     height: 40px;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .lk-btn {
@@ -1043,6 +1036,8 @@ footer-logo img {
     cursor: pointer;
     text-transform: uppercase;
     text-align: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .lk-btn-upload {
@@ -1061,12 +1056,122 @@ footer-logo img {
     padding: 12px 30px;
     font-size: 16px;
     margin-top: 20px;
+    width: auto;
+    display: inline-block;
 }
 
 .lk-action-buttons {
     text-align: center;
+    padding-top: 80px;
+    padding-bottom: 40px;
 }
 
+@media (max-width: 768px) {
+    .lk-container {
+        max-width: 95%;
+        padding: 25px;
+    }
+
+    .lk-form-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .lk-left-column {
+        order: 2;
+        margin-top: 20px;
+        width: 100%;
+        max-width: none;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .lk-right-column {
+        order: 1;
+    }
+
+    .lk-action-buttons {
+        order: 3;
+    }
+
+    .lk-btn-save {
+        width: 100%;
+    }
+
+    .lk-photo-preview {
+        width: 250px;
+        height: 250px;
+        flex-shrink: 0;
+    }
+
+    .lk-photo-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: auto;
+        justify-content: flex-start;
+        padding-top: 10px;
+    }
+
+    .lk-photo-actions .lk-btn {
+        width: 150px;
+        padding: 12px 0;
+    }
+
+}
+
+@media (max-width: 600px) {
+    .lk-left-column {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .lk-photo-actions {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .lk-photo-actions .lk-btn {
+        width: auto;
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .lk-container {
+        padding: 20px;
+    }
+
+    .lk-title {
+        font-size: 22px;
+        margin-bottom: 25px;
+    }
+
+    .lk-photo-preview {
+        width: 200px;
+        height: 200px;
+    }
+
+    .lk-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .lk-btn-save {
+        padding: 12px 25px;
+        font-size: 16px;
+    }
+
+    .lk-input {
+        font-size: 16px;
+        height: 42px;
+    }
+}
 
 /*-------------------------------------Новое меню с выпадающими списками--------------------------*/
 /* Стили для навигационного меню */
