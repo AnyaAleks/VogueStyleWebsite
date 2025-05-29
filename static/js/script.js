@@ -363,11 +363,62 @@ function bookService(serviceName) {
 
 
 // Показ диалога с первой страницей
+// Измененная функция showDialog
 function showDialog(serviceName, servicePrice) {
     const dialog = document.getElementById('pop-up');
-    showFirstPage(serviceName, servicePrice);
+    if (serviceName && servicePrice) {
+        showFirstPage(serviceName, servicePrice);
+    } else {
+        showServiceList();
+    }
     dialog.showModal();
 }
+
+// Новая функция для отображения списка услуг
+async function showServiceList() {
+    const content = document.getElementById('dialog-content');
+    content.innerHTML = `
+        <div class="dialog-container">
+            <h3 class="dialog-title">Выберите услугу:</h3>
+            <div class="location-list" id="service-list-container">
+                Загрузка...
+            </div>
+            <div class="popup-buttons">
+                <button onclick="document.getElementById('pop-up').close()">Закрыть</button>
+            </div>
+        </div>
+    `;
+
+    const serviceListContainer = document.getElementById('service-list-container');
+
+    try {
+        const response = await fetch('http://82.202.142.17:8000/services');
+        const data = await response.json();
+
+        if (data && data.ok && data.services && Array.isArray(data.services)) {
+            const services = data.services;
+
+            let servicesHTML = '';
+            services.forEach(service => {
+                servicesHTML += `
+                    <div class="location" onclick="showFirstPage('${service.name}', '${service.price}')">
+                        <div class="location-name">${service.name}</div>
+                        <div class="location-address">Цена: ${service.price} ₽</div>
+                    </div>
+                `;
+            });
+            serviceListContainer.innerHTML = servicesHTML;
+        } else {
+            serviceListContainer.innerHTML = '<div class="location-name">Ошибка загрузки услуг.</div>';
+        }
+    } catch (error) {
+        console.error('Ошибка получения списка услуг:', error);
+        serviceListContainer.innerHTML = '<div class="location-name">Ошибка при загрузке списка услуг.</div>';
+    }
+}
+
+// Остальные функции без изменений...
+
 
 function showFirstPage(serviceName, servicePrice) {
     const content = document.getElementById('dialog-content');
@@ -591,6 +642,33 @@ function handleMasterSelect(element, masterId, serviceName, servicePrice, locati
     showFifthPage(serviceName, servicePrice, locationName, masterId);
 }
 
+//function showFifthPage(serviceName, servicePrice, locationName, masterId) {
+//    const content = document.getElementById('dialog-content');
+//    content.innerHTML = `
+//        <div class="popup-content">
+//            <h3>Подтверждение записи</h3>
+//            <p>Услуга: ${serviceName}</p>
+//            <p>Мастер ID: ${masterId}</p>
+//            <p>Цена: ${servicePrice} ₽</p>
+//            <p>Адрес: ${locationName}</p>
+//
+//            <div class="form-group">
+//                <label>Выберите дату:</label>
+//                <input type="date" class="popup-input" id="appointment-date">
+//            </div>
+//            <div class="form-group">
+//                <label>Выберите время:</label>
+//                <input type="time" class="popup-input" id="appointment-time">
+//            </div>
+//
+//            <div class="popup-buttons">
+//                <button onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}')">Далее</button>
+//                <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}')">Назад</button>
+//            </div>
+//        </div>
+//    `;
+//}
+
 function showFifthPage(serviceName, servicePrice, locationName, masterId) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
@@ -611,53 +689,105 @@ function showFifthPage(serviceName, servicePrice, locationName, masterId) {
             </div>
 
             <div class="popup-buttons">
-                <button onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}')">Далее</button>
+                <button onclick="saveDateTimeAndShowSixthPage('${serviceName}', ${servicePrice}, '${locationName}', ${masterId})">Далее</button>
                 <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}')">Назад</button>
             </div>
         </div>
     `;
 }
 
+
 //НАДО ПЕРЕДОВАТЬ ДАЛЬШЕ ВРЕМЯ И ДАТУ
 //А ПОТОМ НАДО БУДЕТ ЕЩЁ ДАННЫЕ КЛИЕНТА ПЕРЕДОВАТЬ
 
-function showSixthPage(serviceName, servicePrice, locationName, masterId) {
-    const content = document.getElementById('dialog-content');
-    content.innerHTML = `
-        <div class="dialog-container">
-        <h3 class="dialog-title">Выберите адрес для услуги: <span>${serviceName}</span></h3>
-        <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
-        <p class="location-info">Локация: <span>${locationName}</span></p>
-        <p class="master-id">Мастер: <span>${masterId}</span></p>
+//function showSixthPage(serviceName, servicePrice, locationName, masterId) {
+//    const content = document.getElementById('dialog-content');
+//    content.innerHTML = `
+//        <div class="dialog-container">
+//        <h3 class="dialog-title">Выберите адрес для услуги: <span>${serviceName}</span></h3>
+//        <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+//        <p class="location-info">Локация: <span>${locationName}</span></p>
+//        <p class="master-id">Мастер: <span>${masterId}</span></p>
+//
+//        <div class="input-list">
+//            <div class="input-field">
+//                <label for="lastName">Фамилия*</label>
+//                <input type="text" id="lastName" placeholder="Иванов" required>
+//            </div>
+//            <div class="input-field">
+//                <label for="firstName">Имя*</label>
+//                <input type="text" id="firstName" placeholder="Иван" required>
+//            </div>
+//            <div class="input-field">
+//                <label for="middleName">Отчество</label>
+//                <input type="text" id="middleName" placeholder="Иванович (необязательно)">
+//            </div>
+//            <div class="input-field">
+//                <label for="phoneNumber">Номер телефона*</label>
+//                <input type="tel" id="phoneNumber" placeholder="+7 (900) 123-45-67" required>
+//            </div>
+//        </div>
+//
+//        <div class="popup-buttons">
+//            <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}')">Подтвердить</button>
+//            <button class="back-btn" onclick="showFifthPage('${serviceName}', ${servicePrice})">Назад</button>
+//        </div>
+//    </div>
+//    `;
+//}
+//
+//function confirmAppointment(masterId, serviceName, servicePrice, locationName) {
+//    const dateInput = document.getElementById('appointment-date');
+//    const timeInput = document.getElementById('appointment-time');
+//
+//    if (!dateInput.value || !timeInput.value) {
+//        alert('Пожалуйста, выберите дату и время');
+//        return;
+//    }
+//
+//    const datetime = `${dateInput.value}T${timeInput.value}:00`;
+//
+//    bookMaster(masterId, serviceName, servicePrice, locationName, datetime);
+//}
 
-        <div class="input-list">
-            <div class="input-field">
-                <label for="lastName">Фамилия*</label>
-                <input type="text" id="lastName" placeholder="Иванов" required>
-            </div>
-            <div class="input-field">
-                <label for="firstName">Имя*</label>
-                <input type="text" id="firstName" placeholder="Иван" required>
-            </div>
-            <div class="input-field">
-                <label for="middleName">Отчество</label>
-                <input type="text" id="middleName" placeholder="Иванович (необязательно)">
-            </div>
-            <div class="input-field">
-                <label for="phoneNumber">Номер телефона*</label>
-                <input type="tel" id="phoneNumber" placeholder="+7 (900) 123-45-67" required>
-            </div>
-        </div>
+// Обновленная функция bookMaster с параметром datetime
+//function bookMaster(masterId, serviceName, servicePrice, locationName, datetime) {
+//    const url = 'http://82.202.142.17:8000/requests';
+//    const userId = 1; // !!!Заменить на реальный ID пользователя
+//    const serviceId = 1; // !!!Заменить на реальный ID сервиса
+//
+//    const data = {
+//        master_id: masterId,
+//        service_id: serviceId,
+//        user_id: userId,
+//        datetime: datetime || new Date().toISOString() // Используем переданное время или текущее
+//    };
+//
+//    const xhr = new XMLHttpRequest();
+//    xhr.open('POST', url);
+//    xhr.setRequestHeader('Content-Type', 'application/json');
+//
+//    xhr.onload = function() {
+//        if (xhr.status >= 200 && xhr.status < 300) {
+//            console.log('Заявка успешно создана:', xhr.responseText);
+//            alert(`Вы записаны на ${serviceName} в ${locationName} за ${servicePrice} ₽ в ${datetime}`);
+//            document.getElementById('pop-up').close();
+//        } else {
+//            console.error('Ошибка при создании заявки:', xhr.status, xhr.statusText);
+//            alert(`Ошибка при создании заявки: ${xhr.status} ${xhr.statusText}`);
+//        }
+//    };
+//
+//    xhr.onerror = function() {
+//        console.error('Ошибка сети при создании заявки.');
+//        alert('Ошибка сети при создании заявки.');
+//    };
+//
+//    xhr.send(JSON.stringify(data));
+//}
 
-        <div class="popup-buttons">
-            <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}')">Подтвердить</button>
-            <button class="back-btn" onclick="showFifthPage('${serviceName}', ${servicePrice})">Назад</button>
-        </div>
-    </div>
-    `;
-}
 
-function confirmAppointment(masterId, serviceName, servicePrice, locationName) {
+function saveDateTimeAndShowSixthPage(serviceName, servicePrice, locationName, masterId) {
     const dateInput = document.getElementById('appointment-date');
     const timeInput = document.getElementById('appointment-time');
 
@@ -666,13 +796,71 @@ function confirmAppointment(masterId, serviceName, servicePrice, locationName) {
         return;
     }
 
-    const datetime = `${dateInput.value}T${timeInput.value}:00`;
+    const selectedDate = dateInput.value;
+    const selectedTime = timeInput.value;
 
-    bookMaster(masterId, serviceName, servicePrice, locationName, datetime);
+    showSixthPage(serviceName, servicePrice, locationName, masterId, selectedDate, selectedTime);
 }
 
-// Обновленная функция bookMaster с параметром datetime
-function bookMaster(masterId, serviceName, servicePrice, locationName, datetime) {
+function showSixthPage(serviceName, servicePrice, locationName, masterId, selectedDate, selectedTime) {
+   const content = document.getElementById('dialog-content');
+    content.innerHTML = `
+        <div class="dialog-container">
+            <h3 class="dialog-title">Выберите адрес для услуги: <span>${serviceName}</span></h3>
+            <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+            <p class="location-info">Локация: <span>${locationName}</span></p>
+            <p class="master-id">Мастер: <span>${masterId}</span></p>
+            <p class="appointment-time">Дата и время: <span>${selectedDate}</span>, <span>${selectedTime}</span></p>
+
+            <div class="input-list">
+                <div class="input-field">
+                    <label for="lastName">Фамилия*</label>
+                    <input type="text" id="lastName" placeholder="Иванов" required>
+                </div>
+                <div class="input-field">
+                    <label for="firstName">Имя*</label>
+                    <input type="text" id="firstName" placeholder="Иван" required>
+                </div>
+                <div class="input-field">
+                    <label for="middleName">Отчество</label>
+                    <input type="text" id="middleName" placeholder="Иванович (необязательно)">
+                </div>
+                <div class="input-field">
+                    <label for="phoneNumber">Номер телефона*</label>
+                    <input type="tel" id="phoneNumber" placeholder="+7 (900) 123-45-67" required>
+                </div>
+            </div>
+
+            <div class="popup-buttons">
+                <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}', '${selectedDate}', '${selectedTime}')">Подтвердить</button>
+                <button class="back-btn" onclick="showFifthPage('${serviceName}', ${servicePrice})">Назад</button>
+            </div>
+        </div>
+    `;
+}
+
+function confirmAppointment(masterId, serviceName, servicePrice, locationName, selectedDate, selectedTime) {
+    const lastName = document.getElementById('lastName').value;
+    const firstName = document.getElementById('firstName').value;
+    const middleName = document.getElementById('middleName').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
+
+    if (!lastName || !firstName || !phoneNumber) {
+        alert('Пожалуйста, заполните все обязательные поля.');
+        return;
+    }
+
+    if (!selectedDate || !selectedTime) {
+        alert('Пожалуйста, выберите дату и время.');
+        return;
+    }
+
+    const datetime = `${selectedDate}T${selectedTime}:00`;
+    bookMaster(masterId, serviceName, servicePrice, locationName, datetime, lastName, firstName, middleName, phoneNumber);
+}
+
+// Обновленная функция bookMaster с параметрами для данных клиента
+function bookMaster(masterId, serviceName, servicePrice, locationName, datetime, lastName, firstName, middleName, phoneNumber) {
     const url = 'http://82.202.142.17:8000/requests';
     const userId = 1; // !!!Заменить на реальный ID пользователя
     const serviceId = 1; // !!!Заменить на реальный ID сервиса
@@ -681,7 +869,11 @@ function bookMaster(masterId, serviceName, servicePrice, locationName, datetime)
         master_id: masterId,
         service_id: serviceId,
         user_id: userId,
-        datetime: datetime || new Date().toISOString() // Используем переданное время или текущее
+        datetime: datetime,
+        last_name: lastName,
+        first_name: firstName,
+        patronymic: middleName, // Исправлено:  middleName -> patronymic
+        phone_number: phoneNumber
     };
 
     const xhr = new XMLHttpRequest();
@@ -706,6 +898,7 @@ function bookMaster(masterId, serviceName, servicePrice, locationName, datetime)
 
     xhr.send(JSON.stringify(data));
 }
+
 
 
 //Для обработки всех данных из ЛК мастера

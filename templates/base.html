@@ -46,7 +46,7 @@
         <div class="nav-container">
             <ul class="nav-menu">
                 <div class="nav-menu-left">
-                    <li class="nav-item"><a href="/request" class="nav-link {% if request.path == '/request' %}active{% endif %}">Запись</a></li>
+                    <li class="nav-item"><a href="/request" class="nav-link {% if request.path == '/request' %}active{% endif %}" onclick="showPopUpForRequest(); return false;">Запись</a></li>
                     <li class="nav-item"><a href="/about" class="nav-link {% if request.path == '/about' %}active{% endif %}">О нас</a></li>
 
 
@@ -144,6 +144,11 @@
     {% block extra_scripts %}{% endblock %}
 </body>
 <script>
+    function showPopUpForRequest() {
+    showDialog();  // Вызываем showDialog без параметров
+    }
+
+
     function checkZoom() {
         const isZoomed = window.devicePixelRatio >= 2.5;
         const mobileHeader = document.querySelector('.mobile-header');
