@@ -1827,12 +1827,13 @@ footer-logo img {
 }
 
 .popup-buttons button:first-child {
-    background-color: #6c5ce7;
-    color: black;
+    background-color: #173fa1;
+    color: white;
 }
 
 .popup-buttons button:last-child {
     background-color: #dfe6e9;
+    color: black;
 }
 
 /*----------------Записаться дата и время------------------ */
