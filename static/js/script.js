@@ -58,6 +58,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+//document.getElementById('loginForm').addEventListener('submit', function(event) {
+//    event.preventDefault();
+//
+//    // Здесь должна быть проверка логина и пароля
+//    // Для примера используем простую проверку
+//    const username = document.getElementById('username').value;
+//    const password = document.getElementById('password').value;
+//    const errorMessage = document.getElementById('errorMessage');
+//
+//    // Пример проверки (замените на реальную проверку)
+//    if (username === 'master' && password === '12345') {
+//        // Если данные верные, отправляем форму
+//        this.submit();
+//    } else {
+//        // Если данные неверные, показываем сообщение об ошибке
+//        errorMessage.style.display = 'block';
+//    }
+//});
 
 function handlePhotoUpload(event) {
     const file = event.target.files[0];

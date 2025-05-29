@@ -1,0 +1,127 @@
+<div class="login-body">
+    <div class="login-container">
+        <div class="login-h1">Вход в личный кабинет</div>
+
+        <form id="loginForm" action="/personal_account_master" method="POST">
+            <div class="login-input-group">
+                <label for="username" class="login-label">Логин</label>
+                <input type="text" class="login-input" id="username" name="username" required>
+            </div>
+
+            <div class="login-input-group">
+                <label for="password" class="login-label">Пароль</label>
+                <input type="password" class="login-input" id="password" name="password" required>
+            </div>
+
+            <div class="login-error-message" id="errorMessage">
+                Неверно введены данные
+            </div>
+
+            <button type="submit" class="book-button">Войти</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .login-body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+
+    .login-container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 350px;
+        text-align: center;
+    }
+
+    .login-h1 {
+        color: #333;
+        margin-bottom: 30px;
+        font-size: 24px;
+    }
+
+    .login-input-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .login-label {
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+    .login-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .book-button {
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        background: linear-gradient(95deg, #163587, #0a52a6);
+        color: white;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .book-button::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -60%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+        transform: rotate(30deg);
+        transition: all 0.6s ease;
+    }
+
+    .book-button:hover {
+        box-shadow: 0 10px 20px rgba(22, 53, 135, 0.4);
+        transform: translateY(-2px);
+        background: linear-gradient(95deg, #0a52a6, #163587);
+    }
+
+    .book-button:hover::after {
+        left: 100%;
+    }
+
+    .book-button i {
+        font-size: 1.1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .book-button:hover i {
+        transform: translateX(3px);
+    }
+
+    .login-error-message {
+        color: #f44336;
+        margin-top: 10px;
+        padding-bottom: 40px;
+        display: none;
+    }
+</style>
