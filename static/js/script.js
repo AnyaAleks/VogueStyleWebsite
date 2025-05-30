@@ -662,6 +662,14 @@ function handleMasterSelect(element, masterId, serviceName, servicePrice, locati
 async function showFifthPage(serviceName, servicePrice, locationName, masterId, serviceId) {
     const content = document.getElementById('dialog-content');
 
+    // Пример данных: даты и доступное время для каждой даты
+    const availableSlots = {
+        '2025-05-18': ['09:00', '11:00', '14:00', '16:00'],
+        '2025-05-20': ['10:00', '12:00', '15:00', '17:00']
+    };
+
+    const availableDates = Object.keys(availableSlots);
+
     try {
         const response = await fetch(`http://82.202.142.17:8000/master/id/${masterId}`);
         const data = await response.json();
@@ -669,7 +677,7 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
         if (data && data.ok && data.master) {
             const masterName = data.master.name;
             const masterSurname = data.master.surname;
-            const masterFullName = `${masterSurname} ${masterName}`; // Формируем полное имя
+            const masterFullName = `${masterSurname} ${masterName}`;
 
             content.innerHTML = `
                 <div class="dialog-container">
@@ -680,11 +688,19 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
 
                     <div class="form-group">
                         <label>Выберите дату:</label>
-                        <input type="date" class="popup-input" id="appointment-date">
+                        <select class="popup-input" id="appointment-date" onchange="updateAvailableTimes()">
+                            <option value="">-- Выберите дату --</option>
+                            ${availableDates.map(date => `
+                                <option value="${date}">${formatDate(date)}</option>
+                            `).join('')}
+                        </select>
                     </div>
+
                     <div class="form-group">
                         <label>Выберите время:</label>
-                        <input type="time" class="popup-input" id="appointment-time">
+                        <select class="popup-input" id="appointment-time" disabled>
+                            <option value="">-- Сначала выберите дату --</option>
+                        </select>
                     </div>
 
                     <div class="popup-buttons">
@@ -693,6 +709,9 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
                     </div>
                 </div>
             `;
+
+            // Добавляем availableSlots в глобальную область видимости для использования в updateAvailableTimes
+            window.availableSlots = availableSlots;
         } else {
             content.innerHTML = `
                 <div class="dialog-container">
@@ -721,27 +740,45 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
         console.error('Ошибка получения информации о мастере:', error);
         content.innerHTML = `
             <div class="dialog-container">
-                <h3 class="dialog-title">Выберите время и дату для услуги: <span>${serviceName}</span></h3>
-                <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
-                <p class="location-info">Адрес: <span>${locationName}</span></p>
-                <p class="location-info">Мастер: <span>${masterFullName}</span></p>
-
-                <div class="form-group">
-                    <label>Выберите дату:</label>
-                    <input type="date" class="popup-input" id="appointment-date">
-                </div>
-                <div class="form-group">
-                    <label>Выберите время:</label>
-                    <input type="time" class="popup-input" id="appointment-time">
-                </div>
-
-                <div class="popup-buttons">
-                    <button onclick="saveDateTimeAndShowSixthPage('${serviceName}', ${servicePrice}, '${locationName}', ${masterId}, ${serviceId})">Далее</button>
-                    <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}')">Назад</button>
-                </div>
+                <h3 class="dialog-title">Ошибка загрузки данных</h3>
+                <p>Пожалуйста, попробуйте позже</p>
+                <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}')">Назад</button>
             </div>
         `;
     }
+}
+
+function updateAvailableTimes() {
+    const dateSelect = document.getElementById('appointment-date');
+    const timeSelect = document.getElementById('appointment-time');
+    const selectedDate = dateSelect.value;
+
+    timeSelect.innerHTML = '';
+    timeSelect.disabled = !selectedDate;
+
+    if (selectedDate && window.availableSlots[selectedDate]) {
+        window.availableSlots[selectedDate].forEach(time => {
+            const option = document.createElement('option');
+            option.value = time;
+            option.textContent = time;
+            timeSelect.appendChild(option);
+        });
+    } else if (selectedDate) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'Нет доступного времени';
+        timeSelect.appendChild(option);
+    } else {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = '-- Сначала выберите дату --';
+        timeSelect.appendChild(option);
+    }
+}
+
+function formatDate(dateString) {
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('ru-RU', options);
 }
 
 function saveDateTimeAndShowSixthPage(serviceName, servicePrice, locationName, masterId, serviceId) {
@@ -753,12 +790,8 @@ function saveDateTimeAndShowSixthPage(serviceName, servicePrice, locationName, m
         return;
     }
 
-    const selectedDate = dateInput.value;
-    const selectedTime = timeInput.value;
-
-    showSixthPage(serviceName, servicePrice, locationName, masterId, selectedDate, selectedTime, serviceId);
+    showSixthPage(serviceName, servicePrice, locationName, masterId, dateInput.value, timeInput.value, serviceId);
 }
-
 
 async function showSixthPage(serviceName, servicePrice, locationName, masterId, selectedDate, selectedTime, serviceId) {
     const content = document.getElementById('dialog-content');
