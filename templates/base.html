@@ -27,7 +27,7 @@
         <div class="mobile-menu">
             <button class="close-btn">×</button>
             <a href="/" class="mobile-nav-item">На главную</a>
-            <a href="/request" class="mobile-nav-item {% if request.path == '/request' %}active{% endif %}">Запись</a>
+            <a href="/request" class="mobile-nav-item {% if request.path == '/request' %}active{% endif %}" onclick="showPopUpForRequest(); return false;">Запись</a>
             <a href="/about" class="mobile-nav-item {% if request.path == '/about' %}active{% endif %}">О нас</a>
             <a href="/masters" class="mobile-nav-item {% if request.path == '/masters' %}active{% endif %}">Наши Мастера</a>
             <div class="mobile-nav-item">
