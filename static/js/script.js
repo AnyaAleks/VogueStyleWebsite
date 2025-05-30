@@ -437,10 +437,11 @@ async function showServiceList() {
 function showFirstPage(serviceName, servicePrice, serviceId) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
-        <div class="popup-content">
-            <h3>Запись на услугу</h3>
-            <p>Услуга: <span>${serviceName}</span></p>
-            <p>Цена: <span>${servicePrice}</span> ₽</p>
+        <div class="dialog-container">
+            <h3 class="dialog-title">Запись на услугу</span></h3>
+            <p class="service-price-info">Услуга: <span>${serviceName}</span></p>
+            <p class="location-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+
             <div class="popup-buttons">
                 <button onclick="showSecondPage('${serviceName}', '${servicePrice}', '${serviceId}')">Записаться</button>
                 <button onclick="document.getElementById('pop-up').close()">Закрыть</button>
@@ -671,12 +672,11 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
             const masterFullName = `${masterSurname} ${masterName}`; // Формируем полное имя
 
             content.innerHTML = `
-                <div class="popup-content">
-                    <h3>Подтверждение записи</h3>
-                    <p>Услуга: ${serviceName}</p>
-                    <p>Мастер: ${masterFullName}</p>
-                    <p>Цена: ${servicePrice} ₽</p>
-                    <p>Адрес: ${locationName}</p>
+                <div class="dialog-container">
+                    <h3 class="dialog-title">Выберите время и дату для услуги: <span>${serviceName}</span></h3>
+                    <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+                    <p class="location-info">Адрес: <span>${locationName}</span></p>
+                    <p class="location-info">Мастер: <span>${masterFullName}</span></p>
 
                     <div class="form-group">
                         <label>Выберите дату:</label>
@@ -695,12 +695,11 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
             `;
         } else {
             content.innerHTML = `
-                <div class="popup-content">
-                    <h3>Подтверждение записи</h3>
-                    <p>Услуга: ${serviceName}</p>
-                    <p>Мастер: Информация о мастере не найдена</p>
-                    <p>Цена: ${servicePrice} ₽</p>
-                    <p>Адрес: ${locationName}</p>
+                <div class="dialog-container">
+                    <h3 class="dialog-title">Выберите время и дату для услуги: <span>${serviceName}</span></h3>
+                    <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+                    <p class="location-info">Адрес: <span>${locationName}</span></p>
+                    <p class="location-info">Мастер: <span>${masterFullName}</span></p>
 
                     <div class="form-group">
                         <label>Выберите дату:</label>
@@ -721,12 +720,11 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
     } catch (error) {
         console.error('Ошибка получения информации о мастере:', error);
         content.innerHTML = `
-            <div class="popup-content">
-                <h3>Подтверждение записи</h3>
-                <p>Услуга: ${serviceName}</p>
-                <p>Мастер: Ошибка при загрузке информации о мастере</p>
-                <p>Цена: ${servicePrice} ₽</p>
-                <p>Адрес: ${locationName}</p>
+            <div class="dialog-container">
+                <h3 class="dialog-title">Выберите время и дату для услуги: <span>${serviceName}</span></h3>
+                <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+                <p class="location-info">Адрес: <span>${locationName}</span></p>
+                <p class="location-info">Мастер: <span>${masterFullName}</span></p>
 
                 <div class="form-group">
                     <label>Выберите дату:</label>

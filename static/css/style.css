@@ -1452,11 +1452,11 @@ footer-logo img {
     flex-wrap: wrap;
     background-color: white;
     justify-content: center;
-    padding: 2vw 10vh 10vh;
+    padding: clamp(10px, 2vw, 24px) clamp(20px, 5vw, 80px) clamp(50px, 6vw, 100px);
     max-width: 1600px;
     margin: 0 auto;
     box-sizing: border-box;
-    gap: 2vw;
+    gap: clamp(8px, 2vw, 20px);
 }
 
 .about-container {
@@ -1524,6 +1524,13 @@ footer-logo img {
 
 /* Адаптация для планшетов и мобильных */
 @media (max-width: 768px) {
+    .container-about {
+        padding-left: 2px;
+        padding-right: 2px;
+        padding-bottom: 15px;
+        max-width: 100%;
+    }
+
     .about-header {
         width: 100%;
         margin: 0 auto;
@@ -1848,6 +1855,8 @@ footer-logo img {
 
 .form-group {
     margin-bottom: 15px;
+    margin-top: 15px;
+
 }
 
 .form-group label {
@@ -1894,7 +1903,7 @@ footer-logo img {
 /* Стили для страницы выбора локации */
 .dialog-container {
     font-family: Arial, sans-serif;
-    max-width: 500px;
+    width: min(100%, 1000px);
     margin: 0 auto;
     padding: 20px;
 }
@@ -1953,6 +1962,50 @@ footer-logo img {
 .location-info {
     color: #666;
 
+}
+
+/* Мобильная адаптация */
+@media only screen and (max-width: 768px) {
+    .dialog-container {
+        width: 100%;
+    }
+
+    .dialog-title {
+        font-size: 18px;
+    }
+
+    .location {
+        padding: 12px;
+    }
+
+    .location-name {
+        font-size: 15px;
+    }
+
+    .location-address,
+    .location-info,
+    .service-price-info {
+        font-size: 13px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .dialog-container {
+        padding: 10px;
+    }
+
+    .dialog-title {
+        font-size: 16px;
+    }
+
+    .location-list {
+        gap: 10px;
+        padding-top: 15px;
+    }
+
+    .location {
+        padding: 10px;
+    }
 }
 
 /*-----------------------Главная страница----------------------*/
@@ -2174,6 +2227,7 @@ footer-logo img {
     flex-direction: column;
     gap: 15px;
     padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .input-field {
