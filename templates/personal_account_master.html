@@ -5,7 +5,7 @@
 {% block content %}
 <div class="lk-container">
     <h1 class="lk-title">Личные данные</h1>
-    <form class="lk-form" method="POST" enctype="multipart/form-data">
+    <form class="lk-form" method="POST" action="/update_master/{{ master.id }}" enctype="multipart/form-data">
         <div class="lk-form-layout">
             <!-- Левая колонка (фото и кнопки) -->
             <div class="lk-left-column">
@@ -34,50 +34,50 @@
             <div class="lk-right-column">
                 <div class="lk-form-group">
                     <label class="lk-label">Фамилия</label>
-                    <input type="text" class="lk-input" name="last_name"
-                           value="{{ master.last_name if master.last_name else '' }}">
+                    <input type="text" class="lk-input" name="surname"
+                           value="{{ master.surname if master.surname else '' }}" required>
                 </div>
 
                 <div class="lk-form-group">
                     <label class="lk-label">Имя</label>
-                    <input type="text" class="lk-input" name="first_name"
-                           value="{{ master.first_name if master.first_name else '' }}">
+                    <input type="text" class="lk-input" name="name"
+                           value="{{ master.name if master.name else '' }}" required>
                 </div>
 
                 <div class="lk-form-group">
                     <label class="lk-label">Отчество</label>
-                    <input type="text" class="lk-input" name="middle_name"
-                           value="{{ master.middle_name if master.middle_name else '' }}">
+                    <input type="text" class="lk-input" name="patronymic"
+                           value="{{ master.patronymic if master.patronymic else '' }}">
                 </div>
 
                 <div class="lk-form-group">
-                    <label class="lk-label">Дата рождения</label>
-                    <input type="date" class="lk-input" name="birth_date"
-                           value="{{ master.birth_date if master.birth_date else '' }}">
+                    <label class="lk-label">Должность</label>
+                    <input type="text" class="lk-input" name="job"
+                           value="{{ master.job if master.job else '' }}">
                 </div>
 
                 <div class="lk-form-group">
-                    <label class="lk-label">Адрес</label>
-                    <input type="text" class="lk-input" name="address"
-                           value="{{ master.address if master.address else '' }}">
+                    <label class="lk-label">Обучение</label>
+                    <input type="text" class="lk-input" name="education"
+                           value="{{ master.education if master.education else '' }}">
                 </div>
 
                 <div class="lk-form-group">
                     <label class="lk-label">E-mail</label>
                     <input type="email" class="lk-input" name="email"
-                           value="{{ master.email if master.email else '' }}">
+                           value="{{ master.email if master.email else '' }}" required>
                 </div>
 
                 <div class="lk-form-group">
                     <label class="lk-label">Телефон</label>
                     <input type="tel" class="lk-input" name="phone"
-                           value="{{ master.phone if master.phone else '' }}">
+                           value="{{ master.phone if master.phone else '' }}" required>
                 </div>
             </div>
         </div>
 
         <div class="lk-action-buttons">
-            <button type="button" class="lk-btn lk-btn-save" id="save-information">
+            <button type="submit" class="lk-btn lk-btn-save">
                 СОХРАНИТЬ ИЗМЕНЕНИЯ
             </button>
         </div>

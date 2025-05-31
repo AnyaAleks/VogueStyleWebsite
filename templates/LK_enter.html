@@ -4,8 +4,8 @@
 
         <form id="loginForm" action="/personal_account_master" method="POST">
             <div class="login-input-group">
-                <label for="username" class="login-label">Логин</label>
-                <input type="text" class="login-input" id="username" name="username" required>
+                <label for="phone" class="login-label">Логин</label>
+                <input type="text" class="login-input" id="phone" name="phone" required>
             </div>
 
             <div class="login-input-group">
@@ -13,9 +13,15 @@
                 <input type="password" class="login-input" id="password" name="password" required>
             </div>
 
-            <div class="login-error-message" id="errorMessage">
+            {% if error %}
+            <div class="login-error-message" id="errorMessage" style="display: block;">
+                {{ error }}
+            </div>
+            {% else %}
+            <div class="login-error-message" id="errorMessage" style="display: none;">
                 Неверно введены данные
             </div>
+            {% endif %}
 
             <button type="submit" class="book-button">Войти</button>
         </form>
@@ -127,9 +133,9 @@
     .login-error-message {
         color: #f44336;
         margin-top: min(3vw, 10px);
-        padding-bottom: min(10vw, 40px);
-        display: none;
+        padding-bottom: min(3vw, 10px);
         font-size: clamp(14px, 4vw, 16px);
+        /* Убрано display: none - теперь управляется через style */
     }
 
     /* Адаптация при увеличении масштаба */

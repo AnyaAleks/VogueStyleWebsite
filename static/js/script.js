@@ -561,7 +561,8 @@ function showThirdPage(serviceName, servicePrice, locationName, serviceId) {
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
         <div class="dialog-container">
-            <h3 class="dialog-title">Выберите адрес для услуги: <span>${serviceName}</span></h3>
+            <h3 class="dialog-title">Выберите мастера</span></h3>
+            <p class="location-info">Услуга: <span>${serviceName}</span></p>
             <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
             <p class="location-info">Локация: <span>${locationName}</span></p>
             <div class="loading-spinner"></div>

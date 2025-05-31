@@ -284,8 +284,11 @@ def api_id():
 @app.route("/master/masters", methods=["GET"])
 @app.route("/client/masters",  methods=["GET"])
 def view_masters():
-    """Web route to view all services"""
     try:
+        # Получаем данные мастеров с сервера
+        api_url_masters = "http://82.202.142.17:8000/master"
+        masters_list = requests.get(api_url_masters).json()
+        print("masters_list", masters_list)
 
         # api_url_masters = "http://82.202.142.17:8000/master"
         # all_masters = requests.get(api_url_masters).json()
@@ -371,7 +374,7 @@ def view_masters():
     #     cursor.close()
     #     conn.close()
     #
-        return render_template("masters.html", masters=masters_add)
+        return render_template("masters.html", masters=masters_list)
     except Exception as e:
         return render_template("error.html", error=str(e))
 
@@ -385,43 +388,111 @@ def view_about():
         return render_template("error.html", error=str(e))
 
 
+# @app.route("/personal_account_master", methods=["GET", "POST"])
+# @app.route("/master/personal_account_master", methods=["GET", "POST"])
+# def personal_account_master():
+#     """Личный кабинет мастера с аутентификацией из БД"""
+#     try:
+#         master_data = {
+#             "id": 1,
+#             "last_name": "Иванов",
+#             "first_name": "Иван",
+#             "middle_name": "Иванович",
+#             "birth_date": "1990-01-01",
+#             "address": "г. Москва, ул. Примерная, д. 1",
+#             "email": "ivanov@example.com",
+#             "phone": "+79991234567",
+#             "photo": "/media/photos/master1.jpg",
+#             "login": "1234",  # Ожидаемый логин
+#             "master_password": "1234"  # Ожидаемый пароль (в реальном проекте используйте хеш!)
+#         }
+#
+#         if _siteVersion == _master:
+#             if request.method == "POST":
+#                 username = request.form.get("username", "").strip()
+#                 password = request.form.get("password", "").strip()
+#                 print(f"Введено: '{username}' (ожидаем '1234'), '{password}' (ожидаем '1234')")  # Отладочный вывод
+#
+#                 if username == master_data["login"] and password == master_data["master_password"]:
+#                     return render_template("personal_account_master.html", master=master_data)
+#                 else:
+#                     return render_template("LK_enter.html", error="Неверный логин или пароль")
+#
+#             return render_template("LK_enter.html")
+#         else:
+#             abort(403)  # Доступ запрещён
+#
+#     except Exception as e:
+#         return render_template("error.html", error=str(e)), 500
+
+
 @app.route("/personal_account_master", methods=["GET", "POST"])
 @app.route("/master/personal_account_master", methods=["GET", "POST"])
 def personal_account_master():
-    """Личный кабинет мастера с аутентификацией из БД"""
     try:
-        master_data = {
-            "id": 1,
-            "last_name": "Иванов",
-            "first_name": "Иван",
-            "middle_name": "Иванович",
-            "birth_date": "1990-01-01",
-            "address": "г. Москва, ул. Примерная, д. 1",
-            "email": "ivanov@example.com",
-            "phone": "+79991234567",
-            "photo": "/media/photos/master1.jpg",
-            "login": "1234",  # Ожидаемый логин
-            "master_password": "1234"  # Ожидаемый пароль (в реальном проекте используйте хеш!)
-        }
+        if _siteVersion != _master:
+            abort(403)
 
-        if _siteVersion == _master:
-            if request.method == "POST":
-                username = request.form.get("username", "").strip()
-                password = request.form.get("password", "").strip()
-                print(f"Введено: '{username}' (ожидаем '1234'), '{password}' (ожидаем '1234')")  # Отладочный вывод
+        if request.method == "POST":
+            phone = request.form.get("phone", "").strip()
+            password = request.form.get("password", "").strip()
 
-                if username == master_data["login"] and password == master_data["master_password"]:
-                    return render_template("personal_account_master.html", master=master_data)
-                else:
-                    return render_template("LK_enter.html", error="Неверный логин или пароль")
+            if not phone or not password:
+                return render_template("LK_enter.html", error="Заполните все поля")
 
-            return render_template("LK_enter.html")
-        else:
-            abort(403)  # Доступ запрещён
+            try:
+                # 1. Проверяем учетные данные
+                check_url = "http://82.202.142.17:8000/master/check"
+                payload = {
+                    "phoneemail": phone,
+                    "password": password
+                }
+
+                headers = {
+                    "accept": "application/json",
+                    "Content-Type": "application/json"
+                }
+
+                response = requests.post(check_url, json=payload, headers=headers, timeout=5)
+                response.raise_for_status()
+                auth_result = response.json()
+
+                if not auth_result.get("verified", False):
+                    return render_template("LK_enter.html",
+                                           error=auth_result.get("message", "Неверные учетные данные"))
+
+                # 2. Если проверка успешна, получаем данные мастера с id=3
+                get_master_url = "http://82.202.142.17:8000/master"
+
+                # Отправляем GET-запрос для получения всех мастеров
+                response = requests.get(get_master_url, headers=headers, timeout=5)
+                response.raise_for_status()
+                masters_data = response.json()
+
+                # Находим мастера с id=3
+                master_data = next((m for m in masters_data if m.get("id") == 3), None)
+
+                if not master_data:
+                    return render_template("LK_enter.html", error="Данные мастера не найдены")
+
+                return render_template("personal_account_master.html", master=master_data)
+
+            except requests.ConnectionError:
+                return render_template("LK_enter.html", error="Ошибка соединения с сервером")
+            except requests.Timeout:
+                return render_template("LK_enter.html", error="Сервер не отвечает")
+            except requests.HTTPError as e:
+                if e.response.status_code == 404:
+                    return render_template("LK_enter.html", error="Сервис временно недоступен")
+                return render_template("LK_enter.html", error=f"Ошибка сервера: {str(e)}")
+            except Exception as e:
+                return render_template("LK_enter.html", error=f"Произошла ошибка: {str(e)}")
+
+        # GET-запрос - показываем форму входа
+        return render_template("LK_enter.html")
 
     except Exception as e:
         return render_template("error.html", error=str(e)), 500
-
 
 @app.route("/salons/bm", methods=["GET"])
 @app.route("/master/salons/bm", methods=["GET"])

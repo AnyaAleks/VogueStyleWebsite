@@ -12,7 +12,7 @@
     <div class="profile-content">
         <div class="profile-header">
             <h3 class="master-job">{{ master.job }}</h3>
-            <p class="master-name">{{ master.name }}</p>
+            <p class="master-name">{{ master.name + " " + master.surname + " " + master.patronymic }}</p>
         </div>
 
         <div class="master-main-info">
@@ -27,7 +27,7 @@
                     <h4>Сертификаты:</h4>
                     <ul>
                         {% for cert in master.certificates %}
-                            <li>{{ cert }}</li>
+                            <li>{{ cert.name }}</li>
                         {% endfor %}
                     </ul>
                 </div>
