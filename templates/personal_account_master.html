@@ -6,6 +6,9 @@
 <div class="lk-container">
     <h1 class="lk-title">Личные данные</h1>
     <form class="lk-form" method="POST" action="/update_master/{{ master.id }}" enctype="multipart/form-data">
+        <!-- Скрытое поле с ID мастера -->
+        <input type="hidden" id="masterId" name="masterId" value="{{ master.id }}">
+
         <div class="lk-form-layout">
             <!-- Левая колонка (фото и кнопки) -->
             <div class="lk-left-column">
