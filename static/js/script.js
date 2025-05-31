@@ -587,11 +587,12 @@ function showThirdPage(serviceName, servicePrice, locationName, serviceId) {
             }
             return response.json();
         })
-        .then(data => {
+       .then(data => {
+            console.log("API response:", data);
             spinner.style.display = 'none';
 
-            if (data.ok && data.masters && data.masters.length > 0) {
-                renderMasters(data.masters, serviceName, servicePrice, locationName, container, serviceId);
+            if (Array.isArray(data) && data.length > 0) { // Проверка, что data - массив
+                renderMasters(data, serviceName, servicePrice, locationName, container, serviceId);
             } else {
                 container.innerHTML = `
                     <div class="no-masters">
@@ -619,29 +620,40 @@ function showThirdPage(serviceName, servicePrice, locationName, serviceId) {
 function renderMasters(masters, serviceName, servicePrice, locationName, container, serviceId) {
     container.innerHTML = '';
 
+    console.log(`renderMasters called with serviceId: ${serviceId}`); // Добавляем отладочный вывод
+
     masters.forEach(master => {
-        const masterElement = document.createElement('div');
-        masterElement.classList.add('master');
-        masterElement.classList.add('master-js');
+        console.log(`Master ID: ${master.id}, Services:`, master.services); // Добавляем отладочный вывод
+        // Проверяем, есть ли услуга с нужным ID в списке услуг мастера
+        const service = master.services.find(s => s.id == serviceId);
 
-        const masterName = `${master.surname} ${master.name} ${master.patronymic}`.trim();
+        if (service) {
+            console.log(`Found service ${serviceId} for master ${master.id}`); // Добавляем отладочный вывод
+            const masterElement = document.createElement('div');
+            masterElement.classList.add('master');
+            masterElement.classList.add('master-js');
 
-        masterElement.innerHTML = `
-            <div class="master-name-js">${masterName}</div>
-            <div class="master-specialty-js">${master.phone}</div>
+            const masterName = `${master.surname} ${master.name} ${master.patronymic}`.trim();
 
-        `;
+            masterElement.innerHTML = `
+                <div class="master-name-js">${masterName}</div>
+                <div class="master-specialty-js">${master.phone}</div>
 
-        masterElement.onclick = () => handleMasterSelect(
-            masterElement,
-            master.id,
-            serviceName,
-            servicePrice,
-            locationName,
-            serviceId
-        );
+            `;
 
-        container.appendChild(masterElement);
+            masterElement.onclick = () => handleMasterSelect(
+                masterElement,
+                master.id,
+                serviceName,
+                servicePrice,
+                locationName,
+                serviceId
+            );
+
+            container.appendChild(masterElement);
+        } else {
+            console.log(`No service ${serviceId} found for master ${master.id}`); // Добавляем отладочный вывод
+        }
     });
 }
 
@@ -939,13 +951,13 @@ function bookMaster(masterId, serviceName, servicePrice, locationName, datetime,
     let locationId;
     switch (locationName) {
         case 'Центр города':
-            locationId = 0;
-            break;
-        case 'Московская':
             locationId = 1;
             break;
-        case 'Ленсовета':
+        case 'Московская':
             locationId = 2;
+            break;
+        case 'Ленсовета':
+            locationId = 3;
             break;
         default:
             locationId = -1;

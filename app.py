@@ -103,13 +103,11 @@ def home():
     try:
         api_url_masters = "http://82.202.142.17:8000/master"
         all_masters = requests.get(api_url_masters).json()
-        masters_list = all_masters['masters']
-        print(all_masters)
+        print("all_masters", all_masters)
 
         api_url_services = "http://82.202.142.17:8000/services"
         all_services = requests.get(api_url_services).json()
-        services_list = all_services['services']
-        #print(services_list)
+        print("services_list:  ", all_services)
 
 
         test_services = [
@@ -203,7 +201,7 @@ def home():
     #
     #     # Render the index.html template and pass the services data to it
 
-        return render_template("index.html", services=services_list, masters=masters_list)
+        return render_template("index.html", services=all_services, masters=all_masters)
 
     except Exception as e:
         # If an error occurs, render the error.html template and pass the error message
