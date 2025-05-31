@@ -75,12 +75,69 @@
                 </div>
             </div>
         </div>
-
         <div class="lk-action-buttons">
-            <button type="submit" class="lk-btn lk-btn-save">
-                СОХРАНИТЬ ИЗМЕНЕНИЯ
-            </button>
+          <button type="button" class="lk-btn lk-btn-save" onclick="saveChanges()">
+            СОХРАНИТЬ ИЗМЕНЕНИЯ
+          </button>
         </div>
     </form>
 </div>
+
+<script>
+function saveChanges() {
+
+    const masterId = 3;
+
+    if (!masterId || isNaN(masterId)) {
+      console.error('Недопустимый ID мастера.');
+      alert('Ошибка: Не удалось определить ID мастера для обновления.');
+      return;
+    }
+
+    // 2. Собираем данные из формы
+    const form = document.querySelector('.lk-form');
+    if (!form) {
+      console.error('Форма с классом ".lk-form" не найдена.');
+      alert('Ошибка: Не найдена форма для редактирования данных мастера.');
+      return;
+    }
+
+    const formData = new FormData(form);
+    const masterData = {};
+    formData.forEach((value, key) => {
+      masterData[key] = value;
+    });
+
+    // Добавляем ID мастера к данным (если это требуется вашим API)
+    masterData.id = masterId; // Или masterData.masterId = masterId; в зависимости от API
+
+    // Отправляем данные на сервер
+    const apiUrl = `http://82.202.142.17:8000/master/id/${masterId}`;
+    const requestOptions = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(masterData)
+    };
+
+    fetch(apiUrl, requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Успешно обновлено:', data);
+        alert('Данные мастера успешно обновлены!');
+        // Можно обновить данные на странице (например, через перезагрузку)
+        // window.location.reload();
+      })
+      .catch(error => {
+        console.error('Ошибка при обновлении данных мастера:', error);
+        alert('Ошибка при обновлении данных мастера. Пожалуйста, попробуйте позже.');
+      });
+}
+</script>
 {% endblock %}

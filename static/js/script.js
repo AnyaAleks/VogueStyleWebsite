@@ -1001,34 +1001,35 @@ function bookMaster(masterId, serviceName, servicePrice, locationName, datetime,
 }
 
 
-
-//Для обработки всех данных из ЛК мастера
-document.querySelector('save-information').addEventListener('click', function(e) {
-    e.preventDefault();
-
-    const form = document.querySelector('.lk-form');
-    const formData = new FormData(form);
-
-    let output = "Данные мастера:\n\n";
-    const fieldLabels = {
-        'last_name': 'Фамилия',
-        'first_name': 'Имя',
-        'middle_name': 'Отчество',
-        'birth_date': 'Дата рождения',
-        'address': 'Адрес',
-        'email': 'E-mail',
-        'phone': 'Телефон',
-        'photo': 'Фото'
-    };
-
-    for (let [key, value] of formData.entries()) {
-        if (key === 'photo' && value instanceof File) {
-            output += `${fieldLabels[key] || key}: ${value.name || 'файл выбран'}\n`;
-        } else {
-            output += `${fieldLabels[key] || key}: ${value || 'не указано'}\n`;
-        }
-    }
-
-    alert(output);
-    // form.submit(); // Раскомментировать для реальной отправки
-});
+//
+////Для обработки всех данных из ЛК мастера
+//document.querySelector('save-information').addEventListener('click', function(e) {
+//    alert("dsh")
+//    e.preventDefault();
+//
+//    const form = document.querySelector('.lk-form');
+//    const formData = new FormData(form);
+//
+//    let output = "Данные мастера:\n\n";
+//    const fieldLabels = {
+//        'last_name': 'Фамилия',
+//        'first_name': 'Имя',
+//        'middle_name': 'Отчество',
+//        'birth_date': 'Дата рождения',
+//        'address': 'Адрес',
+//        'email': 'E-mail',
+//        'phone': 'Телефон',
+//        'photo': 'Фото'
+//    };
+//
+//    for (let [key, value] of formData.entries()) {
+//        if (key === 'photo' && value instanceof File) {
+//            output += `${fieldLabels[key] || key}: ${value.name || 'файл выбран'}\n`;
+//        } else {
+//            output += `${fieldLabels[key] || key}: ${value || 'не указано'}\n`;
+//        }
+//    }
+//
+//    alert(output);
+//    // form.submit(); // Раскомментировать для реальной отправки
+//});
