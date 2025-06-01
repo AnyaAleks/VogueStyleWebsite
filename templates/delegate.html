@@ -6,7 +6,7 @@
             <span class="service-price">{{ service.price }}</span>
             <span class="service-price-period">₽ / сеанс</span>
         </div>
-        <button class="book-button" onclick="showDialog('{{ service.name }}', {{ service.price }})">
+        <button class="book-button" onclick="showDialog('{{ service.name }}', {{ service.price }}, {{ service.id }})">
             Записаться онлайн </i>
         </button>
     </div>
