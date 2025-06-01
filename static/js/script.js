@@ -417,7 +417,7 @@ async function showServiceList() {
                 console.log("Service object:", service); // Добавлено
                 if (service) {
                     servicesHTML += `
-                         <div class="location" onclick="${encodeURIComponent(`showFirstPage('${encodeURIComponent(service.name)}', '${service.price}', '${service.id}')`)}">
+                         <div class="location" onclick="${`showFirstPage('${service.name}', '${service.price}', '${service.id}')`}">
                             <div class="location-name">${service.name}</div>
                             <div class="location-address">Цена: ${service.price} ₽</div>
                         </div>
@@ -437,10 +437,8 @@ async function showServiceList() {
     }
 }
 
-// Остальные функции без изменений...
-
-
 function showFirstPage(serviceName, servicePrice, serviceId) {
+    console.log("showFirstPage вызвана с аргументами:", serviceName, servicePrice, serviceId);
     const content = document.getElementById('dialog-content');
     content.innerHTML = `
         <div class="dialog-container">
@@ -585,7 +583,7 @@ function handleServiceSelect(element, serviceId, serviceName, servicePrice) {
     showFourthPagePage(serviceName, servicePrice, serviceId);
 }
 
-function showThirdPage(serviceName, servicePrice, locationName, serviceId) {
+function showThirdPage(serviceName, servicePrice, locationName, serviceId, locationId) {
   console.log("Функция showThirdPage вызвана", serviceName, servicePrice, locationName, serviceId);
 
   const content = document.getElementById('dialog-content');
@@ -662,7 +660,7 @@ function showThirdPage(serviceName, servicePrice, locationName, serviceId) {
         spinner.style.display = 'none';
 
         if (filteredMasters.length > 0) {
-          renderMasters(filteredMasters, serviceName, servicePrice, locationName, container, serviceId);
+          renderMasters(filteredMasters, serviceName, servicePrice, locationName, container, serviceId, locationId);
         } else {
           container.innerHTML = `
             <div class="no-masters">
@@ -679,7 +677,7 @@ function showThirdPage(serviceName, servicePrice, locationName, serviceId) {
           <div class="error">
             <i class="icon-error"></i>
             <p>Ошибка загрузки данных. Пожалуйста, попробуйте позже.</p>
-            <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}')">
+            <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}', '${locationId}')">
               Попробовать снова
             </button>
           </div>
@@ -705,7 +703,7 @@ function showThirdPage(serviceName, servicePrice, locationName, serviceId) {
     });
 }
 
-function renderMasters(masters, serviceName, servicePrice, locationName, container, serviceId) {
+function renderMasters(masters, serviceName, servicePrice, locationName, container, serviceId, locationId) {
     container.innerHTML = '';
 
     console.log(`renderMasters called with serviceId: ${serviceId}`); // Добавляем отладочный вывод
@@ -735,7 +733,8 @@ function renderMasters(masters, serviceName, servicePrice, locationName, contain
                 serviceName,
                 servicePrice,
                 locationName,
-                serviceId
+                serviceId,
+                locationId
             );
 
             container.appendChild(masterElement);
@@ -745,7 +744,7 @@ function renderMasters(masters, serviceName, servicePrice, locationName, contain
     });
 }
 
-function handleMasterSelect(element, masterId, serviceName, servicePrice, locationName, serviceId) {
+function handleMasterSelect(element, masterId, serviceName, servicePrice, locationName, serviceId, locationId) {
     // Удаляем класс selected у всех элементов
     document.querySelectorAll('.master-js').forEach(m => {
         m.classList.remove('selected');
@@ -755,11 +754,11 @@ function handleMasterSelect(element, masterId, serviceName, servicePrice, locati
     element.classList.add('selected');
 
     // Переходим на страницу подтверждения
-    showFifthPage(serviceName, servicePrice, locationName, masterId, serviceId);
+    showFifthPage(serviceName, servicePrice, locationName, masterId, serviceId, locationId);
 }
 
 
-async function showFifthPage(serviceName, servicePrice, locationName, masterId, serviceId) {
+async function showFifthPage(serviceName, servicePrice, locationName, masterId, serviceId, locationId) {
     const content = document.getElementById('dialog-content');
 
     // Пример данных: даты и доступное время для каждой даты
@@ -804,8 +803,8 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
                     </div>
 
                     <div class="popup-buttons">
-                        <button onclick="saveDateTimeAndShowSixthPage('${serviceName}', ${servicePrice}, '${locationName}', ${masterId}, ${serviceId})">Далее</button>
-                        <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}')">Назад</button>
+                        <button onclick="saveDateTimeAndShowSixthPage('${serviceName}', ${servicePrice}, '${locationName}', ${masterId}, ${serviceId}), '${locationId}'">Далее</button>
+                        <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}', '${locationId}')">Назад</button>
                     </div>
                 </div>
             `;
@@ -830,8 +829,8 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
                     </div>
 
                     <div class="popup-buttons">
-                        <button onclick="saveDateTimeAndShowSixthPage('${serviceName}', ${servicePrice}, '${locationName}', ${masterId}, ${serviceId})">Далее</button>
-                        <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}')">Назад</button>
+                        <button onclick="saveDateTimeAndShowSixthPage('${serviceName}', ${servicePrice}, '${locationName}', ${masterId}, ${serviceId}, '${locationId}')">Далее</button>
+                        <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}', '${locationId}')">Назад</button>
                     </div>
                 </div>
             `;
@@ -842,7 +841,7 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
             <div class="dialog-container">
                 <h3 class="dialog-title">Ошибка загрузки данных</h3>
                 <p>Пожалуйста, попробуйте позже</p>
-                <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}')">Назад</button>
+                <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}', '${locationId}')">Назад</button>
             </div>
         `;
     }
@@ -881,7 +880,7 @@ function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString('ru-RU', options);
 }
 
-function saveDateTimeAndShowSixthPage(serviceName, servicePrice, locationName, masterId, serviceId) {
+function saveDateTimeAndShowSixthPage(serviceName, servicePrice, locationName, masterId, serviceId, locationId) {
     const dateInput = document.getElementById('appointment-date');
     const timeInput = document.getElementById('appointment-time');
 
@@ -890,10 +889,10 @@ function saveDateTimeAndShowSixthPage(serviceName, servicePrice, locationName, m
         return;
     }
 
-    showSixthPage(serviceName, servicePrice, locationName, masterId, dateInput.value, timeInput.value, serviceId);
+    showSixthPage(serviceName, servicePrice, locationName, masterId, dateInput.value, timeInput.value, serviceId, locationId);
 }
 
-async function showSixthPage(serviceName, servicePrice, locationName, masterId, selectedDate, selectedTime, serviceId) {
+async function showSixthPage(serviceName, servicePrice, locationName, masterId, selectedDate, selectedTime, serviceId, locationId) {
     const content = document.getElementById('dialog-content');
 
     try {
@@ -933,8 +932,8 @@ async function showSixthPage(serviceName, servicePrice, locationName, masterId, 
                     </div>
 
                     <div class="popup-buttons">
-                        <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}', '${selectedDate}', '${selectedTime}', '${serviceId}')">Подтвердить</button>
-                        <button onclick="showFifthPage(&quot;${serviceName}&quot;, ${servicePrice}, &quot;${locationName}&quot;, ${masterId}, ${serviceId})">Назад</button>
+                        <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}', '${selectedDate}', '${selectedTime}', '${serviceId}', '${locationId}')">Подтвердить</button>
+                        <button onclick="showFifthPage(&quot;${serviceName}&quot;, ${servicePrice}, &quot;${locationName}&quot;, ${masterId}, ${serviceId}, '${locationId}')">Назад</button>
                     </div>
                 </div>
             `;
@@ -967,8 +966,8 @@ async function showSixthPage(serviceName, servicePrice, locationName, masterId, 
                     </div>
 
                     <div class="popup-buttons">
-                        <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}', '${selectedDate}', '${selectedTime}', '${serviceId}')">Подтвердить</button>
-                        <button onclick="showFifthPage(&quot;${serviceName}&quot;, ${servicePrice}, &quot;${locationName}&quot;, ${masterId}, ${serviceId})">Назад</button>
+                        <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}', '${selectedDate}', '${selectedTime}', '${serviceId}', '${locationId}')">Подтвердить</button>
+                        <button onclick="showFifthPage(&quot;${serviceName}&quot;, ${servicePrice}, &quot;${locationName}&quot;, ${masterId}, ${serviceId}, '${locationId}')">Назад</button>
                     </div>
                 </div>
             `;
@@ -1002,8 +1001,8 @@ async function showSixthPage(serviceName, servicePrice, locationName, masterId, 
                     </div>
 
                     <div class="popup-buttons">
-                        <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}', '${selectedDate}', '${selectedTime}', '${serviceId}')">Подтвердить</button>
-                        <button onclick="showFifthPage(&quot;${serviceName}&quot;, ${servicePrice}, &quot;${locationName}&quot;, ${masterId}, ${serviceId})">Назад</button>
+                        <button class="confirm-btn" onclick="confirmAppointment(${masterId}, '${serviceName}', ${servicePrice}, '${locationName}', '${selectedDate}', '${selectedTime}', '${serviceId}', '${locationId}')">Подтвердить</button>
+                        <button onclick="showFifthPage(&quot;${serviceName}&quot;, ${servicePrice}, &quot;${locationName}&quot;, ${masterId}, ${serviceId}, '${locationId}')">Назад</button>
                     </div>
                 </div>
             `;
@@ -1011,7 +1010,7 @@ async function showSixthPage(serviceName, servicePrice, locationName, masterId, 
     }
 
 
-function confirmAppointment(masterId, serviceName, servicePrice, locationName, selectedDate, selectedTime, serviceId) {
+function confirmAppointment(masterId, serviceName, servicePrice, locationName, selectedDate, selectedTime, serviceId, locationId) {
     const lastName = document.getElementById('lastName').value;
     const firstName = document.getElementById('firstName').value;
     const middleName = document.getElementById('middleName').value;
@@ -1028,63 +1027,105 @@ function confirmAppointment(masterId, serviceName, servicePrice, locationName, s
     }
 
     const datetime = `${selectedDate} ${selectedTime}:00`;
-    bookMaster(masterId, serviceName, servicePrice, locationName, datetime, lastName, firstName, middleName, phoneNumber, serviceId);
+    bookMaster(masterId, serviceName, servicePrice, locationName, datetime, lastName, firstName, middleName, phoneNumber, serviceId, locationId);
 }
 
 // Обновленная функция bookMaster с параметрами для данных клиента
-function bookMaster(masterId, serviceName, servicePrice, locationName, datetime, lastName, firstName, middleName, phoneNumber, serviceId) {
-    const url = 'http://82.202.142.17:8000/requests';
-    const userId = 1; // !!!Заменить на реальный ID пользователя
+function bookMaster(masterId, serviceName, servicePrice, locationName, datetime, lastName, firstName, middleName, phoneNumber, serviceId, locationId) {
+  const requestsUrl = 'http://82.202.142.17:8000/requests';
+  const getUserByPhoneUrl = `http://82.202.142.17:8000/user/tg_id/${phoneNumber}`;
+  const createUserUrl = 'http://82.202.142.17:8000/user';
 
-    let locationId;
-    switch (locationName) {
-        case 'Центр города':
-            locationId = 1;
-            break;
-        case 'Московская':
-            locationId = 2;
-            break;
-        case 'Ленсовета':
-            locationId = 3;
-            break;
-        default:
-            locationId = -1;
-            break;
+  // Вспомогательная функция для отправки POST-запроса и получения данных
+  async function postData(url, data) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`HTTP error! status: ${response.status} - ${errorData.message || 'Unknown error'}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Ошибка при отправке данных:', error);
+      throw error; // Повторно кидаем ошибку, чтобы ее обработал вызывающий код
     }
+  }
 
+  // 1. Получаем пользователя по номеру телефона
+  fetch(getUserByPhoneUrl)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else if (response.status === 404) { // Если пользователь не найден (404)
+        return null; // Возвращаем null, чтобы указать, что пользователя нет
+      } else {
+        throw new Error(`Ошибка при получении пользователя: ${response.status} ${response.statusText}`);
+      }
+    })
+    .then(userData => {
+      if (userData && userData.ok) { // Пользователь найден
+        const userId = userData.id; // предполагаем, что API возвращает id пользователя
+        console.log("Пользователь найден:", userData);
+        // 3. Записываем пользователя на услугу (с найденным ID)
+        bookAppointment(userId);
+      } else { // Пользователь не найден, создаем нового
+        console.log("Пользователь не найден. Создаем нового...");
+
+        const newUser = {
+          name: firstName,
+          surname: lastName,
+          patronymic: middleName,
+          birthday: "2000-06-01", // !!!Заменить
+          tg_id: 0, //  !!!Заменить
+          phone: phoneNumber
+        };
+
+        return postData(createUserUrl, newUser) // Используем вспомогательную функцию
+          .then(createdUserData => {
+            if (createdUserData) {
+                const userId = createdUserData.id;
+                console.log("Пользователь создан:", createdUserData);
+                // 3. Записываем пользователя на услугу (с созданным ID)
+                bookAppointment(userId);
+            }
+          })
+          .catch(error => {
+            console.error('Ошибка при создании пользователя:', error);
+            alert(`Ошибка при создании пользователя: ${error.message}`); // Выводим сообщение об ошибке
+          });
+      }
+    })
+    .catch(error => {
+      console.error('Общая ошибка:', error);
+      alert(`Общая ошибка: ${error.message}`); // Выводим сообщение об ошибке
+    });
+
+  // Вложенная функция для записи на услугу
+  function bookAppointment(userId) {
     const data = {
-        master_id: masterId,
-        service_id: serviceId,
-        user_id: userId,
-        datetime: datetime,
-        last_name: lastName,
-        first_name: firstName,
-        patronymic: middleName,
-        phone_number: phoneNumber,
-        location: locationId
+      master_id: masterId,
+      service_id: serviceId,
+      user_id: userId,
+      schedule_at: datetime,
     };
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', url);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onload = function() {
-        if (xhr.status >= 200 && xhr.status < 300) {
-            console.log('Заявка успешно создана:', xhr.responseText);
-            alert(`Вы записаны на ${serviceId} ${serviceName} в ${locationName} за ${servicePrice} ₽ в ${datetime}`);
-            document.getElementById('pop-up').close();
-        } else {
-            console.error('Ошибка при создании заявки:', xhr.status, xhr.statusText);
-            alert(`Ошибка при создании заявки: ${xhr.status} ${xhr.statusText}`);
-        }
-    };
-
-    xhr.onerror = function() {
-        console.error('Ошибка сети при создании заявки.');
-        alert('Ошибка сети при создании заявки.');
-    };
-
-    xhr.send(JSON.stringify(data));
+    postData(requestsUrl, data)  // Используем вспомогательную функцию
+      .then(requestData => {
+        console.log('Заявка успешно создана:', requestData);
+        alert(`Вы записаны на ${serviceName} в ${locationName} за ${servicePrice} ₽ на ${datetime}`);
+        document.getElementById('pop-up').close();
+      })
+      .catch(error => {
+        console.error('Ошибка при создании заявки:', error);
+        alert(`Ошибка при создании заявки: ${error.message}`); // Выводим сообщение об ошибке
+      });
+  }
 }
 
 
