@@ -46,7 +46,7 @@
         <div class="nav-container">
             <ul class="nav-menu">
                 <div class="nav-menu-left">
-                    <li class="nav-item"><a href="/request" class="nav-link {% if request.path == '/request' %}active{% endif %}" onclick="showPopUpForRequest(); return false;">Запись</a></li>
+                    <li class="nav-item"><a href="/request" class="nav-link {% if request.path == '/request' %}active{% endif %}" onclick="showPopUpForRequest(event)">Запись</a></li>
                     <li class="nav-item"><a href="/about" class="nav-link {% if request.path == '/about' %}active{% endif %}">О нас</a></li>
 
 
@@ -144,9 +144,25 @@
     {% block extra_scripts %}{% endblock %}
 </body>
 <script>
-    function showPopUpForRequest() {
-    showDialog();  // Вызываем showDialog без параметров
+    function showPopUpForRequest(event) {
+        event.preventDefault(); // Отменяем переход по ссылке
+
+        // Если мы НЕ на главной странице
+        if (window.location.pathname !== "/") {
+            sessionStorage.setItem("shouldOpenPopup", "true"); // Сохраняем флаг
+            window.location.href = "/"; // Переходим на главную
+        } else {
+            showDialog(); // Если уже на главной, просто открываем pop-up
+        }
     }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Проверяем, нужно ли открыть pop-up
+        if (sessionStorage.getItem("shouldOpenPopup") === "true") {
+            showDialog(); // Открываем окно записи
+            sessionStorage.removeItem("shouldOpenPopup"); // Удаляем флаг
+        }
+    });
 
 
     function checkZoom() {

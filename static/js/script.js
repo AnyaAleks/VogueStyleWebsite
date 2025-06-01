@@ -377,7 +377,6 @@ function bookService(serviceName) {
 //    popUpElement.showModal();
 //}
 
-
 // Показ диалога с первой страницей
 function showDialog(serviceName, servicePrice, serviceId) {
     const dialog = document.getElementById('pop-up');
