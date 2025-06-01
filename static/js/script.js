@@ -414,13 +414,19 @@ async function showServiceList() {
 
             let servicesHTML = '';
             services.forEach(service => {
-                servicesHTML += `
-                    <div class="location" onclick="showFirstPage('${service.name}', '${service.price}', ${service.id})">
-                        <div class="location-name">${service.name}</div>
-                        <div class="location-address">Цена: ${service.price} ₽</div>
-                    </div>
-                `;
+                console.log("Service object:", service); // Добавлено
+                if (service) {
+                    servicesHTML += `
+                         <div class="location" onclick="${encodeURIComponent(`showFirstPage('${encodeURIComponent(service.name)}', '${service.price}', '${service.id}')`)}">
+                            <div class="location-name">${service.name}</div>
+                            <div class="location-address">Цена: ${service.price} ₽</div>
+                        </div>
+                    `;
+                } else {
+                    console.warn("Обнаружен неверный объект service:", service);
+                }
             });
+            console.log();
             serviceListContainer.innerHTML = servicesHTML;
         } else {
             serviceListContainer.innerHTML = '<div class="location-name">Ошибка загрузки услуг.</div>';
@@ -451,35 +457,59 @@ function showFirstPage(serviceName, servicePrice, serviceId) {
 }
 
 function showSecondPage(serviceName, servicePrice, serviceId) {
-    const content = document.getElementById('dialog-content');
-    content.innerHTML = `
-        <div class="dialog-container">
-            <h3 class="dialog-title">Выберите адрес для услуги: <span>${serviceName}</span></h3>
-            <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
-            <div class="location-list">
-                <div class="location" onclick="handleLocationSelect(this, '${serviceName}', ${servicePrice}, 'Центр города', '${serviceId}')">
-                    <div class="location-name">Салон VogueStyle в Центре города</div>
-                    <div class="location-address">ул. Большая Морская 67, Санкт-Петербург</div>
-                </div>
+  const content = document.getElementById('dialog-content');
 
-                <div class="location" onclick="handleLocationSelect(this, '${serviceName}', ${servicePrice}, 'Московская', '${serviceId}')">
-                    <div class="location-name">Салон VogueStyle на Московской</div>
-                    <div class="location-address">Гастелло ул. 15, Санкт-Петербург</div>
-                </div>
+  // Функция для получения местоположений с API
+  function fetchLocations() {
+    fetch('http://82.202.142.17:8000/locations')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(locations => {
+        // После получения данных о местоположениях, отображаем их
+        displayLocations(locations);
+      })
+      .catch(error => {
+        console.error('Ошибка при получении данных о местоположениях:', error);
+        content.innerHTML = `<p>Ошибка при загрузке данных о местоположениях. Пожалуйста, попробуйте позже.</p>`;
+      });
+  }
 
-                <div class="location" onclick="handleLocationSelect(this, '${serviceName}', ${servicePrice}, 'Ленсовета', '${serviceId}')">
-                    <div class="location-name">Салон VogueStyle на Ленсовета</div>
-                    <div class="location-address">Ленсовета ул. 14, Санкт-Петербург</div>
-                </div>
-            </div>
-            <div class="popup-buttons">
-                <button onclick="showFirstPage('${serviceName}', ${servicePrice})">Назад</button>
-            </div>
+  // Функция для отображения местоположений
+  function displayLocations(locations) {
+    let locationListHTML = '';
+
+    locations.forEach(location => {
+      locationListHTML += `
+        <div class="location" onclick="handleLocationSelect(this, '${serviceName}', ${servicePrice}, '${location.name}', '${serviceId}', '${location.id}')">
+          <div class="location-name">${location.name}</div>
+          <div class="location-address">${location.address}</div>
         </div>
+      `;
+    });
+
+    content.innerHTML = `
+      <div class="dialog-container">
+        <h3 class="dialog-title">Выберите адрес для услуги: <span>${serviceName}</span></h3>
+        <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+        <div class="location-list">
+          ${locationListHTML}
+        </div>
+        <div class="popup-buttons">
+          <button onclick="showFirstPage('${serviceName}', ${servicePrice})">Назад</button>
+        </div>
+      </div>
     `;
+  }
+
+  // Вызываем функцию для получения местоположений
+  fetchLocations();
 }
 
-function handleLocationSelect(element, serviceName, servicePrice, locationName, serviceId) {
+function handleLocationSelect(element, serviceName, servicePrice, locationName, serviceId, locationId) {
     // Удаляем класс selected у всех элементов
     document.querySelectorAll('.location').forEach(loc => {
         loc.classList.remove('selected');
@@ -489,7 +519,7 @@ function handleLocationSelect(element, serviceName, servicePrice, locationName, 
     element.classList.add('selected');
 
     // Сразу переходим на третью страницу с выбранным адресом
-    showThirdPage(serviceName, servicePrice, locationName, serviceId);
+    showThirdPage(serviceName, servicePrice, locationName, serviceId, locationId);
 }
 
 function showFourthPage(serviceName, servicePrice, locationName) {
@@ -556,66 +586,123 @@ function handleServiceSelect(element, serviceId, serviceName, servicePrice) {
 }
 
 function showThirdPage(serviceName, servicePrice, locationName, serviceId) {
-    console.log("Функция showThirdPage вызвана");
+  console.log("Функция showThirdPage вызвана", serviceName, servicePrice, locationName, serviceId);
 
-    const content = document.getElementById('dialog-content');
-    content.innerHTML = `
-        <div class="dialog-container">
-            <h3 class="dialog-title">Выберите мастера</span></h3>
-            <p class="location-info">Услуга: <span>${serviceName}</span></p>
-            <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
-            <p class="location-info">Локация: <span>${locationName}</span></p>
-            <div class="loading-spinner"></div>
-            <div class="master-list-js" id="masters-container"></div>
-            <div class="popup-buttons">
-                <button onclick="showSecondPage('${serviceName}', ${servicePrice}, ${serviceId})">Назад</button>
-            </div>
-        </div>
-    `;
+  const content = document.getElementById('dialog-content');
+  content.innerHTML = `
+    <div class="dialog-container">
+      <h3 class="dialog-title">Выберите мастера</span></h3>
+      <p class="location-info">Услуга: <span>${serviceName}</span></p>
+      <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+      <p class="location-info">Локация: <span>${locationName}</span></p>
+      <div class="loading-spinner"></div>
+      <div class="master-list-js" id="masters-container"></div>
+      <div class="popup-buttons">
+        <button onclick="showSecondPage('${serviceName}', ${servicePrice}, ${serviceId})">Назад</button>
+      </div>
+    </div>
+  `;
 
-    const spinner = content.querySelector('.loading-spinner');
-    const container = content.querySelector('#masters-container');
+  const spinner = content.querySelector('.loading-spinner');
+  const container = content.querySelector('#masters-container');
 
-    spinner.style.display = 'block';
-    container.innerHTML = '';
+  spinner.style.display = 'block';
+  container.innerHTML = '';
 
-    const url = 'http://82.202.142.17:8000/master';
+  // Получаем ID локации из API по locationName
+  function fetchLocationIdByName(locationName) {
+    return fetch('http://82.202.142.17:8000/locations')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(locations => {
+        const location = locations.find(loc => loc.name === locationName);
+        if (location) {
+          return location.id;
+        } else {
+          throw new Error(`Location with name "${locationName}" not found.`);
+        }
+      });
+  }
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-       .then(data => {
-            console.log("API response:", data);
-            spinner.style.display = 'none';
+  // Получаем данные о мастерах и фильтруем их
+  function fetchMasters(locationId, serviceId) {
+    fetch('http://82.202.142.17:8000/master')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(masters => {
+        console.log("All Masters:", masters);
 
-            if (Array.isArray(data) && data.length > 0) { // Проверка, что data - массив
-                renderMasters(data, serviceName, servicePrice, locationName, container, serviceId);
-            } else {
-                container.innerHTML = `
-                    <div class="no-masters">
-                        <i class="icon-warning"></i>
-                        <p>Нет доступных мастеров.</p>
-                    </div>
-                `;
-            }
-        })
-        .catch(error => {
-            spinner.style.display = 'none';
-            console.error('Ошибка загрузки мастеров:', error);
-            container.innerHTML = `
-                <div class="error">
-                    <i class="icon-error"></i>
-                    <p>Ошибка загрузки данных. Пожалуйста, попробуйте позже.</p>
-                    <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}')">
-                        Попробовать снова
-                    </button>
-                </div>
-            `;
+        // Фильтруем мастеров по locationId и serviceId
+        const filteredMasters = masters.filter(master => {
+          console.log(`Фильтрация мастера ${master.name} ${master.surname}:`);
+          console.log(`  locationId: ${locationId}, master.location_id: ${master.location_id}`);
+          console.log(`  serviceId: ${serviceId}, Services:`, master.services);
+
+          // Проверяем соответствие locationId
+          const isCorrectLocation = master.location_id === locationId;
+
+          // Проверяем, предоставляет ли мастер данную услугу
+          const providesService = master.services.some(service => service.id === parseInt(serviceId)); // Приводим serviceId к числу
+
+          console.log(`  isCorrectLocation: ${isCorrectLocation}, providesService: ${providesService}`);
+
+          return isCorrectLocation && providesService;
         });
+
+        console.log("Filtered Masters:", filteredMasters);
+
+        spinner.style.display = 'none';
+
+        if (filteredMasters.length > 0) {
+          renderMasters(filteredMasters, serviceName, servicePrice, locationName, container, serviceId);
+        } else {
+          container.innerHTML = `
+            <div class="no-masters">
+              <i class="icon-warning"></i>
+              <p>Нет доступных мастеров в ${locationName} для услуги ${serviceName}.</p>
+            </div>
+          `;
+        }
+      })
+      .catch(error => {
+        spinner.style.display = 'none';
+        console.error('Ошибка загрузки мастеров:', error);
+        container.innerHTML = `
+          <div class="error">
+            <i class="icon-error"></i>
+            <p>Ошибка загрузки данных. Пожалуйста, попробуйте позже.</p>
+            <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}')">
+              Попробовать снова
+            </button>
+          </div>
+        `;
+      });
+  }
+
+  // Вызываем функцию для получения locationId и затем получаем мастеров
+  fetchLocationIdByName(locationName)
+    .then(locationId => {
+      console.log("Location ID:", locationId);
+      fetchMasters(locationId, serviceId);
+    })
+    .catch(error => {
+      spinner.style.display = 'none';
+      console.error('Ошибка получения ID локации:', error);
+      container.innerHTML = `
+        <div class="error">
+          <i class="icon-error"></i>
+          <p>Ошибка получения ID локации. Пожалуйста, попробуйте позже.</p>
+        </div>
+      `;
+    });
 }
 
 function renderMasters(masters, serviceName, servicePrice, locationName, container, serviceId) {
