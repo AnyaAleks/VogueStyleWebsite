@@ -91,7 +91,7 @@
 </div>
 
 <script>
-function saveChanges() {
+    function saveChanges() {
 
     // 1. Получаем masterId из скрытого поля
     const masterIdElement = document.getElementById('masterId');
@@ -175,90 +175,104 @@ function saveChanges() {
     `;
 
     function showAppointmentsDialog() {
-      const content = document.getElementById('dialog-content');
+        // Создаем модальное окно
+        const modalOverlay = document.createElement('div');
+        modalOverlay.className = 'appointment-modal-backdrop is-visible';
+        modalOverlay.id = 'appointment-modal-overlay';
 
-      try {
-        const appointments = JSON.parse(appointmentsJSON);
+        const modalWindow = document.createElement('div');
+        modalWindow.className = 'appointment-modal-container';
 
-        if (!Array.isArray(appointments)) {
-          content.innerHTML = `
-            <div class="dialog-container">
-              <h3 class="dialog-title">Ошибка</h3>
-              <p>Неверный формат данных с записями.</p>
-              <div class="popup-buttons">
-                <button onclick="closeDialog()">Закрыть</button>
-              </div>
-            </div>
-          `;
-          return;
+        try {
+            const appointments = JSON.parse(appointmentsJSON);
+
+            if (!Array.isArray(appointments)) {
+                modalWindow.innerHTML = `
+                    <h3 class="appointment-modal-heading">Ошибка</h3>
+                    <p>Неверный формат данных с записями.</p>
+                    <div class="appointment-modal-controls">
+                        <button class="appointment-modal-close" onclick="closeAppointmentModal()">Закрыть</button>
+                    </div>
+                `;
+                modalOverlay.appendChild(modalWindow);
+                document.body.appendChild(modalOverlay);
+                document.body.classList.add('appointment-modal-active');
+                return;
+            }
+
+            if (appointments.length === 0) {
+                modalWindow.innerHTML = `
+                    <h3 class="appointment-modal-heading">Записи отсутствуют</h3>
+                    <p>На данный момент записи отсутствуют.</p>
+                    <div class="appointment-modal-controls">
+                        <button class="appointment-modal-close" onclick="closeAppointmentModal()">Закрыть</button>
+                    </div>
+                `;
+                modalOverlay.appendChild(modalWindow);
+                document.body.appendChild(modalOverlay);
+                document.body.classList.add('appointment-modal-active');
+                return;
+            }
+
+            let appointmentsHTML = '';
+            appointments.forEach(appointment => {
+                appointmentsHTML += `
+                    <div class="appointment-record">
+                        <p><strong>Услуга:</strong> ${appointment.serviceName}</p>
+                        <p><strong>Клиент:</strong> ${appointment.clientName} ${appointment.clientSurname}</p>
+                        <p><strong>Телефон:</strong> ${appointment.clientPhone}</p>
+                        <p><strong>Стоимость:</strong> ${appointment.servicePrice} ₽</p>
+                    </div>
+                    <div class="appointment-separator"></div>
+                `;
+            });
+
+            modalWindow.innerHTML = `
+                <h3 class="appointment-modal-heading">Записи</h3>
+                <div class="appointment-records">
+                    ${appointmentsHTML}
+                </div>
+                <div class="appointment-modal-controls">
+                    <button class="appointment-modal-close" onclick="closeAppointmentModal()">Закрыть</button>
+                </div>
+            `;
+
+            modalOverlay.appendChild(modalWindow);
+            document.body.appendChild(modalOverlay);
+            document.body.classList.add('appointment-modal-active');
+        } catch (error) {
+            console.error("Ошибка при парсинге JSON:", error);
+            modalWindow.innerHTML = `
+                <h3 class="appointment-modal-heading">Ошибка</h3>
+                <p>Ошибка при обработке данных. Пожалуйста, попробуйте позже.</p>
+                <div class="appointment-modal-controls">
+                    <button class="appointment-modal-close" onclick="closeAppointmentModal()">Закрыть</button>
+                </div>
+            `;
+            modalOverlay.appendChild(modalWindow);
+            document.body.appendChild(modalOverlay);
+            document.body.classList.add('appointment-modal-active');
         }
-
-        if (appointments.length === 0) {
-          content.innerHTML = `
-            <div class="dialog-container">
-              <h3 class="dialog-title">Записи отсутствуют</h3>
-              <p>На данный момент записи отсутствуют.</p>
-              <div class="popup-buttons">
-                <button onclick="closeDialog()">Закрыть</button>
-              </div>
-            </div>
-          `;
-          return;
-        }
-
-        let appointmentsHTML = '';
-        appointments.forEach(appointment => {
-          appointmentsHTML += `
-            <div class="appointment-item">
-              <p><strong>Услуга:</strong> ${appointment.serviceName}</p>
-              <p><strong>Клиент:</strong> ${appointment.clientName} ${appointment.clientSurname}</p>
-              <p><strong>Телефон:</strong> ${appointment.clientPhone}</p>
-              <p><strong>Стоимость:</strong> ${appointment.servicePrice} ₽</p>
-            </div>
-            <hr>
-          `;
-        });
-
-        content.innerHTML = `
-          <div class="dialog-container">
-            <h3 class="dialog-title">Записи</h3>
-            <div class="appointments-list">
-              ${appointmentsHTML}
-            </div>
-            <div class="popup-buttons">
-              <button onclick="closeDialog()">Закрыть</button>
-            </div>
-          </div>
-        `;
-      } catch (error) {
-        console.error("Ошибка при парсинге JSON:", error);
-        content.innerHTML = `
-          <div class="dialog-container">
-            <h3 class="dialog-title">Ошибка</h3>
-            <p>Ошибка при обработке данных. Пожалуйста, попробуйте позже.</p>
-            <div class="popup-buttons">
-              <button onclick="closeDialog()">Закрыть</button>
-            </div>
-          </div>
-        `;
-      }
     }
 
-    function closeDialog() {
-      const content = document.getElementById('dialog-content');
-      content.innerHTML = ''; // Очищаем содержимое диалога
+    function closeAppointmentModal() {
+        const modal = document.getElementById('appointment-modal-overlay');
+        if (modal) {
+            modal.remove();
+            document.body.classList.remove('appointment-modal-active');
+        }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-      const viewAppointmentsButton = document.getElementById('view-appointments');
+        const viewAppointmentsButton = document.getElementById('view-appointments');
 
-      if (viewAppointmentsButton) {
-        viewAppointmentsButton.addEventListener('click', function() {
-          showAppointmentsDialog();
-        });
-      } else {
-        console.error("Кнопка с id 'view-appointments' не найдена.");
-      }
+        if (viewAppointmentsButton) {
+            viewAppointmentsButton.addEventListener('click', function() {
+                showAppointmentsDialog();
+            });
+        } else {
+            console.error("Кнопка с id 'view-appointments' не найдена.");
+        }
     });
 </script>
 {% endblock %}
