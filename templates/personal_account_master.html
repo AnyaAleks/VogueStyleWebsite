@@ -87,6 +87,7 @@
           </button>
         </div>
     </form>
+    <div id="dialog-content"></div>  <!-- Добавляем элемент для диалога -->
 </div>
 
 <script>
@@ -151,6 +152,113 @@ function saveChanges() {
         console.error('Ошибка при обновлении данных мастера:', error);
         alert('Ошибка при обновлении данных мастера. Пожалуйста, попробуйте позже.');
       });
-}
+    }
+
+    //Вывод списка услгу мастера
+    const appointmentsJSON = `
+      [
+        {
+          "serviceName": "Стрижка мужская",
+          "clientName": "Иван",
+          "clientSurname": "Иванов",
+          "clientPhone": "+79111234567",
+          "servicePrice": 800.00
+        },
+        {
+          "serviceName": "Маникюр с покрытием",
+          "clientName": "Елена",
+          "clientSurname": "Петрова",
+          "clientPhone": "+79211234567",
+          "servicePrice": 1500.00
+        }
+      ]
+    `;
+
+    function showAppointmentsDialog() {
+      const content = document.getElementById('dialog-content');
+
+      try {
+        const appointments = JSON.parse(appointmentsJSON);
+
+        if (!Array.isArray(appointments)) {
+          content.innerHTML = `
+            <div class="dialog-container">
+              <h3 class="dialog-title">Ошибка</h3>
+              <p>Неверный формат данных с записями.</p>
+              <div class="popup-buttons">
+                <button onclick="closeDialog()">Закрыть</button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        if (appointments.length === 0) {
+          content.innerHTML = `
+            <div class="dialog-container">
+              <h3 class="dialog-title">Записи отсутствуют</h3>
+              <p>На данный момент записи отсутствуют.</p>
+              <div class="popup-buttons">
+                <button onclick="closeDialog()">Закрыть</button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        let appointmentsHTML = '';
+        appointments.forEach(appointment => {
+          appointmentsHTML += `
+            <div class="appointment-item">
+              <p><strong>Услуга:</strong> ${appointment.serviceName}</p>
+              <p><strong>Клиент:</strong> ${appointment.clientName} ${appointment.clientSurname}</p>
+              <p><strong>Телефон:</strong> ${appointment.clientPhone}</p>
+              <p><strong>Стоимость:</strong> ${appointment.servicePrice} ₽</p>
+            </div>
+            <hr>
+          `;
+        });
+
+        content.innerHTML = `
+          <div class="dialog-container">
+            <h3 class="dialog-title">Записи</h3>
+            <div class="appointments-list">
+              ${appointmentsHTML}
+            </div>
+            <div class="popup-buttons">
+              <button onclick="closeDialog()">Закрыть</button>
+            </div>
+          </div>
+        `;
+      } catch (error) {
+        console.error("Ошибка при парсинге JSON:", error);
+        content.innerHTML = `
+          <div class="dialog-container">
+            <h3 class="dialog-title">Ошибка</h3>
+            <p>Ошибка при обработке данных. Пожалуйста, попробуйте позже.</p>
+            <div class="popup-buttons">
+              <button onclick="closeDialog()">Закрыть</button>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function closeDialog() {
+      const content = document.getElementById('dialog-content');
+      content.innerHTML = ''; // Очищаем содержимое диалога
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const viewAppointmentsButton = document.getElementById('view-appointments');
+
+      if (viewAppointmentsButton) {
+        viewAppointmentsButton.addEventListener('click', function() {
+          showAppointmentsDialog();
+        });
+      } else {
+        console.error("Кнопка с id 'view-appointments' не найдена.");
+      }
+    });
 </script>
 {% endblock %}
