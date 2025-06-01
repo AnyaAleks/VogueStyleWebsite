@@ -1069,6 +1069,12 @@ footer-logo img {
     display: inline-block;
 }
 
+.lk-btn-view {
+    background: #673AB7;
+    color: white;
+    margin-top: 50px;
+}
+
 .lk-action-buttons {
     text-align: center;
     padding-top: 80px;
@@ -1093,10 +1099,11 @@ footer-logo img {
         width: 100%;
         max-width: none;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: flex-start;
         gap: 20px;
         justify-content: center;
+        align-items: center;
     }
 
     .lk-right-column {
@@ -1118,19 +1125,20 @@ footer-logo img {
     }
 
     .lk-photo-actions {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        width: auto;
-        justify-content: flex-start;
-        padding-top: 10px;
+        width: 100%;
+        max-width: 400px;
+        margin: 20px auto 0;
     }
 
     .lk-photo-actions .lk-btn {
-        width: 150px;
-        padding: 12px 0;
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
     }
 
+    .lk-btn-view {
+        margin-top: 20px;
+    }
 }
 
 @media (max-width: 600px) {
@@ -1140,7 +1148,7 @@ footer-logo img {
     }
 
     .lk-photo-actions {
-        flex-direction: row;
+        flex-direction: column;
         width: 100%;
         justify-content: center;
     }
@@ -1148,6 +1156,7 @@ footer-logo img {
     .lk-photo-actions .lk-btn {
         width: auto;
         flex: 1;
+        margin-top: 10px;
     }
 }
 
@@ -1166,13 +1175,17 @@ footer-logo img {
         height: 200px;
     }
 
+    .lk-photo-actions {
+        max-width: 100%;
+    }
+
     .lk-btn {
         padding: 10px 15px;
         font-size: 14px;
     }
 
     .lk-btn-save {
-        padding: 12px 25px;
+        padding: 12px;
         font-size: 16px;
     }
 
