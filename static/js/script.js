@@ -968,13 +968,16 @@ async function showSixthPage(serviceName, servicePrice, locationName, masterId, 
             const masterSurname = data.master.surname;
             const masterFullName = `${masterSurname} ${masterName}`;
 
+            // Отформатируйте дату и время *здесь*
+            const formattedDateTime = formatDate(selectedDate, selectedTime);
+
             content.innerHTML = `
                 <div class="dialog-container">
                     <h3 class="dialog-title">Укажите ваши данные для услуги: <span>${serviceName}</span></h3>
                     <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
                     <p class="location-info">Локация: <span>${locationName}</span></p>
                     <p class="location-info">Мастер: <span>${masterFullName}</span></p>
-                    <p class="location-info">Дата и время: <span>${selectedDate}</span>, <span>${selectedTime}</span></p>
+                    <p class="location-info">Дата и время: <span>${formattedDateTime}</span></p>
 
                     <div class="input-list">
                         <div class="input-field">
@@ -1073,6 +1076,22 @@ async function showSixthPage(serviceName, servicePrice, locationName, masterId, 
         }
     }
 
+
+function formatDate(selectedDate, selectedTime) {
+  const date = new Date(selectedDate);
+  const day = date.getDate(); //  Больше не нужно padStart, т.к. нет требования к двум цифрам
+  const monthNames = ["январь", "февраль", "март", "апрель", "май", "июнь",
+    "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"
+  ];
+  const month = monthNames[date.getMonth()]; // Получаем название месяца
+
+  const timeParts = selectedTime.split('T')[1].split(':');
+  const hours = String(timeParts[0]).padStart(2, '0'); // Ведущий ноль для часов
+  const minutes = String(timeParts[1]).padStart(2, '0'); // Ведущий ноль для минут
+
+  const formattedDate = `${day} ${month} ${hours}:${minutes}`;
+  return formattedDate;
+}
 
 function confirmAppointment(masterId, serviceName, servicePrice, locationName, selectedDate, selectedTime, serviceId, locationId) {
     const lastName = document.getElementById('lastName').value;
