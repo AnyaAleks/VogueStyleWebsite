@@ -767,106 +767,112 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
 
     console.log("Данные, полученные от сервера (список мастеров):", data);
 
+    const masters = data;
 
-      const masters = data;
+    // Ищем нужного мастера по ID
+    const master = masters.find(m => m.id === masterId);
 
-      // Ищем нужного мастера по ID
-      const master = masters.find(m => m.id === masterId);
+    if (master) {
+      const masterName = master.name;
+      const masterSurname = master.surname;
+      const masterFullName = `${masterSurname} ${masterName}`;
+      const availableSlots = master.available_slots;
 
-      if (master) {
-        const masterName = master.name;
-        const masterSurname = master.surname;
-        const masterFullName = `${masterSurname} ${masterName}`;
-        const availableSlots = master.available_slots;
+      console.log("Найденный мастер:", master);
+      console.log("availableSlots:", availableSlots);
 
-        console.log("Найденный мастер:", master);
-        console.log("availableSlots:", availableSlots);
+      let availableDatesHTML = '';
+      const today = new Date();
 
-        let availableDatesHTML = '';
-        const today = new Date();
+      // Генерируем даты в диапазоне недели от текущей
+      for (let i = 0; i < 7; i++) {
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() + i);
+        const dayOfWeek = currentDate.getDay();
+        const dayOfWeekString = String(dayOfWeek);
 
-        // Генерируем даты в диапазоне недели от текущей
-        for (let i = 0; i < 7; i++) {
-          const currentDate = new Date();
-          currentDate.setDate(currentDate.getDate() + i);
-          const dayOfWeek = currentDate.getDay();
-          const dayOfWeekString = String(dayOfWeek);
+        console.log(`День недели (число): ${dayOfWeek}, (строка): ${dayOfWeekString}`);
 
-          console.log(`День недели (число): ${dayOfWeek}, (строка): ${dayOfWeekString}`);
-
-          // Проверяем, есть ли доступные слоты для этого дня недели
-          if (availableSlots && availableSlots[dayOfWeekString]) {
-            console.log(`Для дня недели ${dayOfWeekString} есть доступные слоты`);
-            const formattedDate = formatDateWithWords(currentDate);
-            availableDatesHTML += `
-              <option value="${formatDate(currentDate)}">${formattedDate}</option>
-            `;
-          } else {
-            console.log(`Для дня недели ${dayOfWeekString} НЕТ доступных слотов`);
-          }
+        // Проверяем, есть ли доступные слоты для этого дня недели
+        if (availableSlots && availableSlots[dayOfWeekString]) {
+          console.log(`Для дня недели ${dayOfWeekString} есть доступные слоты`);
+          const formattedDate = formatDateWithWords(currentDate);
+          availableDatesHTML += `
+            <option value="${formatDate(currentDate)}">${formattedDate}</option>
+          `;
+        } else {
+          console.log(`Для дня недели ${dayOfWeekString} НЕТ доступных слотов`);
         }
+      }
 
-        console.log("Сгенерированный HTML для дат:", availableDatesHTML);
+      console.log("Сгенерированный HTML для дат:", availableDatesHTML);
 
-        content.innerHTML = `
-          <div class="dialog-container">
-            <h3 class="dialog-title">Выберите время и дату для услуги: <span>${serviceName}</span></h3>
-            <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
-            <p class="location-info">Адрес: <span>${locationName}</span></p>
-            <p class="location-info">Мастер: <span>${masterFullName}</span></p>
+      content.innerHTML = `
+        <div class="dialog-container">
+          <h3 class="dialog-title">Выберите время и дату для услуги: <span>${serviceName}</span></h3>
+          <p class="service-price-info">Стоимость: <span>${servicePrice}</span> ₽</p>
+          <p class="location-info">Адрес: <span>${locationName}</span></p>
+          <p class="location-info">Мастер: <span>${masterFullName}</span></p>
 
-            <div class="form-group">
-              <label>Выберите дату:</label>
-              <select class="popup-input" id="appointment-date" onchange="updateAvailableTimes('${masterId}')">
-                ${availableDatesHTML}
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Выберите время:</label>
-              <select class="popup-input" id="appointment-time" disabled>
-                <option value="">Выберите время</option>
-              </select>
-            </div>
-
-            <div class="popup-buttons">
-              <button onclick="saveDateTimeAndShowSixthPage('${serviceName}', ${servicePrice}, '${locationName}', ${masterId}, ${serviceId}, '${locationId}')">Далее</button>
-              <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}', '${locationId}')">Назад</button>
-            </div>
+          <div class="form-group">
+            <label>Выберите дату:</label>
+            <select class="popup-input" id="appointment-date" onchange="updateAvailableTimes('${masterId}')">
+              <option value="">Выберите дату</option>
+              ${availableDatesHTML}
+            </select>
           </div>
-        `;
 
-        // Добавляем функцию для выбора времени
-        window.updateAvailableTimes = function(masterId) {
-          const selectedDate = document.getElementById('appointment-date').value;
-          const selectedDayOfWeek = new Date(selectedDate).getDay();
-          const selectedDayOfWeekString = String(selectedDayOfWeek);
+          <div class="form-group">
+            <label>Выберите время:</label>
+            <select class="popup-input" id="appointment-time" disabled>
+              <option value="">Выберите время</option>
+            </select>
+          </div>
 
-          const appointmentTimeSelect = document.getElementById('appointment-time');
-          appointmentTimeSelect.disabled = false;
-          appointmentTimeSelect.innerHTML = '<option value="">Выберите время</option>';
-
-          if (availableSlots && availableSlots[selectedDayOfWeekString]) {
-            availableSlots[selectedDayOfWeekString].forEach(time => {
-              appointmentTimeSelect.innerHTML += `<option value="${selectedDate}T${time}">${time}</option>`;
-            });
-          } else {
-            appointmentTimeSelect.innerHTML = '<option value="">Нет доступных слотов на этот день</option>';
-            appointmentTimeSelect.disabled = true;
-          }
-        }
-
-      } else {
-        // Мастер с указанным ID не найден
-        console.error(`Мастер с ID ${masterId} не найден`);
-        content.innerHTML = `
-          <div class="dialog-container">
-            <h3 class="dialog-title">Мастер не найден</h3>
-            <p>Пожалуйста, попробуйте позже</p>
+          <div class="popup-buttons">
+            <button onclick="saveDateTimeAndShowSixthPage('${serviceName}', ${servicePrice}, '${locationName}', ${masterId}, ${serviceId}, '${locationId}')">Далее</button>
             <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}', '${locationId}')">Назад</button>
           </div>
-        `;
+        </div>
+      `;
+
+      // Добавляем функцию для выбора времени
+      window.updateAvailableTimes = function(masterId) {
+        const selectedDate = document.getElementById('appointment-date').value;
+        const selectedDayOfWeek = new Date(selectedDate).getDay();
+        const selectedDayOfWeekString = String(selectedDayOfWeek);
+
+        const appointmentTimeSelect = document.getElementById('appointment-time');
+        appointmentTimeSelect.disabled = false;
+        appointmentTimeSelect.innerHTML = '<option value="">Выберите время</option>';
+
+        if (availableSlots && availableSlots[selectedDayOfWeekString]) {
+          availableSlots[selectedDayOfWeekString].forEach(time => {
+            appointmentTimeSelect.innerHTML += `<option value="${selectedDate}T${time}">${time}</option>`;
+          });
+        } else {
+          appointmentTimeSelect.innerHTML = '<option value="">Нет доступных слотов на этот день</option>';
+          appointmentTimeSelect.disabled = true;
+        }
       }
+      setTimeout(() => {
+        const appointmentDateSelect = document.getElementById('appointment-date');
+        if (appointmentDateSelect) {
+          appointmentDateSelect.dispatchEvent(new Event('change'));
+        }
+      }, 0);
+
+    } else {
+      // Мастер с указанным ID не найден
+      console.error(`Мастер с ID ${masterId} не найден`);
+      content.innerHTML = `
+        <div class="dialog-container">
+          <h3 class="dialog-title">Мастер не найден</h3>
+          <p>Пожалуйста, попробуйте позже</p>
+          <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}', '${locationId}')">Назад</button>
+        </div>
+      `;
+    }
   } catch (error) {
     console.error('Ошибка получения информации о мастере:', error);
     content.innerHTML = `
