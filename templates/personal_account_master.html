@@ -89,7 +89,14 @@
 <script>
 function saveChanges() {
 
-    const masterId = 3;
+    // 1. Получаем masterId из скрытого поля
+    const masterIdElement = document.getElementById('masterId');
+    if (!masterIdElement) {
+        console.error('Элемент с id="masterId" не найден.');
+        alert('Ошибка: Не удалось найти элемент с id="masterId".');
+        return;
+    }
+    const masterId = masterIdElement.value;
 
     if (!masterId || isNaN(masterId)) {
       console.error('Недопустимый ID мастера.');
