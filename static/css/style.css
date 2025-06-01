@@ -1645,6 +1645,12 @@ footer-logo img {
     margin-top: 60px;
     gap: 20px;
 }
+/* Стилизация ссылки Telegram */
+.salon-info a {
+    color: #0088cc;
+    text-decoration: none;
+    transition: color 0.2s;
+}
 
 .salon-info div {
     flex: 1 1 150px;
@@ -1659,11 +1665,6 @@ footer-logo img {
 .salon-info div:last-child {
     text-align: right;
 }
-
-.online-booking {
-    text-decoration: underline;
-}
-
 
 /* Адаптация для планшетов и мобильных */
 @media (max-width: 768px) {
