@@ -460,19 +460,23 @@ def personal_account_master():
 
                 if not auth_result.get("verified", False):
                     return render_template("LK_enter.html",
-                                           error=auth_result.get("message", "Неверные учетные данные"))
+                                       error=auth_result.get("message", "Неверные учетные данные"))
 
-                # 2. Если проверка успешна, получаем данные мастера с id=3
-                get_master_url = "http://82.202.142.17:8000/master"
+                # 2. Получаем ID мастера из ответа
+                master_id = auth_result.get("master_id")
+                if not master_id:
+                    return render_template("LK_enter.html", error="Не удалось получить ID мастера")
 
-                # Отправляем GET-запрос для получения всех мастеров
-                response = requests.get(get_master_url, headers=headers, timeout=5)
-                response.raise_for_status()
-                masters_data = response.json()
+                # 3. Получаем данные мастера по его ID с API (исправленный URL)
+                master_data_url = f"http://82.202.142.17:8000/master/id/{master_id}"
+                master_response = requests.get(master_data_url, headers=headers, timeout=5)
+                master_response.raise_for_status()
+                master_result = master_response.json()
 
-                # Находим мастера с id=3
-                master_data = next((m for m in masters_data if m.get("id") == 3), None)
+                if not master_result.get("ok", False):
+                    return render_template("LK_enter.html", error="Данные мастера не найдены")
 
+                master_data = master_result.get("master")
                 if not master_data:
                     return render_template("LK_enter.html", error="Данные мастера не найдены")
 
