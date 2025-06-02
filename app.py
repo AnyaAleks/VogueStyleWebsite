@@ -202,6 +202,30 @@ def home():
     #
     #     # Render the index.html template and pass the services data to it
 
+        # Для каждого мастера получаем URL фотографии
+        for master in all_masters:
+            if 'id' in master:
+                try:
+                    photo_url = f"http://82.202.142.17:8000/master/photo/{master['id']}"
+                    photo_response = requests.get(photo_url)
+                    photo_response.raise_for_status()
+                    photo_data = photo_response.json()
+
+                    if photo_data.get('ok') and photo_data.get('photo_url'):
+                        master['photo_url'] = photo_data['photo_url']['_url']
+                    else:
+                        master['photo_url'] = None
+                except Exception as e:
+                    print(f"Error fetching photo for master {master['id']}: {str(e)}")
+                    master['photo_url'] = None
+
+        # Получаем список услуг
+        api_url_services = "http://82.202.142.17:8000/services"
+        services_response = requests.get(api_url_services)
+        services_response.raise_for_status()
+        all_services = services_response.json()
+        services_list = all_services['services']
+
         return render_template("index.html", services=services_list, masters=all_masters)
 
     except Exception as e:

@@ -1,7 +1,7 @@
 <div class="slide">
     <div class="master-photo">
-        {% if master.photo %}
-            <img src="https://ania.cleverlive.pro/VogueStyle_MastersPhoto/{{ master.photo }}"
+        {% if master.photo_url %}
+            <img src="{{ master.photo_url }}"
                  alt="{{ master.name }}"
                  class="master-photo-img">
         {% else %}
