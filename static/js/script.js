@@ -998,7 +998,7 @@ async function showSixthPage(serviceName, servicePrice, locationName, masterId, 
                         </div>
                     </div>
                      <div class="input-field">
-                        <label for="tg_link">Ссылка на телеграм*</label>
+                        <label for="tg_link">Ссылка на телеграм</label>
                         <input type="tel" id="tg_link" required>
                     </div>
                     <div class="popup-buttons">
@@ -1035,7 +1035,7 @@ async function showSixthPage(serviceName, servicePrice, locationName, masterId, 
                         </div>
                     </div>
                     <div class="input-field">
-                        <label for="tg_link">Ссылка на телеграм*</label>
+                        <label for="tg_link">Ссылка на телеграм</label>
                         <input type="tel" id="tg_link" required>
                     </div>
                     <div class="popup-buttons">
@@ -1073,7 +1073,7 @@ async function showSixthPage(serviceName, servicePrice, locationName, masterId, 
                         <input type="tel" id="phoneNumber" placeholder="+7 (900) 123-45-67" required>
                     </div>
                     <div class="input-field">
-                        <label for="tg_link">Ссылка на телеграм*</label>
+                        <label for="tg_link">Ссылка на телеграм</label>
                         <input type="tel" id="tg_link" required>
                     </div>
                     <div class="popup-buttons">
@@ -1135,19 +1135,18 @@ function confirmAppointment(masterId, serviceName, servicePrice, locationName, s
         return;
     }
 
-    const datetime = `${selectedDate} ${selectedTime}:00`;
+    const datetime = `${selectedTime}:00`;
     bookMaster(masterId, serviceName, servicePrice, locationName, datetime, lastName, firstName, middleName, phoneNumber, serviceId, locationId, tg_link);
 }
 
 function bookMaster(masterId, serviceName, servicePrice, locationName, datetime, lastName, firstName, middleName, phoneNumber, serviceId, locationId, tg_link) {
     const requestsUrl = 'http://82.202.142.17:8000/requests';
     const getUserByPhoneUrl = `http://82.202.142.17:8000/user/phone/${phoneNumber}`;
-    const createUserUrl = 'http://82.202.142.17:8000/user/'; //  Обратите внимание на слеш
-    const linkTelegramUrl = 'http://82.202.142.17:8000/user/link'; // URL для привязки Telegram
+    const createUserUrl = 'http://82.202.142.17:8000/user/';
 
     // Вспомогательная функция для отправки POST-запроса и получения данных
     async function postData(url, data) {
-        console.log(`Отправка POST запроса на ${url} с данными:`, JSON.stringify(data));  // Логируем отправляемые данные
+        console.log(`Отправка POST запроса на ${url} с данными:`, JSON.stringify(data));
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -1159,153 +1158,108 @@ function bookMaster(masterId, serviceName, servicePrice, locationName, datetime,
             console.log(`Ответ от ${url}:`, response);
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('Ошибка ответа API:', errorData); // Логируем ошибки от API
+                console.error('Ошибка ответа API:', errorData);
+                if (errorData.detail && Array.isArray(errorData.detail)) {
+                    errorData.detail.forEach(err => {
+                        console.error('Ошибка валидации:', err);
+                        alert(`Ошибка валидации: ${err.loc ? err.loc.join('.') + ': ' : ''}${err.msg}`);
+                    });
+                } else {
+                    alert(`Ошибка при создании: ${errorData.message || 'Неизвестная ошибка'}`);
+                }
                 throw new Error(`HTTP error! status: ${response.status} - ${errorData.message || 'Unknown error'}`);
             }
             const responseData = await response.json();
-            console.log(`Успешный ответ от ${url}:`, responseData);  // Логируем успешные ответы
+            console.log(`Успешный ответ от ${url}:`, responseData);
             return responseData;
         } catch (error) {
             console.error('Ошибка при отправке данных:', error);
-            throw error; // Повторно кидаем ошибку, чтобы ее обработал вызывающий код
+            alert(`Ошибка при отправке данных: ${error.message}`);
+            throw error;
         }
     }
-
-    // Функция для создания записи о заявке
     async function bookAppointment(userId) {
+        const datetime2 = datetime.slice(0, -3);
         const data = {
             master_id: masterId,
             service_id: serviceId,
             user_id: userId,
-            schedule_at: datetime,
+            schedule_at: datetime2
         };
 
-        console.log("Попытка создать заявку с данными:", JSON.stringify(data)); // Логируем данные заявки
+        console.log("Данные для создания заявки:", JSON.stringify(data));
+
         try {
             const requestData = await postData(requestsUrl, data);
-            console.log('Заявка успешно создана:', requestData);
             alert(`Вы записаны на ${serviceName} в ${locationName} за ${servicePrice} ₽ на ${datetime}`);
-            document.getElementById('pop-up').close(); // Закрываем диалоговое окно
+            document.getElementById('pop-up').close();
+            return requestData.user_id;
         } catch (error) {
             console.error('Ошибка при создании заявки:', error);
-            alert(`Ошибка при создании заявки: ${error.message}`);
+            return null;
         }
     }
 
-
-    // Функция для привязки Telegram ID к существующему пользователю
-    async function linkTelegram(userId, tgId) {
-        const data = {
-            phone: phoneNumber,  //  Убедитесь, что передаете телефон
-            tg_id: tgId
+    async function createUserAndBookAppointment() {
+        const newUser = {
+            name: firstName,
+            surname: lastName,
+            patronymic: middleName,
+            birthday: "2000-06-01", // Замените на динамическую
+            phone: phoneNumber
         };
-        console.log("Попытка привязать Telegram с данными:", JSON.stringify(data));
+        console.log("Данные для создания пользователя:", JSON.stringify(newUser));
+
         try {
-            const response = await fetch(linkTelegramUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            if (response.ok) {
-                 const responseData = await response.json();
-                console.log('Telegram ID успешно привязан:', responseData);
-            } else {
-                const errorData = await response.json();
-                console.error('Ошибка при привязке Telegram:', errorData);
-                alert(`Ошибка при привязке Telegram: ${errorData.message}`);
-            }
+            const createdUserData = await postData(createUserUrl, newUser);
+            const userId = createdUserData.user_id;
+            console.log("Пользователь создан:", userId);
+            await bookAppointment(userId);
         } catch (error) {
-            console.error('Ошибка при привязке Telegram:', error);
-            alert(`Ошибка при привязке Telegram: ${error.message}`);
+            console.error('Ошибка при создании пользователя и записи:', error);
+            alert(`Ошибка при создании пользователя и записи: ${error.message}`);
         }
     }
 
-    // Функция для форматирования номера телефона
-    function formatPhoneNumber(phoneNumber) {
-        // Удаляем все символы, кроме цифр
-        let cleaned = ("" + phoneNumber).replace(/\D/g, "");
+    function formatDateTime(datetime) {
+    const date = new Date(datetime);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
 
-        // Если номер начинается с 7 или 8, заменяем на +7
-        if (cleaned.startsWith('7') || cleaned.startsWith('8')) {
-            cleaned = '+7' + cleaned.slice(1);
-        } else if (cleaned.length === 10) { // Если нет кода страны
-            cleaned = '+7' + cleaned;
-        }
-        // Добавляем сюда любые другие необходимые преобразования
-
-        return cleaned;
-    }
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
 
     // 1. Получаем пользователя по номеру телефона
     fetch(getUserByPhoneUrl)
         .then(response => {
             console.log("Запрос на получение пользователя по телефону:", getUserByPhoneUrl);
-            console.log("Ответ на запрос получения пользователя:", response);
             if (response.ok) {
                 return response.json();
-            } else if (response.status === 404) { // Если пользователь не найден (404)
-                return null; // Возвращаем null, чтобы указать, что пользователя нет
+            } else if (response.status === 404) {
+                return null;
             } else {
                 throw new Error(`Ошибка при получении пользователя: ${response.status} ${response.statusText}`);
             }
         })
-        .then(async userData => { // Добавлено async
-            if (userData && userData.ok) { // Пользователь найден
+        .then(async userData => {
+            if (userData && userData.user) {
                 const userId = userData.user.id;
                 console.log("Пользователь найден:", userData);
-                // Записываем пользователя на услугу (с найденным ID)
-                await bookAppointment(userId); // Добавлено await
-            } else { // Пользователь не найден, создаем нового
+                await bookAppointment(userId);
+            } else {
                 console.log("Пользователь не найден. Создаем нового...");
-
-                // Форматируем номер телефона перед регистрацией
-                const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
-
-                // 2. Привязываем Telegram (если есть)
-                if (tg_link) {
-                  try{
-                    await linkTelegram(null, tg_link); // Привязываем Telegram  (передаем null для id, т.к. пользователя еще нет)
-                  }catch(e){
-                    console.error("Ошибка при привязке tg перед регистрацией:", e);
-                    alert("Ошибка при привязке tg перед регистрацией:" + e.message);
-                    return; // Не продолжаем, если не удалось привязать TG.
-                  }
-
-                }
-
-                const newUser = {
-                    name: firstName,
-                    surname: lastName,
-                    patronymic: middleName,
-                    birthday: "2000-06-01", // !!!Заменить на динамическую
-                    tg_id: tg_link || null, //  Использовать tg_link или null, если поле пустое  - САМОЕ ВАЖНОЕ ИЗМЕНЕНИЕ
-                    phone: formattedPhoneNumber
-                };
-
-                console.log("Данные для создания пользователя:", JSON.stringify(newUser)); // Логируем данные пользователя
-
-                try {
-                    const createdUserData = await postData(createUserUrl, newUser); // Используем вспомогательную функцию
-                    if (createdUserData) {
-                        const userId = createdUserData.id;
-                        console.log("Пользователь создан:", createdUserData);
-                        // 3. Записываем пользователя на услугу (с созданным ID)
-                        await bookAppointment(userId); // Добавлено await
-                    }
-                } catch (error) {
-                    console.error('Ошибка при создании пользователя:', error);
-                    alert(`Ошибка при создании пользователя: ${error.message}`); // Выводим сообщение об ошибке
-                }
+                await createUserAndBookAppointment();
             }
         })
         .catch(error => {
             console.error('Общая ошибка:', error);
-            alert(`Общая ошибка: ${error.message}`); // Выводим сообщение об ошибке
+            alert(`Общая ошибка: ${error.message}`);
         });
 }
-
 
 
 
