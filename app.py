@@ -283,101 +283,39 @@ def api_id():
 # Web route to view all services in the browser
 @app.route("/masters", methods=["GET"])
 @app.route("/master/masters", methods=["GET"])
-@app.route("/client/masters",  methods=["GET"])
+@app.route("/client/masters", methods=["GET"])
 def view_masters():
     try:
         # Получаем данные мастеров с сервера
         api_url_masters = "http://82.202.142.17:8000/master"
-        masters_list = requests.get(api_url_masters).json()
-        print("masters_list", masters_list)
+        response = requests.get(api_url_masters)
+        response.raise_for_status()  # Проверяем на ошибки HTTP
+        masters_list = response.json()
 
-        # api_url_masters = "http://82.202.142.17:8000/master"
-        # all_masters = requests.get(api_url_masters).json()
-        # masters_list = all_masters['masters']
+        # Для каждого мастера получаем URL фотографии
+        for master in masters_list:
+            if 'id' in master:
+                try:
+                    photo_url = f"http://82.202.142.17:8000/master/photo/{master['id']}"
+                    photo_response = requests.get(photo_url)
+                    photo_response.raise_for_status()
+                    photo_data = photo_response.json()
 
-        masters_add = [
-            {
-                "id": 1,
-                "photo": "vogue_1.jpg",
-                "name": "Иванова Анна",
-                "job": "Топ-стилист, колорист",
-                "specialization": "Окрашивание, уход за волосами",
-                "experience": 8,
-                "education": "Высшее образование: Московский институт красоты. Курсы повышения квалификации в Лондоне и Милане.",
-                "certificates": [
-                    "Сертификат L'Oréal Professionnel",
-                    "Диплом Wella Professionals",
-                    "Мастер-класс Tony&Guy"
-                ],
-                "services": [
-                    "Сложное окрашивание",
-                    "Кератиновое восстановление",
-                    "Авторские стрижки"
-                ]
-            },
-            {
-                "id": 2,
-                "photo": "vogue_2.jpg",
-                "name": "Петров Сергей",
-                "job": "Барбер-стилист",
-                "specialization": "Мужские стрижки, бороды",
-                "experience": 5,
-                "education": "Школа барберов «OldBoy». Мастер-классы в Берлине и Варшаве.",
-                "certificates": [
-                    "Сертификат BarberPro",
-                    "Диплом Schorem Academy",
-                    "Курс «Современные техники бритья»"
-                ],
-                "services": [
-                    "Классическая стрижка",
-                    "Королевское бритье",
-                    "Уход за бородой",
-                    "Оформление усов"
-                ]
-            },
-            {
-                "id": 3,
-                "photo": "vogue_3.jpg",
-                "name": "Смирнова Екатерина",
-                "job": "Визажист-стилист",
-                "specialization": "Вечерний и свадебный макияж",
-                "experience": 6,
-                "education": "Академия визажа MakeUpAtelier. Стажировка в Париже у Christophe Danchaud.",
-                "certificates": [
-                    "Сертификат MAC Pro",
-                    "Диплом по airbrush макияжу",
-                    "Курс «Свадебный макияж»"
-                ],
-                "services": [
-                    "Свадебный макияж",
-                    "Вечерний макияж",
-                    "Smoky eyes",
-                    "Контурная пластика"
-                ]
-            }
-        ]
+                    if photo_data.get('ok') and photo_data.get('photo_url'):
+                        master['photo_url'] = photo_data['photo_url']['_url']
+                    else:
+                        master['photo_url'] = None
+                except Exception as e:
+                    print(f"Error fetching photo for master {master['id']}: {str(e)}")
+                    master['photo_url'] = None
 
-    # try:
-    #     conn = get_db_connection()
-    #     cursor = conn.cursor()
-    #
-    #     # Execute a SQL query to fetch all services and their prices
-    #     cursor.execute(
-    #         """
-    #         SELECT s.id, s.name as service, p.price
-    #         FROM services s
-    #         JOIN prices p ON s.id = p.service_id
-    #     """
-    #     )
-    #     # Fetch all rows from the query result
-    #     services = cursor.fetchall()
-    #
-    #     cursor.close()
-    #     conn.close()
-    #
         return render_template("masters.html", masters=masters_list)
     except Exception as e:
+        print(f"Error in view_masters: {str(e)}")
         return render_template("error.html", error=str(e))
+
+
+
 
 @app.route("/about", methods=["GET"])
 @app.route("/master/about", methods=["GET"])

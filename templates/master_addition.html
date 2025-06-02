@@ -1,8 +1,8 @@
 <div class="profile-container">
     <div class="profile-image-wrapper">
         <div class="profile-image-box">
-            {% if master.photo %}
-                <img src="https://ania.cleverlive.pro/VogueStyle_MastersPhoto/{{ master.photo }}" alt="Фото {{ master.name }}" class="profile-image">
+            {% if master.photo_url %}
+                <img src="{{ master.photo_url }}" alt="Фото {{ master.name }}" class="profile-image">
             {% else %}
                 <div class="profile-image-placeholder">Фото не загружено</div>
             {% endif %}
