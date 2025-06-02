@@ -81,6 +81,50 @@
                 </div>
             </div>
         </div>
+
+        <!-- Блок для добавления услуг -->
+        <div class="lk-services-section">
+            <h2 class="lk-subtitle">Мои услуги</h2>
+            <div id="services-container">
+                <!-- Существующие услуги будут добавляться здесь -->
+            </div>
+            <div class="lk-form-group">
+                <label class="lk-label">Новая услуга</label>
+                <div class="service-form">
+                    <input type="text" class="lk-input" id="service-name" placeholder="Название услуги">
+                    <input type="text" class="lk-input" id="service-description" placeholder="Описание">
+                    <input type="number" class="lk-input" id="service-price" placeholder="Цена">
+                    <input type="number" class="lk-input" id="service-duration" placeholder="Длительность (минуты)">
+                    <button type="button" class="lk-btn lk-btn-add" onclick="addService()">Добавить услугу</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок для добавления расписания -->
+        <div class="lk-schedule-section">
+            <h2 class="lk-subtitle">Мое расписание</h2>
+            <div id="schedule-container">
+                <!-- Существующее расписание будет добавляться здесь -->
+            </div>
+            <div class="lk-form-group">
+                <label class="lk-label">Добавить время работы</label>
+                <div class="schedule-form">
+                    <select class="lk-input" id="schedule-weekday">
+                        <option value="1">Понедельник</option>
+                        <option value="2">Вторник</option>
+                        <option value="3">Среда</option>
+                        <option value="4">Четверг</option>
+                        <option value="5">Пятница</option>
+                        <option value="6">Суббота</option>
+                        <option value="7">Воскресенье</option>
+                    </select>
+                    <input type="time" class="lk-input" id="schedule-start">
+                    <input type="time" class="lk-input" id="schedule-end">
+                    <button type="button" class="lk-btn lk-btn-add" onclick="addSchedule()">Добавить расписание</button>
+                </div>
+            </div>
+        </div>
+
         <div class="lk-action-buttons">
           <button type="button" class="lk-btn lk-btn-save" onclick="saveChanges()">
             СОХРАНИТЬ ИЗМЕНЕНИЯ
@@ -392,5 +436,111 @@
             });
         }
     });
+
+
+    // Функция для добавления новой услуги
+    async function addService() {
+        const name = document.getElementById('service-name').value;
+        const description = document.getElementById('service-description').value;
+        const price = document.getElementById('service-price').value;
+        const duration = document.getElementById('service-duration').value;
+        const masterId = document.getElementById('masterId').value;
+
+        if (!name || !price || !duration) {
+            alert('Пожалуйста, заполните все обязательные поля (название, цена, длительность)');
+            return;
+        }
+
+        const serviceData = {
+            name: name,
+            description: description,
+            price: parseFloat(price),
+            time_minutes: parseInt(duration)
+        };
+
+        try {
+            const response = await fetch('http://82.202.142.17:8000/services', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(serviceData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при создании услуги');
+            }
+
+            const result = await response.json();
+            if (result.ok) {
+                alert('Услуга успешно добавлена!');
+                // Очищаем поля формы
+                document.getElementById('service-name').value = '';
+                document.getElementById('service-description').value = '';
+                document.getElementById('service-price').value = '';
+                document.getElementById('service-duration').value = '';
+                // Обновляем список услуг
+                loadServices();
+            } else {
+                throw new Error(result.message || 'Неизвестная ошибка');
+            }
+        } catch (error) {
+            console.error('Ошибка при добавлении услуги:', error);
+            alert('Ошибка при добавлении услуги: ' + error.message);
+        }
+    }
+
+    // Функция для добавления расписания
+    async function addSchedule() {
+        const weekday = document.getElementById('schedule-weekday').value;
+        const startTime = document.getElementById('schedule-start').value;
+        const endTime = document.getElementById('schedule-end').value;
+        const masterId = document.getElementById('masterId').value;
+
+        if (!startTime || !endTime) {
+            alert('Пожалуйста, укажите время начала и окончания работы');
+            return;
+        }
+
+        const scheduleData = {
+            master_id: parseInt(masterId),
+            weekday: parseInt(weekday),
+            start_time: startTime + ':00Z', // Формат времени для API
+            end_time: endTime + ':00Z'
+        };
+
+        try {
+            const response = await fetch('http://82.202.142.17:8000/master-schedules', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(scheduleData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка при добавлении расписания');
+            }
+
+            const result = await response.json();
+            if (result.ok) {
+                alert('Расписание успешно добавлено!');
+                // Очищаем поля формы
+                document.getElementById('schedule-start').value = '';
+                document.getElementById('schedule-end').value = '';
+                // Обновляем список расписания
+                loadSchedule();
+            } else {
+                throw new Error(result.message || 'Неизвестная ошибка');
+            }
+        } catch (error) {
+            console.error('Ошибка при добавлении расписания:', error);
+            alert('Ошибка при добавлении расписания: ' + error.message);
+        }
+    }
+
+
 </script>
 {% endblock %}

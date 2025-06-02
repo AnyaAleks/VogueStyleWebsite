@@ -2510,15 +2510,58 @@ body.appointment-modal-active {
 }
 
 .appointment-delete-btn {
-        background-color: #ff4444;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
 
-    .appointment-delete-btn:hover {
-        background-color: #cc0000;
-    }
+.appointment-delete-btn:hover {
+    background-color: #cc0000;
+}
+
+/* Стили для секций услуг и расписания */
+.lk-services-section, .lk-schedule-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.lk-subtitle {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.service-form, .schedule-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.service-form input, .schedule-form select, .schedule-form input {
+    flex: 1;
+    min-width: 150px;
+}
+
+.service-item, .schedule-item {
+    background: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.lk-btn-add {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.lk-btn-add:hover {
+    background-color: #45a049;
+}
