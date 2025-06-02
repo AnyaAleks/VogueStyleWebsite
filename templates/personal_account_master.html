@@ -129,13 +129,19 @@
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return response.json();
+            return response.blob();  // Получаем blob (двоичные данные)
           })
-          .then(data => {
-            console.log('Успешно обновлено:', data);
+          .then(blob => {
+            console.log('Успешно обновлено:', blob);
             alert('Данные мастера успешно обновлены!');
-            // Можно обновить данные на странице (например, через перезагрузку)
-            window.location.reload(); //  Перезагрузка страницы для отображения нового фото
+
+            // Создаем URL из Blob
+            const photoPreview = document.getElementById('photo-preview');
+            if (photoPreview) {
+              photoPreview.src = URL.createObjectURL(blob);  //  Создаем URL из Blob
+            }
+            //  Перезагрузка страницы больше не нужна
+            // window.location.reload(); //  Перезагрузка страницы для отображения нового фото
           })
           .catch(error => {
             console.error('Ошибка при обновлении данных мастера:', error);
