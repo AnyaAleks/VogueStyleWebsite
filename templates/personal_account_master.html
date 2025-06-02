@@ -110,13 +110,13 @@
                 <label class="lk-label">Добавить время работы</label>
                 <div class="schedule-form">
                     <select class="lk-input" id="schedule-weekday">
-                        <option value="1">Понедельник</option>
-                        <option value="2">Вторник</option>
-                        <option value="3">Среда</option>
-                        <option value="4">Четверг</option>
-                        <option value="5">Пятница</option>
-                        <option value="6">Суббота</option>
-                        <option value="7">Воскресенье</option>
+                        <option value="0">Понедельник</option>
+                        <option value="1">Вторник</option>
+                        <option value="2">Среда</option>
+                        <option value="3">Четверг</option>
+                        <option value="4">Пятница</option>
+                        <option value="5">Суббота</option>
+                        <option value="6">Воскресенье</option>
                     </select>
                     <input type="time" class="lk-input" id="schedule-start">
                     <input type="time" class="lk-input" id="schedule-end">
@@ -459,6 +459,7 @@
         };
 
         try {
+            // 1. Добавляем услугу
             const response = await fetch('http://82.202.142.17:8000/services', {
                 method: 'POST',
                 headers: {
@@ -475,6 +476,34 @@
             const result = await response.json();
             if (result.ok) {
                 alert('Услуга успешно добавлена!');
+
+                // 2. Связываем услугу с мастером
+                const serviceId = result.service_id; // Предполагаем, что ID услуги возвращается в результате
+                const linkData = {
+                    master_id: masterId,
+                    service_id: serviceId
+                };
+
+                const linkResponse = await fetch('http://82.202.142.17:8000/services/link', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(linkData)
+                });
+
+                if (!linkResponse.ok) {
+                    throw new Error('Ошибка при связывании услуги с мастером');
+                }
+
+                const linkResult = await linkResponse.json();
+                if (linkResult.ok) {
+                    alert('Услуга успешно связана с мастером!');
+                } else {
+                    throw new Error(linkResult.message || 'Неизвестная ошибка при связывании');
+                }
+
                 // Очищаем поля формы
                 document.getElementById('service-name').value = '';
                 document.getElementById('service-description').value = '';
@@ -487,9 +516,9 @@
             }
         } catch (error) {
             console.error('Ошибка при добавлении услуги:', error);
-            alert('Ошибка при добавлении услуги: ' + error.message);
         }
     }
+
 
     // Функция для добавления расписания
     async function addSchedule() {
@@ -537,7 +566,6 @@
             }
         } catch (error) {
             console.error('Ошибка при добавлении расписания:', error);
-            alert('Ошибка при добавлении расписания: ' + error.message);
         }
     }
 
