@@ -782,48 +782,41 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
 
             let availableDatesHTML = '';
             const today = new Date();
-            const currentDayOfWeek = today.getDay()-1; // 0 - Sunday, 1 - Monday, ... 6 - Saturday
-            const daysOfWeek = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+            today.setHours(0, 0, 0, 0); // Убираем время для точного сравнения дат
 
-            console.log(`Текущая дата: ${today}, День недели (0-6): ${currentDayOfWeek}`);
+            // Конвертация из JS формата (0=вс) в ваш (0=пн)
+            const currentJsDayOfWeek = today.getDay();
+            const currentYourDayOfWeek = currentJsDayOfWeek === 0 ? 6 : currentJsDayOfWeek - 1;
 
-            // Определяем дату понедельника текущей недели
+            console.log(`Текущая дата: ${today}, День недели (JS): ${currentJsDayOfWeek}, (Ваш): ${currentYourDayOfWeek}`);
+
+            // Находим дату понедельника (по вашему формату)
             const startOfWeek = new Date(today);
-            startOfWeek.setDate(today.getDate() - (currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1)); // Вычисляем понедельник
+            startOfWeek.setDate(today.getDate() - currentYourDayOfWeek);
 
             console.log(`Понедельник текущей недели: ${startOfWeek}`);
 
-            // Генерация дат для текущей недели с фильтрацией
+            // Генерация дат для текущей недели
             for (let i = 0; i < 7; i++) {
                 const currentDate = new Date(startOfWeek);
-                currentDate.setDate(startOfWeek.getDate() + i); // Добавляем дни, начиная с понедельника
+                currentDate.setDate(startOfWeek.getDate() + i);
 
-                const dayOfWeek = currentDate.getDay(); // 0 - Sunday, 1 - Monday, 2 - Tuesday, ... 6 - Saturday
-                const dayOfWeekString = String(dayOfWeek); // Преобразуем в строку для ключа availableSlots
+                const jsDayOfWeek = currentDate.getDay();
+                const yourDayOfWeek = jsDayOfWeek === 0 ? 6 : jsDayOfWeek - 1;
+                const yourDayOfWeekString = String(yourDayOfWeek);
                 const formattedDate = formatDate(currentDate);
-                const formattedDateWithWords = `${getDayName(dayOfWeek)}, ${currentDate.getDate()} ${getMonthName(currentDate.getMonth())}`;
+                const formattedDateWithWords = `${getDayName(yourDayOfWeek)}, ${currentDate.getDate()} ${getMonthName(currentDate.getMonth())}`;
 
-                console.log(`
-                    i: ${i},
-                    currentDate: ${currentDate},
-                    dayOfWeek: ${dayOfWeek},
-                    dayOfWeekString: ${dayOfWeekString},
-                    formattedDate: ${formattedDate},
-                    formattedDateWithWords: ${formattedDateWithWords}
-                `);
+                console.log(`Дата: ${currentDate}, JS день: ${jsDayOfWeek}, Ваш день: ${yourDayOfWeek}`);
 
-                // Проверяем, есть ли доступные слоты для этого дня недели и не прошла ли дата
-                if (availableSlots && availableSlots[dayOfWeekString] && currentDate >= today) {
-                    console.log(`Для дня недели ${dayOfWeekString} есть доступные слоты`);
+                // Проверяем доступные слоты
+                if (availableSlots && availableSlots[yourDayOfWeekString] && currentDate >= today) {
+                    console.log(`Доступные слоты для ${formattedDateWithWords}`);
                     availableDatesHTML += `
                         <option value="${formattedDate}">${formattedDateWithWords}</option>
                     `;
-                } else {
-                    console.log(`Для дня недели ${dayOfWeekString} НЕТ доступных слотов или дата прошла`);
                 }
             }
-
-            console.log("Сгенерированный HTML для дат:", availableDatesHTML);
 
             content.innerHTML = `
                 <div class="dialog-container">
@@ -843,7 +836,7 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
                     <div class="form-group">
                         <label>Выберите время:</label>
                         <select class="popup-input" id="appointment-time" disabled>
-                            <option value="">Выберите время</option>
+                            <option value="">Сначала выберите дату</option>
                         </select>
                     </div>
 
@@ -854,38 +847,25 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
                 </div>
             `;
 
-            // Добавляем функцию для выбора времени
             window.updateAvailableTimes = function(masterId) {
                 const selectedDate = document.getElementById('appointment-date').value;
-                const selectedDayOfWeek = new Date(selectedDate).getDay(); // 0 - Sunday, 1 - Monday, ... 6 - Saturday
-                const selectedDayOfWeekString = String(selectedDayOfWeek);
+                const dateObj = new Date(selectedDate);
+                const jsDayOfWeek = dateObj.getDay();
+                const yourDayOfWeek = jsDayOfWeek === 0 ? 6 : jsDayOfWeek - 1;
+                const yourDayOfWeekString = String(yourDayOfWeek);
 
-                const appointmentTimeSelect = document.getElementById('appointment-time');
-                appointmentTimeSelect.disabled = false;
-                appointmentTimeSelect.innerHTML = '<option value="">Выберите время</option>';
+                const timeSelect = document.getElementById('appointment-time');
+                timeSelect.disabled = false;
+                timeSelect.innerHTML = '<option value="">Выберите время</option>';
 
-                if (availableSlots && availableSlots[selectedDayOfWeekString]) {
-                    availableSlots[selectedDayOfWeekString].forEach(time => {
-                        appointmentTimeSelect.innerHTML += `<option value="${selectedDate}T${time}">${time}</option>`;
+                if (availableSlots && availableSlots[yourDayOfWeekString]) {
+                    availableSlots[yourDayOfWeekString].forEach(time => {
+                        timeSelect.innerHTML += `<option value="${selectedDate}T${time}">${time}</option>`;
                     });
-                } else {
-                    appointmentTimeSelect.innerHTML = '<option value="">Нет доступных слотов на этот день</option>';
-                    appointmentTimeSelect.disabled = true;
                 }
             }
 
-             // Вызываем updateAvailableTimes для выбора времени по умолчанию (если есть выбранная дата)
-            setTimeout(() => {
-                const appointmentDateSelect = document.getElementById('appointment-date');
-                if (appointmentDateSelect && appointmentDateSelect.value) { // Проверяем, есть ли выбранная дата
-                   appointmentDateSelect.dispatchEvent(new Event('change'));
-                }
-            }, 0);
-
-
         } else {
-            // Мастер с указанным ID не найден
-            console.error(`Мастер с ID ${masterId} не найден`);
             content.innerHTML = `
                 <div class="dialog-container">
                     <h3 class="dialog-title">Мастер не найден</h3>
@@ -895,17 +875,17 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
             `;
         }
     } catch (error) {
-        console.error('Ошибка получения информации о мастере:', error);
+        console.error('Ошибка:', error);
         content.innerHTML = `
             <div class="dialog-container">
-                <h3 class="dialog-title">Ошибка загрузки данных</h3>
+                <h3 class="dialog-title">Ошибка загрузки</h3>
                 <p>Пожалуйста, попробуйте позже</p>
                 <button onclick="showThirdPage('${serviceName}', ${servicePrice}, '${locationName}', '${serviceId}', '${locationId}')">Назад</button>
             </div>
         `;
     }
 
-    // Функция для форматирования даты в "YYYY-MM-DD"
+    // Вспомогательные функции
     function formatDate(date) {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -913,23 +893,14 @@ async function showFifthPage(serviceName, servicePrice, locationName, masterId, 
         return `${year}-${month}-${day}`;
     }
 
-    // Функция для получения названия дня недели с названием месяца словом
-    function formatDateWithWords(date) {
-        const day = date.getDate();
-        const month = getMonthName(date.getMonth());
-        const dayName = getDayName(date.getDay());
-        return `${dayName}, ${day} ${month}`;
-    }
-
-    // Функция для получения названия дня недели по номеру
-    function getDayName(dayOfWeek) {
+    function getDayName(dayIndex) {
         const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
-        return days[dayOfWeek];
+        return days[dayIndex];
     }
 
-    function getMonthName(month) {
-        const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-        return months[month];
+    function getMonthName(monthIndex) {
+        const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+        return months[monthIndex];
     }
 }
 
