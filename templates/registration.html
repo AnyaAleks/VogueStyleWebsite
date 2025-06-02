@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация мастера{% endblock %}
+
+{% block content %}
+<div class="registration-container">
+    <h1 class="registration-title">Регистрация мастера</h1>
+    <form id="masterRegistrationForm" class="registration-form">
+        <div class="registration-form-layout">
+            <!-- Удалена левая колонка (фото) -->
+            <div class="registration-right-column">
+                <div class="form-row">
+                    <div class="registration-form-group">
+                        <label class="registration-label">Фамилия*</label>
+                        <input type="text" class="registration-input" name="surname" required>
+                    </div>
+                    <div class="registration-form-group">
+                        <label class="registration-label">Имя*</label>
+                        <input type="text" class="registration-input" name="name" required>
+                    </div>
+                </div>
+
+                <div class="registration-form-group">
+                    <label class="registration-label">Отчество</label>
+                    <input type="text" class="registration-input" name="patronymic">
+                </div>
+
+                <div class="registration-form-group">
+                    <label class="registration-label">Специализация*</label>
+                    <input type="text" class="registration-input" name="specialization" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="registration-form-group">
+                        <label class="registration-label">Опыт работы (лет)*</label>
+                        <input type="number" class="registration-input" name="experience" min="0" required>
+                    </div>
+                    <div class="registration-form-group">
+                        <label class="registration-label">Образование</label>
+                        <input type="text" class="registration-input" name="education">
+                    </div>
+                </div>
+
+                <div class="registration-form-group">
+                    <label class="registration-label">E-mail*</label>
+                    <input type="email" class="registration-input" name="email" required>
+                </div>
+
+                <div class="registration-form-group">
+                    <label class="registration-label">Телефон*</label>
+                    <input type="tel" class="registration-input" name="phone" required>
+                </div>
+
+                <div class="registration-form-group">
+                    <label class="registration-label">Локация*</label>
+                    <input type="text" class="registration-input" name="location" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="registration-form-group">
+                        <label class="registration-label">Пароль*</label>
+                        <input type="password" class="registration-input" name="password" required>
+                    </div>
+                    <div class="registration-form-group">
+                        <label class="registration-label">Подтвердите пароль*</label>
+                        <input type="password" class="registration-input" name="confirm_password" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="registration-action-buttons">
+            <button type="submit" class="registration-btn registration-btn-submit">
+                ЗАРЕГИСТРИРОВАТЬСЯ
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('masterRegistrationForm');
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // 1. Сбор данных из формы
+        const formData = new FormData(form); // Предполагаем, что 'form' - это ваш элемент формы
+
+        // 2. Преобразование FormData в JSON
+        const jsonData = {};
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+
+        // 3. (Опционально) Добавление других полей, если они не в форме
+        jsonData.location_id = 2; // Пример: Location ID
+
+        // 4. Отправка данных на сервер
+        try {
+            const response = await fetch('http://82.202.142.17:8000/master', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' // Важно: указываем тип контента
+                },
+                body: JSON.stringify(jsonData) // Преобразуем JSON-объект в строку
+            });
+
+            if (response.ok) {
+                // Обработка успешного ответа
+                const responseData = await response.json();
+                alert("Добро пожаловать!");
+                console.log('Успех:', responseData);
+                // Здесь можно обработать успешный ответ от сервера (например, показать сообщение об успехе)
+            } else {
+                // Обработка ошибки
+                console.error('Ошибка:', response.status, response.statusText);
+                // Здесь можно обработать ошибку (например, показать сообщение об ошибке)
+            }
+        } catch (error) {
+            console.error('Произошла ошибка:', error);
+            // Обработка общей ошибки (например, ошибка сети)
+        }
+    });
+});
+</script>
+
+<style>
+.registration-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.registration-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.registration-form-layout {
+    display: flex;
+    gap: 30px;
+}
+
+.registration-right-column {
+    flex: 2;
+}
+
+.registration-form-group {
+    margin-bottom: 20px;
+}
+
+.registration-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+
+.registration-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.registration-input:focus {
+    border-color: #4a90e2;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.registration-btn {
+    padding: 12px 25px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.registration-btn:hover {
+    background-color: #3a7bc8;
+}
+
+.registration-btn-submit {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    background-color: #2ecc71;
+}
+
+.registration-btn-submit:hover {
+    background-color: #27ae60;
+}
+
+.registration-action-buttons {
+    margin-top: 30px;
+}
+</style>
+{% endblock %}

@@ -351,42 +351,35 @@ def view_about():
         return render_template("error.html", error=str(e))
 
 
-# @app.route("/personal_account_master", methods=["GET", "POST"])
-# @app.route("/master/personal_account_master", methods=["GET", "POST"])
-# def personal_account_master():
-#     """Личный кабинет мастера с аутентификацией из БД"""
-#     try:
-#         master_data = {
-#             "id": 1,
-#             "last_name": "Иванов",
-#             "first_name": "Иван",
-#             "middle_name": "Иванович",
-#             "birth_date": "1990-01-01",
-#             "address": "г. Москва, ул. Примерная, д. 1",
-#             "email": "ivanov@example.com",
-#             "phone": "+79991234567",
-#             "photo": "/media/photos/master1.jpg",
-#             "login": "1234",  # Ожидаемый логин
-#             "master_password": "1234"  # Ожидаемый пароль (в реальном проекте используйте хеш!)
-#         }
-#
-#         if _siteVersion == _master:
-#             if request.method == "POST":
-#                 username = request.form.get("username", "").strip()
-#                 password = request.form.get("password", "").strip()
-#                 print(f"Введено: '{username}' (ожидаем '1234'), '{password}' (ожидаем '1234')")  # Отладочный вывод
-#
-#                 if username == master_data["login"] and password == master_data["master_password"]:
-#                     return render_template("personal_account_master.html", master=master_data)
-#                 else:
-#                     return render_template("LK_enter.html", error="Неверный логин или пароль")
-#
-#             return render_template("LK_enter.html")
-#         else:
-#             abort(403)  # Доступ запрещён
-#
-#     except Exception as e:
-#         return render_template("error.html", error=str(e)), 500
+@app.route("/registration", methods=["GET", "POST"])
+@app.route("/master/registration", methods=["GET", "POST"])
+def registration():
+    """Личный кабинет мастера с аутентификацией из БД"""
+    try:
+        master_data = {
+            "id": 1,
+            "last_name": "Иванов",
+            "first_name": "Иван",
+            "middle_name": "Иванович",
+            "birth_date": "1990-01-01",
+            "address": "г. Москва, ул. Примерная, д. 1",
+            "email": "ivanov@example.com",
+            "phone": "+79991234567",
+            "photo": "/media/photos/master1.jpg",
+            "login": "1234",  # Ожидаемый логин
+            "master_password": "1234"  # Ожидаемый пароль (в реальном проекте используйте хеш!)
+        }
+
+        if _siteVersion == _master:
+
+            return render_template("registration.html", master=master_data)
+
+            return render_template("LK_enter.html")
+        else:
+            abort(403)  # Доступ запрещён
+
+    except Exception as e:
+        return render_template("error.html", error=str(e)), 500
 
 
 @app.route("/personal_account_master", methods=["GET", "POST"])

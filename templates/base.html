@@ -41,6 +41,7 @@
             </div>
             {% if site_version == 'master' %}
                 <a href="/master/personal_account_master" class="mobile-nav-item {% if request.path == '/master/personal_account_master' %}active{% endif %}">ЛК</a>
+                <a href="/master/registration" class="mobile-nav-item {% if request.path == '/master/registration' %}active{% endif %}">РЕГИСТРАЦИЯ</a>
             {% endif %}
         </div>
 
@@ -71,6 +72,7 @@
 
                     {% if site_version == 'master' %}
                         <li class="nav-item"><a href="/master/personal_account_master" class="nav-link {% if request.path == '/master/personal_account_master' %}active{% endif %}">ЛК</a></li>
+                        <li class="nav-item"><a href="/master/registration" class="nav-link {% if request.path == '/master/registration' %}active{% endif %}">РЕГИСТРАЦИЯ</a></li>
                     {% endif %}
                 </div>
             </ul>
