@@ -149,6 +149,74 @@
           });
     }
 
+
+    // Функция для загрузки фотографии мастера с сервера
+    function loadMasterPhoto() {
+        // Получаем ID мастера из скрытого поля
+        const masterId = document.getElementById('masterId').value;
+
+        if (!masterId) {
+            console.error('ID мастера не найден');
+            return;
+        }
+
+        // URL для получения фотографии мастера
+        const apiUrl = `http://82.202.142.17:8000/master/photo/${masterId}`;
+
+        // Выполняем запрос к серверу
+        fetch(apiUrl, {
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // Если фото нет (404), просто выходим
+                if (response.status === 404) {
+                    return null;
+                }
+                throw new Error(`Ошибка HTTP! Статус: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Если получили URL фотографии
+            if (data && data.ok && data.photo_url && data.photo_url._url) {
+                updatePhotoPreview(data.photo_url._url);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при загрузке фотографии мастера:', error);
+        });
+    }
+
+    // Функция для обновления превью фотографии
+    function updatePhotoPreview(photoUrl) {
+        const photoPreview = document.getElementById('photo-preview');
+
+        if (!photoPreview) return;
+
+        // Если это элемент <img>
+        if (photoPreview.tagName === 'IMG') {
+            photoPreview.src = photoUrl;
+        }
+        // Если это div-заглушка
+        else if (photoPreview.classList.contains('lk-photo-placeholder')) {
+            // Создаем новый элемент <img>
+            const img = document.createElement('img');
+            img.id = 'photo-preview';
+            img.src = photoUrl;
+            img.alt = 'Фото мастера';
+            img.className = 'lk-photo';
+
+            // Заменяем placeholder на изображение
+            photoPreview.parentNode.replaceChild(img, photoPreview);
+        }
+    }
+
+    // Загружаем фото при открытии страницы
+    document.addEventListener('DOMContentLoaded', loadMasterPhoto);
+
     async function fetchAppointments() {
         try {
             const response = await fetch('http://82.202.142.17:8000/requests');
